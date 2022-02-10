@@ -1,5 +1,5 @@
 ---
-name: KPT 회고
+name: kpt-retrospect
 about: KPT 회고
 title: "[KPT 회고] n주차 m요일"
 labels: retrospect
