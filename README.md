@@ -1,46 +1,57 @@
-# Getting Started with Create React App
+### VOTE-IT Client README.md
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Manual Installation
+If you would prefer to do the installation manually, follow these steps:
 
-## Available Scripts
+Clone the repo:
+```
+git init
+git remote add origin git@github.com:codestates/vote-it.git
+git pull origin client
+```
 
-In the project directory, you can run:
+Install the dependencies:
+```
+npm install
+```
 
-### `npm start`
+Set the environment variables:  ( 이후 수정, dotenv 사용 가능 여부 확인 필요 )
+```
+cp .env.example .env
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+# open .env file and modify the environment variables (if needed)
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Commands
+Running locally:
+```
+npm run start
+```
 
-### `npm run build`
+Build project:
+```
+npm run build
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Environment Variables
+```
+# Examples
+PORT=3000
+ACCESS_SECRET
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## add later
+```
 
-### `npm run eject`
+## Project Structure
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
+src\
+  │--components\    # Components of Detail Objects
+  │--pages\         # Routed pages
+  | └--components\  # Components of Page Compositions (ex. header, footer, ...)
+  │--app.tsx        # Entire Page Rendering Screen
+  └--index.tsx      # App entry point
+```
