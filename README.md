@@ -11,8 +11,7 @@
 - 투표 결과를 그래프와 그림으로 쉽게 파악할 수 있습니다.
 
 ## 시스템 아키텍처
-
-![시스템 아키텍처](https://cdn.discordapp.com/attachments/941254946853101598/941573051131265044/Web_App_Reference_Architecture_7.png)
+![시스템 아키텍쳐](https://user-images.githubusercontent.com/86960007/153544096-8a2e9b1e-99ff-43aa-ab8d-e41bc0d29653.png)
 
 ## 멤버
 
