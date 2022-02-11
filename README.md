@@ -5,6 +5,11 @@ If you would prefer to do the installation manually, follow these steps:
 
 Clone the repo:
 ```bash
+git clone -b client git@github.com:codestates/vote-it.git
+cd vote-it
+## and do something!
+
+# Or do this:
 git clone git@github.com:codestates/vote-it.git
 cd vote-it
 git branch client
