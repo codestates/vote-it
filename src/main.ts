@@ -5,11 +5,12 @@ import { SSL_KEY, SSL_CERT } from './common/config/env.config';
 import { HttpsOptions } from '@nestjs/common/interfaces/external/https-options.interface';
 import { readFileSync } from 'fs';
 
+const httpsOptions: HttpsOptions = {
+  key: readFileSync(SSL_KEY),
+  cert: readFileSync(SSL_CERT),
+};
+
 async function bootstrap() {
-  const httpsOptions: HttpsOptions = {
-    key: readFileSync(SSL_KEY),
-    cert: readFileSync(SSL_CERT),
-  };
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     httpsOptions,
   });
