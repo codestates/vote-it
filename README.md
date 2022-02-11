@@ -1,4 +1,4 @@
-### VOTE-IT Client README.md
+# VOTE-IT Client README.md
 
 ## Manual Installation
 If you would prefer to do the installation manually, follow these steps:
