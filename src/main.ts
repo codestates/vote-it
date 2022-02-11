@@ -1,7 +1,7 @@
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { SSL_KEY, SSL_CERT } from './common/config/env.config';
+import { PORT, SSL_KEY, SSL_CERT } from './common/config/env.config';
 import { HttpsOptions } from '@nestjs/common/interfaces/external/https-options.interface';
 import { readFileSync } from 'fs';
 
@@ -16,6 +16,6 @@ async function bootstrap() {
   });
   app.disable('x-powered-by');
 
-  await app.listen(3000);
+  await app.listen(PORT);
 }
 bootstrap();

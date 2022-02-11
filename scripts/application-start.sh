@@ -3,6 +3,7 @@
 cd "$HOME/vote-it"
 . "$HOME/.nvm/nvm.sh"
 
+export PORT=$(aws ssm get-parameter --name '/vote-it/PORT' --query 'Parameter.Value' | tr -d '"')
 export SSL_KEY=$(aws ssm get-parameter --name '/vote-it/SSL_KEY' --query 'Parameter.Value' | tr -d '"')
 export SSL_CERT=$(aws ssm get-parameter --name '/vote-it/SSL_CERT' --query 'Parameter.Value' | tr -d '"')
 
