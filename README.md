@@ -12,7 +12,7 @@
 
 ## 시스템 아키텍처
 
-![시스템 아키텍처](https://cdn.discordapp.com/attachments/941254946853101598/941572488167575622/Web_App_Reference_Architecture_6.png)
+![시스템 아키텍처](https://cdn.discordapp.com/attachments/941254946853101598/941573051131265044/Web_App_Reference_Architecture_7.png)
 
 ## 멤버
 
