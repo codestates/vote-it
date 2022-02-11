@@ -1,0 +1,39 @@
+# [Vote It](https://mymy-project-adfs.com/)
+
+[![Vote It 로고](https://user-images.githubusercontent.com/86960007/153313996-ba36f1d3-390c-435a-bac9-c05aa211caac.png)](https://mymy-project-adfs.com/)
+
+## 기능
+
+- 자신이 원하는 투표를 생성하여 다른 사람들의 의견을 물어볼 수 있습니다.
+- 다른 사람의 투표에 쉽게 투표하고 결과를 볼 수 있습니다.
+- 자신의 투표 게시글에 공개 / 비공개를 설정하여 친구들에게만 투표를 공유할 수 있습니다.
+- 투표에 대해 댓글을 달아 투표 뿐 아니라 텍스트로 자신의 의견을 전달할 수 있습니다.
+- 댓글에 대한 좋아요와 대댓글 기능으로 다른 사람의 의견에 공감할 수 있습니다.
+- 투표 결과를 그래프와 그림으로 쉽게 파악할 수 있습니다.
+- 자신의 활동 로그를 모아서 볼 수 있습니다.
+
+## 시스템 아키텍처
+
+![시스템 아키텍처](https://cdn.discordapp.com/attachments/940138951770001421/941552462115000360/Web_App_Reference_Architecture_5.png)
+
+## 멤버
+
+| 이름              | Github 프로필  | 포지션     | 역할 |
+| ----------------- | -------------- | ---------- | ---- |
+| [곽명우](#곽명우) | [citysquirrel] | 풀스택     | 팀장 |
+| [김민범](#김민범) | [alsqja]       | 프론트엔드 | 팀원 |
+| [임윤정](#임윤정) | [yjlim0428]    | 프론트엔드 | 팀원 |
+| [한영우](#한영우) | [nix6839]      | 백엔드     | 팀원 |
+
+[citysquirrel]: https://github.com/citysquirrel
+[alsqja]: https://github.com/alsqja
+[yjlim0428]: https://github.com/yjlim0428
+[nix6839]: https://github.com/nix6839
+
+## 유사한 서비스 
+
+- [투표인](https://2pyo.in/)
+
+## 위키
+
+자세한 내용은 [이곳](https://github.com/codestates/vote-it/wiki) 참조
