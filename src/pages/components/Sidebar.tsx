@@ -22,11 +22,11 @@ const Button = styled.button`
   border-radius: 12px;
   cursor: pointer;
   :hover {
-    background-color: aliceblue;
+    background-color: var(--main-color-tint);
   }
   &.active {
     color: #fff;
-    background-color: #5d6dbe;
+    background-color: var(--main-color);
   }
 `;
 
