@@ -1,17 +1,24 @@
-import React from 'react';
+import { Routes, BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
-import { Main } from './pages/Main';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Vote } from './pages/Vote';
+import { Header } from './pages/components';
+import { Main } from './pages';
+import { useState } from 'react';
+
+// export type LoginProps = boolean;
 
 function App() {
+  const [isLogin, setIsLogin] = useState<boolean>(false);
+
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Main></Main>} />
-        <Route path="/vote" element={<Vote></Vote>} />
-      </Routes>
-    </BrowserRouter>
+    <Router>
+      <div className="App">
+        <Header isLogin={isLogin} setIsLogin={setIsLogin} />
+        <Routes>
+          <Route path="/" element={<Main />}></Route>
+          <Route path="/vote" element={<Vote></Vote>} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
