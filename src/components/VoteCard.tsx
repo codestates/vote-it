@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const VoteCardContainer = styled.div`
   grid-column: span 3;
@@ -13,6 +14,10 @@ const VoteCardContainer = styled.div`
   box-shadow: rgb(0 0 0 / 20%) 0px 5px 5px -3px,
     rgb(0 0 0 / 14%) 0px 8px 10px 1px, rgb(0 0 0 / 12%) 0px 3px 14px 2px;
 
+  cursor: pointer;
+  &: hover {
+    background: #dbdbdb;
+  }
   @media only screen and (max-width: 1200px) {
     grid-column: span 4;
   }
@@ -97,8 +102,15 @@ interface Iprops {
 }
 
 export const VoteCard = ({ id }: Iprops) => {
+  const location = useLocation().state as Iprops;
+  const navigate = useNavigate();
+
+  const OpenVoteHandler = () => {
+    navigate('/vote', { state: location });
+  };
+
   return (
-    <VoteCardContainer>
+    <VoteCardContainer onClick={OpenVoteHandler}>
       <TitleBox>
         <TitleCover>title</TitleCover>
       </TitleBox>

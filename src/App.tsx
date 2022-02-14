@@ -15,6 +15,7 @@ function App() {
         <Header isLogin={isLogin} setIsLogin={setIsLogin} />
         <Routes>
           <Route path="/" element={<Main />}></Route>
+          <Route path="/vote" element={<Vote></Vote>} />
         </Routes>
       </div>
     </Router>
