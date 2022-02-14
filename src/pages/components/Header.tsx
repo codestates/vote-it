@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { LoginModal, SignupModal } from '../../components';
-
+import { FaRegPlusSquare } from 'react-icons/fa';
 const Container = styled.div`
   display: flex;
   box-shadow: 0 0 8px 0 black;
@@ -62,6 +62,8 @@ const TextButton = styled.div`
   cursor: pointer;
 `;
 
+const CreateVoteBtn = styled.div``;
+
 interface IProps {
   isLogin: boolean;
   setIsLogin?: Dispatch<SetStateAction<boolean>>;
@@ -110,6 +112,11 @@ const Header: React.FunctionComponent<IProps> = ({ isLogin, setIsLogin }) => {
         <SettingWrapper>
           {isLogin ? (
             <>
+              <Link to="/createVote">
+                <CreateVoteBtn>
+                  <FaRegPlusSquare style={{ fontSize: '25px' }} />
+                </CreateVoteBtn>
+              </Link>
               <Notice>icon</Notice>
               <Setting>icon</Setting>
             </>

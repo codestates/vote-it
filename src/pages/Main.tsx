@@ -80,3 +80,5 @@ export const Main = () => {
     </MainOuter>
   );
 };
+
+export default Main;

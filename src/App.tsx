@@ -4,7 +4,7 @@ import { Header } from './pages/components';
 import { Main } from './pages/Main';
 import { useState } from 'react';
 import { Vote } from './pages/Vote';
-
+import CreateVote from './pages/CreateVote';
 // export type LoginProps = boolean;
 
 function App() {
@@ -16,6 +16,9 @@ function App() {
         <Header isLogin={isLogin} setIsLogin={setIsLogin} />
         <Routes>
           <Route path="/" element={<Main />}></Route>
+
+          <Route path="/createVote" element={<CreateVote />}></Route>
+
           <Route path="/vote" element={<Vote></Vote>} />
         </Routes>
       </div>
