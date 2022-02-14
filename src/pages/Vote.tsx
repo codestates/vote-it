@@ -106,10 +106,12 @@ const CommentInfo = styled.div`
 const CommentUsername = styled.div`
   padding: 10px;
   font-size: smaller;
+  text-align: left;
 `;
 
 const CommentContent = styled.div`
   padding: 10px;
+  text-align: left;
 `;
 
 interface Ioptions {
