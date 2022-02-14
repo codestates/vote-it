@@ -33,7 +33,7 @@ const MainContainer = styled.div`
   padding-bottom: 20px;
 `;
 
-const Main = () => {
+export const Main = () => {
   const [scrollY, setScrollY] = useState(0); //스크롤 값 저장
   const [btnStatus, setBtnStatus] = useState(false);
 
@@ -80,5 +80,3 @@ const Main = () => {
     </MainOuter>
   );
 };
-
-export default Main;
