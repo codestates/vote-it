@@ -3,7 +3,7 @@ import './App.css';
 import { Header } from './pages/components';
 import { Main } from './pages';
 import { useState } from 'react';
-
+import CreateVote from './pages/CreateVote';
 // export type LoginProps = boolean;
 
 function App() {
@@ -15,7 +15,11 @@ function App() {
         <Header isLogin={isLogin} setIsLogin={setIsLogin} />
         <Routes>
           <Route path="/" element={<Main />}></Route>
+
+          <Route path="/createVote" element={<CreateVote />}></Route>
+
           <Route path="/vote" element={<Vote></Vote>} />
+
         </Routes>
       </div>
     </Router>
