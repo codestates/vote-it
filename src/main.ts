@@ -4,6 +4,7 @@ import { AppModule } from './app.module';
 import { PORT, SSL_KEY, SSL_CERT } from './common/config/env.config';
 import { HttpsOptions } from '@nestjs/common/interfaces/external/https-options.interface';
 import { readFileSync } from 'fs';
+import { ValidationPipe } from '@nestjs/common';
 
 const httpsOptions: HttpsOptions = {
   key: readFileSync(SSL_KEY),
@@ -15,6 +16,8 @@ async function bootstrap() {
     httpsOptions,
   });
   app.disable('x-powered-by');
+
+  app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(PORT);
 }
