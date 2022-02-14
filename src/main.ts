@@ -1,3 +1,4 @@
+import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
@@ -18,6 +19,7 @@ async function bootstrap() {
   app.disable('x-powered-by');
 
   app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   await app.listen(env.PORT);
 }
