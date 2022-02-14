@@ -1,7 +1,7 @@
 import { Routes, BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
 import { Header } from './pages/components';
-import { Main } from './pages';
+import { Main, Setting } from './pages';
 import { useState } from 'react';
 
 // export type LoginProps = boolean;
@@ -15,6 +15,7 @@ function App() {
         <Header isLogin={isLogin} setIsLogin={setIsLogin} />
         <Routes>
           <Route path="/" element={<Main />}></Route>
+          <Route path="/setting" element={<Setting />}></Route>
         </Routes>
       </div>
     </Router>

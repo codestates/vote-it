@@ -1,3 +1,4 @@
-import Main from './Main';
+import { Main } from './Main';
+import Setting from './Setting';
 
-export { Main };
+export { Main, Setting };
