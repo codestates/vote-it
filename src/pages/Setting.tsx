@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Sidebar, Profile, Activity, Security } from './components';
 
@@ -42,6 +42,12 @@ interface IProps {
 const Setting: React.FunctionComponent<IProps> = () => {
   const [content, setContent] = useState<number>(0);
   const menu = [<Profile />, <Activity />, <Security />];
+
+  useEffect(() => {
+    const category = localStorage.getItem('setting'); // ex: "profile"
+    const idx = ['profile', 'activity', 'security'];
+    if (category !== null) setContent(idx.indexOf(category));
+  }, []);
   return (
     <Outer>
       <Container>

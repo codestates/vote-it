@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import styled from 'styled-components';
 
 const Canvas = styled.div`
@@ -113,13 +113,18 @@ interface IProps {
   modalOn: IModalOn;
   setModalOn: Dispatch<SetStateAction<IModalOn>>;
   setModalClass: Dispatch<SetStateAction<number>>;
+  isLogin: boolean;
+  setIsLogin: Dispatch<SetStateAction<boolean>>;
 }
 
 const SignupModal: React.FunctionComponent<IProps> = ({
   modalOn,
   setModalOn,
   setModalClass,
+  isLogin,
+  setIsLogin,
 }) => {
+  const [inputValue, setInputValue] = useState({ email: '', password: '' });
   const handleModalOff = () => {
     console.log('Modal Off');
     setModalOn({ isOn: false, isShow: false });
@@ -130,6 +135,11 @@ const SignupModal: React.FunctionComponent<IProps> = ({
       if (key === 'login') {
         setModalClass(0);
       }
+    };
+
+  const handleInputValue =
+    (key: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      setInputValue({ ...inputValue, [key]: e.target.value });
     };
 
   return (
@@ -148,9 +158,17 @@ const SignupModal: React.FunctionComponent<IProps> = ({
           </div>
           <InputWrapper>
             {/* <div>이메일</div> */}
-            <input type="email" placeholder="E-mail" />
+            <input
+              type="email"
+              placeholder="E-mail"
+              onChange={handleInputValue('email')}
+            />
             {/* <div>비밀번호</div> */}
-            <input type="password" placeholder="Password" />
+            <input
+              type="password"
+              placeholder="Password"
+              onChange={handleInputValue('password')}
+            />
           </InputWrapper>
           <ButtonWrapper>
             <Button color="rgb(199,199,199)">이메일로 계정 만들기</Button>
