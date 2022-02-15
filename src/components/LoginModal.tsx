@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import styled from 'styled-components';
 
 const Canvas = styled.div`
@@ -9,7 +9,7 @@ const Canvas = styled.div`
   width: 100vw;
   background-color: rgba(0, 0, 0, 0.4);
   opacity: 0;
-  transition: all 0.5s;
+  transition: opacity 0.5s;
   &.show {
     opacity: 1;
   }
@@ -112,13 +112,27 @@ interface IProps {
   modalOn: IModalOn;
   setModalOn: Dispatch<SetStateAction<IModalOn>>;
   setModalClass: Dispatch<SetStateAction<number>>;
+  isLogin: boolean;
+  setIsLogin: Dispatch<SetStateAction<boolean>>;
 }
+
+type InputValue = {
+  email: string;
+  password: string;
+};
 
 const LoginModal: React.FunctionComponent<IProps> = ({
   modalOn,
   setModalOn,
   setModalClass,
+  isLogin,
+  setIsLogin,
 }) => {
+  const [inputValue, setInputValue] = useState<InputValue>({
+    email: '',
+    password: '',
+  });
+
   const handleModalOff = () => {
     console.log('Modal Off');
     setModalOn({ isOn: false, isShow: false });
@@ -130,6 +144,19 @@ const LoginModal: React.FunctionComponent<IProps> = ({
         setModalClass(1);
       }
     };
+
+  const handleInputValue =
+    (key: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      setInputValue({ ...inputValue, [key]: e.target.value });
+    };
+
+  const handleButtonClick = () => {
+    const { email, password } = inputValue;
+    // if (email === 'test' && password === 'test') {
+    setIsLogin(true);
+    setModalOn({ isOn: false, isShow: false });
+    // }
+  };
 
   return (
     <>
@@ -147,12 +174,22 @@ const LoginModal: React.FunctionComponent<IProps> = ({
           </div>
           <InputWrapper>
             {/* <div>이메일</div> */}
-            <input type="email" placeholder="E-mail" />
+            <input
+              type="email"
+              placeholder="E-mail"
+              onChange={handleInputValue('email')}
+            />
             {/* <div>비밀번호</div> */}
-            <input type="password" placeholder="Password" />
+            <input
+              type="password"
+              placeholder="Password"
+              onChange={handleInputValue('password')}
+            />
           </InputWrapper>
           <ButtonWrapper>
-            <Button color="rgb(199,199,199)">이메일로 로그인</Button>
+            <Button onClick={handleButtonClick} color="rgb(199,199,199)">
+              이메일로 로그인
+            </Button>
             <Button color="rgb(234,067,053)">구글 로그인</Button>
             <Button color="rgb(45, 180, 0)">네이버 로그인</Button>
             <Button color="rgb(249, 224, 0)">카카오 로그인</Button>

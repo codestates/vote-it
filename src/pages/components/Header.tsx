@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { LoginModal, SignupModal } from '../../components';
+import { LoginModal, SignupModal, DropDown } from '../../components';
 import { FaRegPlusSquare } from 'react-icons/fa';
 const Container = styled.div`
   display: flex;
@@ -55,6 +55,7 @@ const Notice = styled.div`
 
 const Setting = styled.div`
   flex: 1 0 auto;
+  cursor: pointer;
 `;
 
 const TextButton = styled.div`
@@ -66,7 +67,7 @@ const CreateVoteBtn = styled.div``;
 
 interface IProps {
   isLogin: boolean;
-  setIsLogin?: Dispatch<SetStateAction<boolean>>;
+  setIsLogin: Dispatch<SetStateAction<boolean>>;
 }
 
 type Modal = {
@@ -74,11 +75,17 @@ type Modal = {
   isShow: boolean;
 };
 
+// type TDrop = {
+//   isOn: boolean;
+//   isShow: boolean;
+// };
+
 const Header: React.FunctionComponent<IProps> = ({ isLogin, setIsLogin }) => {
   const [modalOn, setModalOn] = useState<Modal>({
     isOn: false,
     isShow: false,
   });
+  const [dropOn, setDropOn] = useState<boolean>(false);
   const [modalClass, setModalClass] = useState<number>(0);
   const handleModal =
     (key: string) => (e: React.MouseEvent<HTMLDivElement>) => {
@@ -97,6 +104,10 @@ const Header: React.FunctionComponent<IProps> = ({ isLogin, setIsLogin }) => {
         }, 50);
       }
     };
+
+  const handleSettingClick = () => {
+    setDropOn(!dropOn);
+  };
   return (
     <Container>
       <Wrapper>
@@ -117,8 +128,15 @@ const Header: React.FunctionComponent<IProps> = ({ isLogin, setIsLogin }) => {
                   <FaRegPlusSquare style={{ fontSize: '25px' }} />
                 </CreateVoteBtn>
               </Link>
-              <Notice>icon</Notice>
-              <Setting>icon</Setting>
+              <Notice>notice</Notice>
+              <Setting onClick={handleSettingClick}>Icon</Setting>
+              {dropOn ? (
+                <DropDown
+                  dropOn={dropOn}
+                  setDropOn={setDropOn}
+                  setIsLogin={setIsLogin}
+                />
+              ) : null}
             </>
           ) : (
             <>
@@ -134,12 +152,16 @@ const Header: React.FunctionComponent<IProps> = ({ isLogin, setIsLogin }) => {
             modalOn={modalOn}
             setModalOn={setModalOn}
             setModalClass={setModalClass}
+            isLogin={isLogin}
+            setIsLogin={setIsLogin}
           />
         ) : (
           <LoginModal
             modalOn={modalOn}
             setModalOn={setModalOn}
             setModalClass={setModalClass}
+            isLogin={isLogin}
+            setIsLogin={setIsLogin}
           />
         )
       ) : null}
