@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { LoginModal, SignupModal, DropDown } from '../../components';
+import { LoginModal, SignupModal, DropDown, Feed } from '../../components';
 import { FaRegPlusSquare } from 'react-icons/fa';
 const Container = styled.div`
   display: flex;
@@ -85,7 +85,8 @@ const Header: React.FunctionComponent<IProps> = ({ isLogin, setIsLogin }) => {
     isOn: false,
     isShow: false,
   });
-  const [dropOn, setDropOn] = useState<boolean>(false);
+  const [dropOn, setDropOn] = useState(false);
+  const [noticeOn, setNoticeOn] = useState(false);
   const [modalClass, setModalClass] = useState<number>(0);
   const handleModal =
     (key: string) => (e: React.MouseEvent<HTMLDivElement>) => {
@@ -105,6 +106,9 @@ const Header: React.FunctionComponent<IProps> = ({ isLogin, setIsLogin }) => {
       }
     };
 
+  const handleNoticeClick = () => {
+    setNoticeOn(!noticeOn);
+  };
   const handleSettingClick = () => {
     setDropOn(!dropOn);
   };
@@ -128,7 +132,8 @@ const Header: React.FunctionComponent<IProps> = ({ isLogin, setIsLogin }) => {
                   <FaRegPlusSquare style={{ fontSize: '25px' }} />
                 </CreateVoteBtn>
               </Link>
-              <Notice>notice</Notice>
+              <Notice onClick={handleNoticeClick}>notice</Notice>
+              {noticeOn ? <Feed setNoticeOn={setNoticeOn} /> : null}
               <Setting onClick={handleSettingClick}>Icon</Setting>
               {dropOn ? (
                 <DropDown
