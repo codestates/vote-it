@@ -8,6 +8,8 @@ interface EnvVars {
   SSL_KEY: string;
   SSL_CERT: string;
 
+  JWT_SECRET: string;
+
   DB_USERNAME: string;
   DB_PASSWORD: string;
 
@@ -21,6 +23,8 @@ interface EnvVars {
 const envSchema = Joi.object<EnvVars, true>({
   SSL_KEY: Joi.string().required(),
   SSL_CERT: Joi.string().required(),
+
+  JWT_SECRET: Joi.string().required(),
 
   DB_USERNAME: Joi.string().required(),
   DB_PASSWORD: Joi.string().required(),
@@ -40,13 +44,4 @@ if (error !== undefined) {
   throw new Error(`Config validation error: ${error.message}`);
 }
 
-export const {
-  SSL_KEY,
-  SSL_CERT,
-  DB_USERNAME,
-  DB_PASSWORD,
-  DB_NAME,
-  DB_HOST,
-  DB_PORT,
-  PORT,
-} = env as EnvVars;
+export default env as EnvVars;
