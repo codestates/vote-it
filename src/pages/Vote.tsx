@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Option } from '../components/Option';
+import { Comments } from '../components/Comments';
 
 const VoteOuter = styled.div`
   width: 100%;
@@ -55,65 +56,6 @@ const ResultContainer = styled.div`
   border: 1px solid black;
 `;
 
-const CommentsContainer = styled.div`
-  width: 1200px;
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  column-gap: 24px;
-  align-items: center;
-  margin-top: 100px;
-
-  @media only screen and (max-width: 1200px) {
-    width: 768px;
-  }
-
-  @media only screen and (max-width: 768px) {
-    width: 360px;
-  }
-`;
-
-const CommentInput = styled.textarea`
-  grid-column: span 12;
-  height: 100px;
-`;
-
-const BtnBox = styled.div`
-  grid-column: span 12;
-  display: flex;
-  justify-content: right;
-  margin-top: 20px;
-`;
-
-const CommentBtn = styled.div`
-  width: 100px;
-  height: 50px;
-  cursor: pointer;
-  border: 1px solid black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 20px;
-  background: #5d6dbe;
-  color: white;
-  font-weight: bold;
-`;
-
-const CommentInfo = styled.div`
-  grid-column: span 12;
-  border-bottom: 1px solid #dbdbdb;
-`;
-
-const CommentUsername = styled.div`
-  padding: 10px;
-  font-size: smaller;
-  text-align: left;
-`;
-
-const CommentContent = styled.div`
-  padding: 10px;
-  text-align: left;
-`;
-
 interface Ioptions {
   id: number;
   content: string;
@@ -123,6 +65,7 @@ interface Icomments {
   id: number;
   content: string;
   username: string;
+  parrentId?: number;
 }
 
 export const Vote = () => {
@@ -130,7 +73,6 @@ export const Vote = () => {
   const [username, setUsername] = useState('');
   const [options, setOptions] = useState<Ioptions[]>([]);
   const [voted, setVoted] = useState(-1);
-  const [comment, setComment] = useState('');
   const [commentsList, setCommentsList] = useState<Icomments[]>([]);
 
   useEffect(() => {
@@ -149,6 +91,9 @@ export const Vote = () => {
       { id: 1, content: 'comment2', username: 'user2' },
       { id: 2, content: 'comment3', username: 'user3' },
       { id: 3, content: 'comment4', username: 'user4' },
+      { id: 4, content: 'comment1', username: 'user1', parrentId: 1 },
+      { id: 5, content: 'comment1', username: 'user1', parrentId: 1 },
+      { id: 6, content: 'comment1', username: 'user1', parrentId: 1 },
     ]);
     // TODO {id}로 get 받아와서 setState
   }, []);
@@ -183,26 +128,7 @@ export const Vote = () => {
           bubble Chart
         </ResultContainer>
       </VoteContainer>
-      <CommentsContainer style={voted === -1 ? { display: 'none' } : {}}>
-        <CommentInput
-          placeholder="댓글을 입력해주세요."
-          value={comment}
-          onChange={(e) => {
-            setComment(e.target.value);
-          }}
-        />
-        <BtnBox>
-          <CommentBtn>댓글 달기</CommentBtn>
-        </BtnBox>
-        {commentsList.map((obj) => {
-          return (
-            <CommentInfo key={obj.id}>
-              <CommentUsername>{obj.username}</CommentUsername>
-              <CommentContent>{obj.content}</CommentContent>
-            </CommentInfo>
-          );
-        })}
-      </CommentsContainer>
+      <Comments commentList={commentsList} isVoted={voted !== -1}></Comments>
     </VoteOuter>
   );
 };
