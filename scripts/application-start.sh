@@ -11,6 +11,8 @@ function set_node_env_from_aws {
 set_node_env_from_aws 'SSL_KEY'
 set_node_env_from_aws 'SSL_CERT'
 
+set_node_env_from_aws 'JWT_SECRET'
+
 set_node_env_from_aws 'DB_USERNAME'
 set_node_env_from_aws 'DB_PASSWORD'
 
