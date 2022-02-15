@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Option } from '../components/Option';
+
+import Bubbles from '../components/Bubbles';
 import { Comments } from '../components/Comments';
+
 
 const VoteOuter = styled.div`
   width: 100%;
@@ -52,6 +55,7 @@ const OptionsBox = styled.div`
 
 const ResultContainer = styled.div`
   grid-column: span 8;
+  height: 100%;
   /* width: 100%; */
   border: 1px solid black;
 `;
@@ -125,7 +129,7 @@ export const Vote = () => {
           })}
         </OptionsBox>
         <ResultContainer style={voted === -1 ? { display: 'none' } : {}}>
-          bubble Chart
+          <Bubbles />
         </ResultContainer>
       </VoteContainer>
       <Comments commentList={commentsList} isVoted={voted !== -1}></Comments>
