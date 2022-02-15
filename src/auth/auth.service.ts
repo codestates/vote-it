@@ -1,3 +1,4 @@
+import { JwtPayload } from './payloads/jwt.payload';
 import { UserRepository } from '../users/repositories/user.repository';
 import { LoginUserDto } from './dto/login-user.dto';
 import { CreateUserDto } from '../users/dto/create-user.dto';
@@ -23,7 +24,7 @@ export class AuthService {
       throw new ForbiddenException('이메일 또는 비밀번호가 다릅니다.');
     }
 
-    const payload = { sub: user.id, email };
+    const payload: JwtPayload = { sub: user.id, email };
     return {
       accessToken: this.jwtService.sign(payload),
     };
