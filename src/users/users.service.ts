@@ -27,6 +27,11 @@ export class UsersService {
     return pickUserData(newUser);
   }
 
+  async getUserById(userId: number) {
+    const user = await this.userRepository.findOneOrFail(userId);
+    return pickUserData(user);
+  }
+
   private async generateUniqueNickname(): Promise<string> {
     let nickname: string;
     do {

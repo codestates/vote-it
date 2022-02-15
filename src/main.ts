@@ -1,3 +1,4 @@
+import { EntityNotFoundErrorFilter } from './common/filters/entity-not-found-error.filter';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { NestFactory } from '@nestjs/core';
@@ -19,7 +20,10 @@ async function bootstrap() {
   app.disable('x-powered-by');
 
   app.useGlobalPipes(new ValidationPipe());
-  app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalFilters(
+    new HttpExceptionFilter(),
+    new EntityNotFoundErrorFilter(),
+  );
 
   await app.listen(env.PORT);
 }
