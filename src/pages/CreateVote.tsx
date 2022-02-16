@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FaMinus, FaPlus } from 'react-icons/fa';
+import { Scheduler } from '../components';
+
 const Container = styled.div`
   padding-top: 48px;
   background-color: #fdfdfd;
@@ -204,11 +206,12 @@ function CreateVote() {
             <Checkbox type={'checkbox'} />
             <CheckboxTitle>비공개</CheckboxTitle>
           </CheckboxAndTitle>
-          <CalendarBtn
+          {/* <CalendarBtn
             type="date"
             onChange={dateSelect}
             value={calendarValue}
-          ></CalendarBtn>
+          ></CalendarBtn> */}
+          <Scheduler translate={'0, -800px'} />
         </CheckboxContainer>
         <CreateBtn>투표만들기</CreateBtn>
       </CenterContainer>

@@ -1,7 +1,13 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { LoginModal, SignupModal, DropDown, Feed } from '../../components';
+import {
+  LoginModal,
+  SignupModal,
+  DropDown,
+  Feed,
+  Scheduler,
+} from '../../components';
 import { FaPlus, FaUserCircle, FaBell, FaSearch } from 'react-icons/fa';
 const Container = styled.div`
   position: fixed;
