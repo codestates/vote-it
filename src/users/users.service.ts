@@ -66,6 +66,13 @@ export class UsersService {
     this.userRepository.update(userId, { password: newPassword });
   }
 
+  async deleteUserById(userId: number) {
+    const deleteResult = await this.userRepository.delete(userId);
+    if (deleteResult.affected === 0) {
+      throw new NotFoundException(NotFoundErrorMessages.USER);
+    }
+  }
+
   private async generateUniqueNickname(): Promise<string> {
     let nickname: string;
     do {
