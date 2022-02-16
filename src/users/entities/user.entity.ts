@@ -14,7 +14,7 @@ export class User extends CommonEntity {
   @IsNotEmpty()
   password: string;
 
-  @Column({ type: 'varchar', nullable: false })
+  @Column({ type: 'varchar', nullable: false, unique: true })
   @IsString()
   @IsNotEmpty()
   nickname: string;

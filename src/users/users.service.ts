@@ -20,19 +20,18 @@ export class UsersService {
     if (await this.userRepository.exists({ email })) {
       throw new ConflictException('이미 존재하는 이메일입니다.');
     }
-
     if (nickname === undefined) {
       nickname = await this.generateUniqueNickname();
     } else if (await this.userRepository.exists({ nickname })) {
       throw new ConflictException('이미 존재하는 닉네임입니다.');
     }
 
-    const newUser = await this.userRepository.save({
+    const insertResult = await this.userRepository.insert({
       email,
-      password,
       nickname,
+      password,
     });
-    return pickUserData(newUser);
+    return { userId: insertResult.raw.insertId as number };
   }
 
   async getUserById(userId: number) {
