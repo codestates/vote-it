@@ -27,7 +27,7 @@ const envSchema = Joi.object<EnvVars, true>({
   JWT_SECRET: Joi.string().required(),
 
   DB_USERNAME: Joi.string().required(),
-  DB_PASSWORD: Joi.string().required(),
+  DB_PASSWORD: Joi.string().empty(''),
 
   DB_NAME: Joi.string().default('vote_it'),
   DB_HOST: Joi.string().hostname().default('127.0.0.1'),
