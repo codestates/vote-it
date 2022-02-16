@@ -5,8 +5,8 @@ import { Option } from '../components/Option';
 import Bubbles from '../components/Bubbles';
 import { Comments } from '../components/Comments';
 
-
 const VoteOuter = styled.div`
+  padding-top: 48px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -129,7 +129,7 @@ export const Vote = () => {
           })}
         </OptionsBox>
         <ResultContainer style={voted === -1 ? { display: 'none' } : {}}>
-          <Bubbles />
+          {/* <Bubbles /> */}
         </ResultContainer>
       </VoteContainer>
       <Comments commentList={commentsList} isVoted={voted !== -1}></Comments>

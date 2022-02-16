@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Sidebar, Profile, Activity, Security } from './components';
 
 const Outer = styled.div`
+  padding-top: 48px;
   width: 100%;
   display: flex;
   justify-content: center;

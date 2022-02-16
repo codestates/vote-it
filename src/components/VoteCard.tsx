@@ -15,7 +15,7 @@ const VoteCardContainer = styled.div`
     rgb(0 0 0 / 14%) 0px 8px 10px 1px, rgb(0 0 0 / 12%) 0px 3px 14px 2px;
 
   cursor: pointer;
-  &: hover {
+  &:hover {
     background: #dbdbdb;
   }
   @media only screen and (max-width: 1200px) {
