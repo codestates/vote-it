@@ -1,3 +1,4 @@
+import { pickUserData } from './../common/utils/pick-data.util';
 import { JwtPayload } from './payloads/jwt.payload';
 import { UserRepository } from '../users/repositories/user.repository';
 import { LoginUserDto } from './dto/login-user.dto';
@@ -27,6 +28,7 @@ export class AuthService {
     const payload: JwtPayload = { sub: user.id, email };
     return {
       accessToken: this.jwtService.sign(payload),
+      user: pickUserData(user),
     };
   }
 }
