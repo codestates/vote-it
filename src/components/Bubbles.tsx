@@ -1,28 +1,69 @@
-import React from 'react';
-// import BubbleChart from '@weknow/react-bubble-chart-d3';
+import React, { useLayoutEffect } from 'react';
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
+import * as am5 from '@amcharts/amcharts5';
+//import * as am5xy from '@amcharts/amcharts5/xy';
+import * as am5hierarchy from '@amcharts/amcharts5/hierarchy';
+import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
+//import am5themes_Micro from '@amcharts/amcharts5/themes/Micro';
 
-const Bubbles = () => {
+interface Ioptions {
+  id: number;
+  content: string;
+}
+
+interface IProps {
+  options: Ioptions[];
+}
+
+const Bubbles = ({ options }: IProps) => {
+
+  useLayoutEffect(() => {
+    let root = am5.Root.new('chartdiv');
+
+    root.setThemes([am5themes_Animated.new(root)]);
+
+    let data = {
+      id: 0,
+      children: options,
+    };
+
+    // Create wrapper container
+    let container = root.container.children.push(
+      am5.Container.new(root, {
+        width: am5.percent(100),
+        height: am5.percent(100),
+        layout: root.verticalLayout,
+      }),
+    );
+
+    let series = container.children.push(
+      am5hierarchy.ForceDirected.new(root, {
+        //singleBranchOnly: false,
+        downDepth: 2,
+        topDepth: 1,
+        initialDepth: 1,
+        maxRadius: 60,
+        minRadius: 20,
+        valueField: 'value',
+        categoryField: 'content',
+        childDataField: 'children',
+        manyBodyStrength: -13,
+        centerStrength: 0.8,
+      }),
+    );
+
+    series.data.setAll([data]);
+
+    series.appear(1000, 100);
+
+    return () => {
+      root.dispose();
+    };
+  }, [options]);
   return (
     <div>
-      {/* <BubbleChart
-        graph={{
-          zoom: 1.1,
-          // offsetX: -0.05,
-          // offsetY: -0.01
-        }}
-        width={200}
-        height={300}
-        padding={0}
-        showLegend={true}
-        legendPercentage={20}
-        data={[
-          { label: 'torrentqq55', value: 1 },
-          { label: 'torrentdia', value: 1 },
-          { label: 'torrentsee37', value: 1 },
-          { label: 'torrentmax5', value: 1 },
-          { label: 'torrenttip9', value: 3 },
-        ]}
-      /> */}
+      <div id="chartdiv" style={{ width: '100%', height: '500px' }}></div>
     </div>
   );
 };

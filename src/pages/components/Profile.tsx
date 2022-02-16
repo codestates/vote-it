@@ -1,7 +1,16 @@
 import styled from 'styled-components';
 
 const Container = styled.div`
-  flex: 2 0 auto;
+  grid-column: span 9;
+
+  @media only screen and (max-width: 1200px) {
+    grid-column: span 11;
+  }
+
+  @media only screen and (max-width: 500px) {
+    margin-top: 50px;
+    grid-column: span 6;
+  }
 `;
 
 interface IProps {}

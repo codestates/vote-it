@@ -4,6 +4,7 @@ import FloatBtn from '../components/FloatBtn';
 import { VoteCard } from '../components/VoteCard';
 
 const MainOuter = styled.div`
+  padding-top: 48px;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -17,7 +18,7 @@ const MainContainer = styled.div`
   align-items: center;
 
   @media only screen and (max-width: 1200px) {
-    width: 800px;
+    width: 768px;
   }
 
   @media only screen and (max-width: 768px) {

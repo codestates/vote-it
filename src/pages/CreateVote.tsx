@@ -4,6 +4,7 @@ import { FaMinus, FaPlus } from 'react-icons/fa';
 import { Scheduler } from '../components';
 
 const Container = styled.div`
+  padding-top: 48px;
   background-color: #fdfdfd;
   display: flex;
 `;
