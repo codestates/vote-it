@@ -4,6 +4,7 @@ import FloatBtn from '../components/FloatBtn';
 import { VoteCard } from '../components/VoteCard';
 
 const MainOuter = styled.div`
+  padding-top: 48px;
   width: 100%;
   display: flex;
   justify-content: center;

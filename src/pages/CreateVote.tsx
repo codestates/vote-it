@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 const Container = styled.div`
+  padding-top: 48px;
   background-color: #fdfdfd;
   display: flex;
 `;

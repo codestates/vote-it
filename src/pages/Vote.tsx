@@ -6,6 +6,7 @@ import Bubbles from '../components/Bubbles';
 import { Comments } from '../components/Comments';
 
 const VoteOuter = styled.div`
+  padding-top: 48px;
   width: 100%;
   display: flex;
   flex-direction: column;
