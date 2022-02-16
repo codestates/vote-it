@@ -3,7 +3,7 @@ import './App.css';
 import { Header } from './pages/components';
 import { Main, Setting, Vote } from './pages';
 import { useState } from 'react';
-import { Vote } from './pages/Vote';
+
 import CreateVote from './pages/CreateVote';
 // export type LoginProps = boolean;
 
@@ -21,9 +21,7 @@ function App() {
 
           <Route path="/vote" element={<Vote></Vote>} />
 
-
           <Route path="/setting" element={<Setting />}></Route>
-
         </Routes>
       </div>
     </Router>
