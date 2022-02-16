@@ -90,6 +90,7 @@ export const Comments = ({ commentList, isVoted }: Iprops) => {
         return (
           <Comment
             id={obj.id}
+            key={obj.id}
             username={obj.username}
             content={obj.content}
             isReply={isReply}
