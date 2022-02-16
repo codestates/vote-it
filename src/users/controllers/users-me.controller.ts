@@ -12,6 +12,7 @@ import {
   UseGuards,
   HttpStatus,
   NotImplementedException,
+  Delete,
 } from '@nestjs/common';
 import { User } from 'src/common/decorators/user.decorator';
 
@@ -36,6 +37,11 @@ export class UsersMeController {
     );
   }
 
+  @Patch('picture')
+  async updateMyPicture(@User() {}: JwtValidatePayload) {
+    throw new NotImplementedException();
+  }
+
   @Patch('password')
   @HttpCode(HttpStatus.NO_CONTENT)
   async updateMyPassword(
@@ -48,8 +54,9 @@ export class UsersMeController {
     );
   }
 
-  @Patch('picture')
-  async updateMyPicture(@User() {}: JwtValidatePayload) {
-    throw new NotImplementedException();
+  @Delete()
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async deleteMe(@User() { userId }: JwtValidatePayload) {
+    await this.usersService.deleteUserById(userId);
   }
 }
