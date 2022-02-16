@@ -3,6 +3,7 @@ import './App.css';
 import { Header } from './pages/components';
 import { Main, Setting, Vote } from './pages';
 import { useState } from 'react';
+
 import CreateVote from './pages/CreateVote';
 // export type LoginProps = boolean;
 
