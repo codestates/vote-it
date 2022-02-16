@@ -7,8 +7,10 @@ import {
   ConflictException,
   Injectable,
   ForbiddenException,
+  NotFoundException,
 } from '@nestjs/common';
 import { pickUserData } from '../common/utils/pick-data.util';
+import { NotFoundErrorMessages } from 'src/common/not-found-error-messages';
 
 @Injectable()
 export class UsersService {
@@ -42,19 +44,23 @@ export class UsersService {
     userId: number,
     updateUserProfileDto: UpdateUserProfileDto,
   ) {
-    await this.userRepository.findOneOrFail(userId);
-    const updatedUser = await this.userRepository.save({
-      id: userId,
-      ...updateUserProfileDto,
-    });
-    return pickUserData(updatedUser);
+    const updateResult = await this.userRepository.update(
+      userId,
+      updateUserProfileDto,
+    );
+    if (updateResult.affected === 0) {
+      throw new NotFoundException(NotFoundErrorMessages.USER);
+    }
+    return updateUserProfileDto;
   }
 
   async updateUserPasswordById(
     userId: number,
     { currentPassword, newPassword }: UpdateUserPasswordDto,
   ) {
-    const user = await this.userRepository.findOneOrFail(userId);
+    const user = await this.userRepository.findOneOrFail(userId, {
+      select: ['password'],
+    });
     if (user.password !== currentPassword) {
       throw new ForbiddenException('currentPassword가 유효하지 않습니다.');
     }
