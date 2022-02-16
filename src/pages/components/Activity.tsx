@@ -2,9 +2,19 @@ import { useState } from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
+  grid-column: span 9;
   display: flex;
   flex-direction: column;
   flex: 2 0 auto;
+
+  @media only screen and (max-width: 1200px) {
+    grid-column: span 11;
+  }
+
+  @media only screen and (max-width: 500px) {
+    margin-top: 50px;
+    grid-column: span 6;
+  }
 `;
 
 const MenuWrapper = styled.div`
@@ -30,7 +40,8 @@ const MenuWrapper = styled.div`
 const ContentWrapper = styled.div`
   display: flex;
   flex: 5 0 512px;
-  border: 1px solid green;
+  border: 1px solid black;
+  margin-right: 24px;
 `;
 
 interface IProps {}

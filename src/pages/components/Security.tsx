@@ -3,48 +3,58 @@ import styled from 'styled-components';
 import { WithdrawalModal } from './WithdrawalModal';
 
 const Container = styled.div`
+  grid-column: span 9;
   display: flex;
   flex-direction: column;
   flex: 2 0 auto;
   padding: 8px;
-  border: 1px solid green;
+  /* border: 1px solid green; */
+
+  @media only screen and (max-width: 1200px) {
+    grid-column: span 11;
+  }
+
+  @media only screen and (max-width: 500px) {
+    margin-top: 50px;
+    grid-column: span 6;
+  }
 `;
 
 const PassWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   margin: 8px;
 `;
 
 const InputWrapper = styled.div`
   display: flex;
+  justify-content: center;
   margin: 4px;
-  div {
+  > div {
     flex: 1 0 216px;
-    width: 216px;
-    text-align: right;
+    width: 150px;
+    text-align: left;
     margin-right: 8px;
   }
-  input {
-    flex: 2 0 auto;
+  > input {
+    width: 150px;
   }
 `;
 
 const ButtonWrapper = styled.div`
   display: flex;
+  justify-content: center;
   button {
-    flex: 1 0 auto;
+    min-width: 100px;
     margin-right: 10px;
     border-radius: 10px;
     border: 1px solid black;
   }
-  span {
-    flex: 10 0 auto;
-  }
   div {
     text-align: center;
     border: 1px solid black;
-    flex: 1 0 auto;
+    min-width: 100px;
     padding: 5px 0;
     color: red;
     border-radius: 10px;
@@ -88,7 +98,6 @@ const Security: React.FunctionComponent<IProps> = () => {
         </InputWrapper>
       </PassWrapper>
       <ButtonWrapper>
-        <span />
         <button>비밀번호 변경</button>
         <div
           onClick={() => {

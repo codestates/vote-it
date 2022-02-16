@@ -24,7 +24,7 @@ const ModalView = styled.div`
     cursor: pointer;
   }
   > div.desc {
-    font-family: 'IBMPlexSansKR-Light';
+    /* font-family: 'IBMPlexSansKR-Light'; */
     background-color: #fff;
     margin-top: 25px;
     color: #b80000;
@@ -32,7 +32,7 @@ const ModalView = styled.div`
     text-align: center;
   }
   > div.button {
-    font-family: 'Y_Spotlight';
+    /* font-family: 'Y_Spotlight'; */
     color: white;
     background: #b80000;
     border-radius: 10px;
@@ -45,6 +45,10 @@ const ModalView = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  @media only screen and (max-width: 500px) {
+    width: 360px;
   }
 `;
 
