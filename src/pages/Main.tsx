@@ -18,7 +18,7 @@ const MainContainer = styled.div`
   align-items: center;
 
   @media only screen and (max-width: 1200px) {
-    width: 800px;
+    width: 768px;
   }
 
   @media only screen and (max-width: 768px) {

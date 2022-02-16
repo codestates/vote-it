@@ -57,7 +57,6 @@ const ResultContainer = styled.div`
   grid-column: span 8;
   height: 100%;
   /* width: 100%; */
-  border: 1px solid black;
 `;
 
 interface Ioptions {

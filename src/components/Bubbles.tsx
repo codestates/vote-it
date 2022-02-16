@@ -17,7 +17,6 @@ interface IProps {
 }
 
 const Bubbles = ({ options }: IProps) => {
-  // let chart = useRef(null);
 
   useLayoutEffect(() => {
     let root = am5.Root.new('chartdiv');
