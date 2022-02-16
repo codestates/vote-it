@@ -6,7 +6,7 @@ import {
   SignupModal,
   DropDown,
   Feed,
-  Scheduler,
+  // Scheduler,
 } from '../../components';
 import { FaPlus, FaUserCircle, FaBell, FaSearch } from 'react-icons/fa';
 const Container = styled.div`
