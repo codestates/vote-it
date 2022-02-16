@@ -1,7 +1,13 @@
+import { UpdateUserPasswordDto } from './dto/update-user-password.dto';
+import { UpdateUserProfileDto } from './dto/update-user-profile.dto';
 import { UserRepository } from './repositories/user.repository';
 import { generateNickname } from '../common/utils/generate-nickname.util';
 import { CreateUserDto } from './dto/create-user.dto';
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  ForbiddenException,
+} from '@nestjs/common';
 import { pickUserData } from '../common/utils/pick-data.util';
 
 @Injectable()
@@ -30,6 +36,29 @@ export class UsersService {
   async getUserById(userId: number) {
     const user = await this.userRepository.findOneOrFail(userId);
     return pickUserData(user);
+  }
+
+  async updateUserProfileById(
+    userId: number,
+    updateUserProfileDto: UpdateUserProfileDto,
+  ) {
+    await this.userRepository.findOneOrFail(userId);
+    const updatedUser = await this.userRepository.save({
+      id: userId,
+      ...updateUserProfileDto,
+    });
+    return pickUserData(updatedUser);
+  }
+
+  async updateUserPasswordById(
+    userId: number,
+    { currentPassword, newPassword }: UpdateUserPasswordDto,
+  ) {
+    const user = await this.userRepository.findOneOrFail(userId);
+    if (user.password !== currentPassword) {
+      throw new ForbiddenException('currentPassword가 유효하지 않습니다.');
+    }
+    this.userRepository.update(userId, { password: newPassword });
   }
 
   private async generateUniqueNickname(): Promise<string> {

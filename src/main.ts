@@ -19,7 +19,11 @@ async function bootstrap() {
   });
   app.disable('x-powered-by');
 
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+    }),
+  );
   app.useGlobalFilters(
     new HttpExceptionFilter(),
     new EntityNotFoundErrorFilter(),

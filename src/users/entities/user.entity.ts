@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 import { CommonEntity } from '../../common/entities/common.entity';
 import { Column, Entity } from 'typeorm';
 
@@ -16,9 +16,10 @@ export class User extends CommonEntity {
 
   @Column({ type: 'varchar', nullable: false })
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   nickname: string;
 
   @Column({ type: 'varchar', nullable: true })
-  picture: string;
+  @IsString()
+  picture: string | null;
 }
