@@ -1,16 +1,35 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
+import { FaUser, FaHistory, FaKey } from 'react-icons/fa';
 
-const Container = styled.div`
+interface IContainerProps {
+  isSideBar: string;
+}
+
+const Container = styled.div<IContainerProps>`
+  grid-column: span 3;
   display: flex;
   flex-direction: column;
-  flex: 1 0 256px;
+  /* flex: 1 0 256px; */
   height: 70vh;
   max-width: 256px;
   margin: 16px;
   border-radius: 8px;
   /* border: 1px solid seagreen; */
   background-color: #eee;
+
+  @media only screen and (max-width: 1200px) {
+    grid-column: span 1;
+  }
+
+  @media only screen and (max-width: 500px) {
+    position: absolute;
+    top: 48px;
+    margin: 0;
+    grid-column: span 6;
+    width: 100%;
+    display: ${(props) => props.isSideBar};
+  }
 `;
 
 const Button = styled.button`
@@ -28,37 +47,62 @@ const Button = styled.button`
     color: #fff;
     background-color: var(--main-color);
   }
+  > span {
+    @media only screen and (max-width: 1200px) {
+      display: none;
+    }
+
+    @media only screen and (max-width: 500px) {
+      display: inline;
+    }
+  }
 `;
 
 interface IProps {
   content: number;
   setContent: Dispatch<SetStateAction<number>>;
+  isSideBar: string;
+  setIsSideBar: Dispatch<SetStateAction<string>>;
 }
 
-const Sidebar: React.FunctionComponent<IProps> = ({ content, setContent }) => {
+const Sidebar: React.FunctionComponent<IProps> = ({
+  content,
+  setContent,
+  isSideBar,
+  setIsSideBar,
+}) => {
   const handleClick =
     (key: number) => (e: React.MouseEvent<HTMLButtonElement>) => {
       setContent(key);
     };
+
   return (
-    <Container>
+    <Container
+      isSideBar={isSideBar}
+      onClick={() => {
+        setIsSideBar('none');
+      }}
+    >
       <Button
         className={`${content === 0 ? 'active' : ''}`}
         onClick={handleClick(0)}
       >
-        프로필
+        <FaUser />
+        <span style={{ marginLeft: '10px' }}>프로필</span>
       </Button>
       <Button
         className={`${content === 1 ? 'active' : ''}`}
         onClick={handleClick(1)}
       >
-        활동 기록
+        <FaHistory />
+        <span style={{ marginLeft: '10px' }}>활동 기록</span>
       </Button>
       <Button
         className={`${content === 2 ? 'active' : ''}`}
         onClick={handleClick(2)}
       >
-        보안
+        <FaKey />
+        <span style={{ marginLeft: '10px' }}>보안</span>
       </Button>
     </Container>
   );
