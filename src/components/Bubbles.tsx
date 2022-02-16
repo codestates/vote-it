@@ -1,10 +1,10 @@
 import React from 'react';
-import BubbleChart from '@weknow/react-bubble-chart-d3';
+// import BubbleChart from '@weknow/react-bubble-chart-d3';
 
 const Bubbles = () => {
   return (
     <div>
-      <BubbleChart
+      {/* <BubbleChart
         graph={{
           zoom: 1.1,
           // offsetX: -0.05,
@@ -22,7 +22,7 @@ const Bubbles = () => {
           { label: 'torrentmax5', value: 1 },
           { label: 'torrenttip9', value: 3 },
         ]}
-      />
+      /> */}
     </div>
   );
 };
