@@ -3,7 +3,9 @@ import './App.css';
 import { Header } from './pages/components';
 import { Main, Setting, Vote } from './pages';
 import { useState } from 'react';
+
 import CreateVote from './pages/CreateVote';
+import Footer from './pages/components/Footer';
 // export type LoginProps = boolean;
 
 function App() {
@@ -22,6 +24,7 @@ function App() {
 
           <Route path="/setting" element={<Setting />}></Route>
         </Routes>
+        <Footer />
       </div>
     </Router>
   );
