@@ -1,5 +1,6 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
 const Canvas = styled.div`
   position: fixed;
@@ -21,7 +22,7 @@ const View = styled.div`
   position: absolute;
   left: calc(50vw - var(--modal-width) / 2);
   top: calc(50vh - var(--modal-height) / 2);
-  height: var(--modal-height);
+  height: var(--modal-height) + 50px;
   width: var(--modal-width);
   background-color: var(--modal-bg);
   border-radius: 16px;
@@ -113,18 +114,18 @@ interface IProps {
   modalOn: IModalOn;
   setModalOn: Dispatch<SetStateAction<IModalOn>>;
   setModalClass: Dispatch<SetStateAction<number>>;
-  isLogin: boolean;
-  setIsLogin: Dispatch<SetStateAction<boolean>>;
 }
 
 const SignupModal: React.FunctionComponent<IProps> = ({
   modalOn,
   setModalOn,
   setModalClass,
-  isLogin,
-  setIsLogin,
 }) => {
-  const [inputValue, setInputValue] = useState({ email: '', password: '' });
+  const [inputValue, setInputValue] = useState({
+    email: '',
+    password: '',
+    nickname: '',
+  });
   const handleModalOff = () => {
     console.log('Modal Off');
     setModalOn({ isOn: false, isShow: false });
@@ -141,6 +142,19 @@ const SignupModal: React.FunctionComponent<IProps> = ({
     (key: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
       setInputValue({ ...inputValue, [key]: e.target.value });
     };
+
+  const SignupHandler = () => {
+    axios
+      .post('https://voteit.washnix.com:3000/auth/signup', inputValue)
+      .then((res) => {
+        console.log(res.data);
+        alert('회원가입이 완료되었습니다.');
+        window.location.href = './';
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  };
 
   return (
     <>
@@ -163,6 +177,11 @@ const SignupModal: React.FunctionComponent<IProps> = ({
               placeholder="E-mail"
               onChange={handleInputValue('email')}
             />
+            <input
+              type="text"
+              placeholder="nickname"
+              onChange={handleInputValue('nickname')}
+            />
             {/* <div>비밀번호</div> */}
             <input
               type="password"
@@ -171,7 +190,9 @@ const SignupModal: React.FunctionComponent<IProps> = ({
             />
           </InputWrapper>
           <ButtonWrapper>
-            <Button color="rgb(199,199,199)">이메일로 계정 만들기</Button>
+            <Button color="rgb(199,199,199)" onClick={SignupHandler}>
+              이메일로 계정 만들기
+            </Button>
             <Button color="rgb(234,067,053)">구글 로그인</Button>
             <Button color="rgb(45, 180, 0)">네이버 로그인</Button>
             <Button color="rgb(249, 224, 0)">카카오 로그인</Button>

@@ -1,6 +1,8 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { loginHandler } from '../modules/login';
 
 const Canvas = styled.div`
   position: fixed;
@@ -46,19 +48,16 @@ const Button = styled.div`
 interface IProps {
   dropOn: boolean;
   setDropOn: Dispatch<SetStateAction<boolean>>;
-  setIsLogin: Dispatch<SetStateAction<boolean>>;
 }
 
-const DropDown: React.FunctionComponent<IProps> = ({
-  dropOn,
-  setDropOn,
-  setIsLogin,
-}) => {
+const DropDown: React.FunctionComponent<IProps> = ({ dropOn, setDropOn }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const handleButtonClick =
     (key: string) => (e: React.MouseEvent<HTMLDivElement>) => {
       if (key === 'logout') {
-        setIsLogin(false);
+        dispatch(loginHandler());
         setDropOn(false);
         navigate('/');
       } else {
