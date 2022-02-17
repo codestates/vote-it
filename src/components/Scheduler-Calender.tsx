@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { useCallback } from 'react';
 import styled from 'styled-components';
+import { FaRegDotCircle, FaAngleRight, FaAngleLeft } from 'react-icons/fa';
 
 const Container = styled.div`
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   display: flex;
   flex-direction: column;
 `;
@@ -17,14 +23,33 @@ const YearNMonth = styled.div`
     font-weight: bold;
   }
   .calender-year-month-button {
-    margin: 4px 16px;
+    margin: 4px 2px;
     height: 24px;
     line-height: 24px;
     justify-content: center;
     border-radius: 12px;
     cursor: pointer;
     :hover {
-      background-color: #eee;
+      color: var(--main-color);
+    }
+    &.disabled {
+      color: #808080;
+      pointer-events: none;
+      cursor: not-allowed;
+      :hover {
+        background-color: transparent;
+      }
+    }
+    &.today {
+      /* color: red; */
+      font-size: 14px;
+      /* position: absolute; */
+      width: 24px;
+
+      /* transform: translate(64px, -10px); */
+      :hover {
+        background-color: transparent;
+      }
     }
   }
 `;
@@ -41,11 +66,16 @@ const Days = styled.div`
   .calender-day {
     height: 24px;
     margin: 4px;
+    border-radius: 100px;
     cursor: pointer;
+    :hover {
+      background-color: var(--main-color-tint);
+      color: white;
+    }
   }
   .current-day {
     font-weight: 500;
-    border-radius: 100px;
+
     background-color: var(--main-color);
     color: white;
   }
@@ -56,16 +86,24 @@ const Days = styled.div`
   .passed {
     color: #eee;
     cursor: auto;
+    :hover {
+      background-color: transparent;
+      color: #eee;
+    }
   }
 `;
 
 interface IProps {}
 
 // 달력 변수 시작
-// const date = new Date();
-// const utc = date.getTime() + date.getTimezoneOffset() * 60 * 1000;
-// const kstGap = 9 * 60 * 60 * 1000;
-// const today = new Date(utc + kstGap);
+const originDate = new Date();
+const utc = originDate.getTime() + originDate.getTimezoneOffset() * 60 * 1000;
+const kstGap = 9 * 60 * 60 * 1000;
+const today = new Date(utc + kstGap);
+const thisDay = today.getDate();
+const thisMonth = today.getMonth();
+const thisYear = today.getFullYear();
+let kstDate = new Date(utc + kstGap);
 // let thisMonth = new Date(
 //   today.getFullYear(),
 //   today.getMonth(),
@@ -78,111 +116,104 @@ interface IProps {}
 
 // 달력 변수 끝
 
-// console.log(curDate, curMonth, curYear, today);
+const renderCalender = () => {
+  const viewYear = kstDate.getFullYear();
+  const viewMonth = kstDate.getMonth();
 
-// console.log(prevDate, prevDay, nextDate, nextDay);
+  const yearMonthText = document.querySelector(
+    '.calender-year-month-text',
+  ) as HTMLParagraphElement;
+  yearMonthText.textContent = `${viewYear}년 ${viewMonth + 1}월`;
+
+  const prevLast = new Date(viewYear, viewMonth, 0);
+  const thisLast = new Date(viewYear, viewMonth + 1, 0);
+
+  const PLDate = prevLast.getDate();
+  const PLDay = prevLast.getDay();
+
+  const TLDate = thisLast.getDate();
+  const TLDay = thisLast.getDay();
+
+  const prevDates: (string | number)[] = [];
+  const thisDates: (string | number)[] = [...Array(TLDate + 1).keys()].slice(1);
+  const nextDates: (string | number)[] = [];
+
+  if (PLDay !== 6) {
+    for (let i = 0; i < PLDay + 1; i++) {
+      prevDates.unshift(PLDate - i);
+    }
+  }
+
+  for (let i = 1; i < 7 - TLDay; i++) {
+    nextDates.push(i);
+  }
+
+  prevDates.forEach((date, i) => {
+    if (viewMonth === thisMonth && viewYear === thisYear)
+      prevDates[i] = `<div class="calender-day passed">${date}</div>`;
+    else prevDates[i] = `<div class="calender-day disabled">${date}</div>`;
+  });
+  thisDates.forEach((date, i) => {
+    if (date < thisDay && viewMonth === thisMonth && viewYear === thisYear)
+      thisDates[i] = `<div class="calender-day passed">${date}</div>`;
+    else if (
+      date === thisDay &&
+      thisMonth === viewMonth &&
+      viewYear === thisYear
+    )
+      thisDates[i] = `<div class="calender-day current-day">${date}</div>`;
+    else thisDates[i] = `<div class="calender-day">${date}</div>`;
+  });
+  nextDates.forEach((date, i) => {
+    nextDates[i] = `<div class="calender-day disabled">${date}</div>`;
+  });
+
+  const dates = prevDates.concat(thisDates, nextDates);
+
+  const dayText = document.querySelector('.calender') as HTMLParagraphElement;
+  dayText.innerHTML = dates.join('');
+
+  const buttonText = document.querySelector(
+    '.calender-year-month-button',
+  ) as HTMLParagraphElement;
+  if (thisMonth === viewMonth && thisYear === viewYear) {
+    buttonText.classList.add('disabled');
+  } else buttonText.classList.remove('disabled');
+};
 
 const SchedulerCalender: React.FunctionComponent<IProps> = () => {
-  const [date, setDate] = useState(new Date());
-  const [utc, setUtc] = useState(
-    date.getTime() + date.getTimezoneOffset() * 60 * 1000,
-  );
-  const [kstGap, setKstGap] = useState(9 * 60 * 60 * 1000);
-  const [today, setToday] = useState(new Date(utc + kstGap));
-  const [thisMonth, setThisMonth] = useState(
-    new Date(today.getFullYear(), today.getMonth(), today.getDate()),
-  );
-  const [curYear, setCurYear] = useState(thisMonth.getFullYear());
-  const [curMonth, setCurMonth] = useState(thisMonth.getMonth() + 1);
-  const [curDate, setCurDate] = useState(thisMonth.getDate());
-  const [startDay, setStartDay] = useState(new Date(curYear, curMonth, 0));
-  const [endDay, setEndDay] = useState(new Date(curYear, curMonth + 1, 0));
-  const [prevDate, setPrevDate] = useState(startDay.getDate());
-  const [prevDay, setPrevDay] = useState(startDay.getDay());
-  const [nextDate, setNextDate] = useState(endDay.getDate());
-  const [nextDay, setNextDay] = useState(endDay.getDay());
-  const [prevMonthList, setPrevMonthList] = useState<number[]>([]);
-  const [curMonthList, setCurMonthList] = useState<number[]>([]);
-  const [nextMonthList, setNextMonthList] = useState<number[]>([]);
-  const [dateName, setDateName] = useState([
-    '일',
-    '월',
-    '화',
-    '수',
-    '목',
-    '금',
-    '토',
-  ]);
-
-  const handleDateInfo = () => {
-    Promise.resolve()
-      .then(() => {
-        setCurYear(thisMonth.getFullYear());
-        setCurMonth(thisMonth.getMonth());
-        setCurDate(thisMonth.getDate());
-      })
-      .then(() => {
-        setStartDay(new Date(curYear, curMonth, 0));
-        setEndDay(new Date(curYear, curMonth + 1, 0));
-      })
-      .then(() => {
-        setPrevDate(startDay.getDate());
-        setPrevDay(startDay.getDay());
-        setNextDate(endDay.getDate());
-        setNextDay(endDay.getDay());
-      });
-  };
-  const handleList = () => {
-    const prevList = [];
-    const curList = [];
-    const nextList = [];
-    for (let i = prevDate - prevDay; i <= prevDate; i++) {
-      prevList.push(i);
-    }
-    for (let i = 1; i <= nextDate; i++) {
-      curList.push(i);
-    }
-    for (let i = 1; i <= (7 - nextDay === 7 ? 0 : 6 - nextDay); i++) {
-      nextList.push(i);
-    }
-    setPrevMonthList([...prevList]);
-    setCurMonthList([...curList]);
-    setNextMonthList([...nextList]);
-  };
+  const [dateInfo, setDateInfo] = useState({ viewMonth: '' });
+  const dateName = ['일', '월', '화', '수', '목', '금', '토'];
 
   const handleMonth =
     (key: number) => (e: React.MouseEvent<HTMLDivElement>) => {
-      setPrevMonthList([]);
-      setCurMonthList([]);
-      setNextMonthList([]);
-
-      Promise.resolve()
-        .then(() => {
-          setThisMonth(new Date(curYear, curMonth + key, 1));
-        })
-        .then(() => {
-          handleDateInfo();
-        })
-        .then(() => {
-          handleList();
-        });
+      if (key === 0) {
+        kstDate = new Date(utc + kstGap);
+      } else kstDate.setMonth(kstDate.getMonth() + key);
+      renderCalender();
     };
 
   useEffect(() => {
-    handleList();
+    renderCalender();
   }, []);
 
   return (
     <Container>
       <YearNMonth>
-        <div onClick={handleMonth(-1)} className="calender-year-month-button">
-          &lt;
-        </div>
         <div className="calender-year-month-text">
-          {curYear}년 {curMonth}월
+          {/* {todayYear}년 {todayMonth + 1}월 */}
+        </div>
+        <div onClick={handleMonth(-1)} className="calender-year-month-button">
+          <FaAngleLeft />
+        </div>
+        <div
+          onClick={handleMonth(0)}
+          className="calender-year-month-button today"
+        >
+          <FaRegDotCircle />
         </div>
         <div onClick={handleMonth(1)} className="calender-year-month-button">
-          &gt;
+          <FaAngleRight />
         </div>
       </YearNMonth>
 
@@ -194,13 +225,13 @@ const SchedulerCalender: React.FunctionComponent<IProps> = () => {
             </div>
           );
         })}
-        {prevMonthList.map((v, i) => {
-          if (curMonth === curMonth)
-            return (
-              <div key={i} className="calender-day passed">
-                {v}
-              </div>
-            );
+        {/* {prevMonthList.map((v, i) => {
+          // if (curMonth === curMonth)
+          //   return (
+          //     <div key={i} className="calender-day passed">
+          //       {v}
+          //     </div>
+          //   );
           return (
             <div key={i} className="calender-day disabled">
               {v}
@@ -232,7 +263,7 @@ const SchedulerCalender: React.FunctionComponent<IProps> = () => {
               {v}
             </div>
           );
-        })}
+        })} */}
       </Days>
     </Container>
   );
