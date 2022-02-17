@@ -18,6 +18,8 @@ interface EnvVars {
   DB_PORT: number;
 
   PORT: number;
+
+  NODE_ENV: 'production' | 'development';
 }
 
 const envSchema = Joi.object<EnvVars, true>({
@@ -34,6 +36,10 @@ const envSchema = Joi.object<EnvVars, true>({
   DB_PORT: Joi.number().port().default(3306),
 
   PORT: Joi.number().port().default(3000),
+
+  NODE_ENV: Joi.string()
+    .valid('production', 'development')
+    .default('production'),
 });
 
 const { value: env, error } = envSchema

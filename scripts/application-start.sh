@@ -17,6 +17,8 @@ declare -a envs=(
   'DB_PORT'
 
   'PORT'
+
+  'NODE_ENV'
 )
 
 for env in "${envs[@]}"
