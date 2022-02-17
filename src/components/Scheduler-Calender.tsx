@@ -115,19 +115,22 @@ const SchedulerCalender: React.FunctionComponent<IProps> = () => {
   ]);
 
   const handleDateInfo = () => {
-    setCurYear(thisMonth.getFullYear());
-    setCurMonth(thisMonth.getMonth());
-    setCurDate(thisMonth.getDate());
-    setTimeout(() => {
-      setStartDay(new Date(curYear, curMonth, 0));
-      setEndDay(new Date(curYear, curMonth + 1, 0));
-      setTimeout(() => {
+    Promise.resolve()
+      .then(() => {
+        setCurYear(thisMonth.getFullYear());
+        setCurMonth(thisMonth.getMonth());
+        setCurDate(thisMonth.getDate());
+      })
+      .then(() => {
+        setStartDay(new Date(curYear, curMonth, 0));
+        setEndDay(new Date(curYear, curMonth + 1, 0));
+      })
+      .then(() => {
         setPrevDate(startDay.getDate());
         setPrevDay(startDay.getDay());
         setNextDate(endDay.getDate());
         setNextDay(endDay.getDay());
-      }, 500);
-    }, 500);
+      });
   };
   const handleList = () => {
     const prevList = [];
@@ -152,21 +155,17 @@ const SchedulerCalender: React.FunctionComponent<IProps> = () => {
       setPrevMonthList([]);
       setCurMonthList([]);
       setNextMonthList([]);
-      setTimeout(() => {
-        setThisMonth(new Date(curYear, curMonth + key, 1));
-        setTimeout(() => {
-          console.log(thisMonth);
-        }, 500);
-      }, 500);
 
-      setTimeout(() => {
-        handleDateInfo();
-        setTimeout(() => {
+      Promise.resolve()
+        .then(() => {
+          setThisMonth(new Date(curYear, curMonth + key, 1));
+        })
+        .then(() => {
+          handleDateInfo();
+        })
+        .then(() => {
           handleList();
-        }, 500);
-      }, 500);
-
-      console.log('ok');
+        });
     };
 
   useEffect(() => {

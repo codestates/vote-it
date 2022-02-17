@@ -33,7 +33,7 @@ const Title = styled.textarea`
   resize: none;
 `;
 const OptionContainer = styled.div`
-  overflow: scroll;
+  overflow-y: scroll;
   margin-top: 30px;
   width: 100%;
   display: flex;
