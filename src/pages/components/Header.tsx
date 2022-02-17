@@ -6,7 +6,7 @@ import {
   SignupModal,
   DropDown,
   Feed,
-  Scheduler,
+  // Scheduler,
 } from '../../components';
 import { FaPlus, FaUserCircle, FaBell, FaSearch } from 'react-icons/fa';
 const Container = styled.div`
@@ -17,7 +17,7 @@ const Container = styled.div`
   justify-content: center;
   top: 0;
   left: 0;
-  box-shadow: 0 0 8px 0 black;
+  box-shadow: -2px -2px 4px #ececec, 3px 3px 8px rgb(184, 184, 184);
   height: 48px;
   z-index: 1;
   background-color: #fff;

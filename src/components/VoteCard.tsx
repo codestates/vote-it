@@ -1,22 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
-
+import '../fonts/font.css';
 const VoteCardContainer = styled.div`
   grid-column: span 3;
-  border: 1px solid #dbdbdb;
   display: flex;
+  border-radius: 10px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 400px;
   margin-top: 20px;
-  box-shadow: rgb(0 0 0 / 20%) 0px 5px 5px -3px,
-    rgb(0 0 0 / 14%) 0px 8px 10px 1px, rgb(0 0 0 / 12%) 0px 3px 14px 2px;
+  background-color: #fff;
+  box-shadow: -2px -2px 4px #ececec, 3px 3px 8px rgb(184, 184, 184);
 
   cursor: pointer;
   &:hover {
-    background: #dbdbdb;
+    background: #e7e7e7;
   }
   @media only screen and (max-width: 1200px) {
     grid-column: span 4;
@@ -36,18 +36,21 @@ const TitleBox = styled.div`
   background-image: url('https://cdn.discordapp.com/attachments/940138951770001421/940774921255129108/vote-it_LOGO1.png');
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 70% 90%;
+  background-size: 55% auto;
+  opacity: 0.8;
   width: 100%;
   flex: 1 1 200px;
-  border-bottom: 1px solid #dbdbdb;
+  border-bottom: 1px solid #eeeeee;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  text-shadow: -2px 0 #fff, 0 2px #fff, 2px 0 #fff, 0 -2px #fff;
+  font-family: 'SBAggroM';
+  text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;
   @media only screen and (max-width: 500px) {
     border-bottom: 0;
     border-right: 1px solid #dbdbdb;
+    opacity: 0.5;
   }
 `;
 
@@ -68,6 +71,7 @@ const TitleCover = styled.div`
 const StyledBody = styled.div`
   flex: 1 1 200px;
   display: flex;
+
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -78,6 +82,7 @@ const StyledBody = styled.div`
 `;
 
 const HiddenTitle = styled.div`
+  font-family: 'SBAggroM';
   font-size: large;
   @media only screen and (min-width: 501px) {
     display: none;
@@ -85,6 +90,7 @@ const HiddenTitle = styled.div`
 `;
 
 const StyledNum = styled.div`
+  font-family: 'SUIT-Medium';
   @media only screen and (min-width: 501px) {
     font-size: large;
     font-weight: bold;
@@ -112,10 +118,10 @@ export const VoteCard = ({ id }: Iprops) => {
   return (
     <VoteCardContainer onClick={OpenVoteHandler}>
       <TitleBox>
-        <TitleCover>title</TitleCover>
+        <TitleCover>Title</TitleCover>
       </TitleBox>
       <StyledBody>
-        <HiddenTitle>title</HiddenTitle>
+        <HiddenTitle>Title</HiddenTitle>
         <StyledNum>참여인원 45명</StyledNum>
         <StyledDate>시작일 ---</StyledDate>
         <StyledDate>마감일 ---</StyledDate>

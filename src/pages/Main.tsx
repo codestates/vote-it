@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import FloatBtn from '../components/FloatBtn';
 import { VoteCard } from '../components/VoteCard';
+import { getPostList, postType } from '../lib/postList'; //+
 
 const MainOuter = styled.div`
   padding-top: 48px;
   width: 100%;
   display: flex;
   justify-content: center;
+  background-color: #f8f8f8;
 `;
 
 const MainContainer = styled.div`
@@ -35,12 +37,34 @@ const MainContainer = styled.div`
 `;
 
 export const Main = () => {
+  const [page, setPage] = useState<number>(1); //+
+  const [posts, setPosts] = useState<postType[]>(getPostList(1)); //+
   const [scrollY, setScrollY] = useState(0); //스크롤 값 저장
   const [btnStatus, setBtnStatus] = useState(false);
 
   const [list, setList] = useState([
     1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0,
   ]);
+
+  const handleScroll = useCallback((): void => {
+    //+
+    const { innerHeight } = window;
+    const { scrollHeight } = document.body;
+    const { scrollTop } = document.documentElement;
+
+    if (Math.round(scrollTop + innerHeight) >= scrollHeight) {
+      setPosts(posts.concat(getPostList(page + 1)));
+      setPage((prevPage: number) => prevPage + 1);
+    }
+  }, [page, posts]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, true);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll, true);
+    };
+  }, [handleScroll]);
 
   const handleFollow = () => {
     setScrollY(window.pageYOffset); //스크롤 값 저장
@@ -69,8 +93,8 @@ export const Main = () => {
   return (
     <MainOuter>
       <MainContainer>
-        {list.map((el, idx) => {
-          return <VoteCard key={idx} id={el} />;
+        {posts.map((el, idx) => {
+          return <VoteCard key={idx} id={idx} />;
         })}
       </MainContainer>
       {btnStatus ? (
