@@ -3,15 +3,15 @@ import styled from 'styled-components';
 import { ImageUpload } from '../../components/ImageUpload';
 
 const Container = styled.div`
-  grid-column: span 9;
+  grid-column: span 8;
 
   @media only screen and (max-width: 1200px) {
-    grid-column: span 11;
+    grid-column: span 10;
   }
 
   @media only screen and (max-width: 500px) {
     margin-top: 50px;
-    grid-column: span 6;
+    grid-column: span 5;
   }
 `;
 
@@ -115,6 +115,13 @@ const Profile: React.FunctionComponent<IProps> = () => {
       'https://w.namu.la/s/5e8f11a4acfe69bcfea691be09c0a89994a41a1fc06fd2d6b4562d346529ca59061b3998c8da662b83c462a0a81a893fd4551dcbf2d1b0c19d670b55ece8f24e8f5b2b631a8b89121c4c3aad755d4c2d44273656184ff7047a910458fdaa9080',
   });
 
+  const UserInfoHandler = () => {
+    if (username === '') {
+      return;
+    }
+    setUserInfo({ ...userInfo, nickname: username });
+  };
+
   return (
     <Container>
       <ImgContainer>
@@ -146,7 +153,9 @@ const Profile: React.FunctionComponent<IProps> = () => {
           setIsUpdating(!isUpdating);
         }}
       >
-        <Btn>{isUpdating ? '완료' : '프로필 업데이트'}</Btn>
+        <Btn onClick={UserInfoHandler}>
+          {isUpdating ? '완료' : '프로필 업데이트'}
+        </Btn>
       </BtnBox>
     </Container>
   );
