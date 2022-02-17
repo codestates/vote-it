@@ -1,5 +1,8 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { loginHandler } from '../modules/login';
 
 const Canvas = styled.div`
   position: fixed;
@@ -112,8 +115,6 @@ interface IProps {
   modalOn: IModalOn;
   setModalOn: Dispatch<SetStateAction<IModalOn>>;
   setModalClass: Dispatch<SetStateAction<number>>;
-  isLogin: boolean;
-  setIsLogin: Dispatch<SetStateAction<boolean>>;
 }
 
 type InputValue = {
@@ -125,13 +126,13 @@ const LoginModal: React.FunctionComponent<IProps> = ({
   modalOn,
   setModalOn,
   setModalClass,
-  isLogin,
-  setIsLogin,
 }) => {
   const [inputValue, setInputValue] = useState<InputValue>({
     email: '',
     password: '',
   });
+
+  const dispatch = useDispatch();
 
   const handleModalOff = () => {
     console.log('Modal Off');
@@ -152,10 +153,22 @@ const LoginModal: React.FunctionComponent<IProps> = ({
 
   const handleButtonClick = () => {
     const { email, password } = inputValue;
-    // if (email === 'test' && password === 'test') {
-    setIsLogin(true);
-    setModalOn({ isOn: false, isShow: false });
-    // }
+    axios
+      .post(
+        'https://voteit.washnix.com:3000/auth/login',
+        { email, password },
+        {
+          headers: { 'Content-Type': 'application/json' },
+        },
+      )
+      .then((res) => {
+        dispatch(loginHandler());
+        setModalOn({ isOn: false, isShow: false });
+        localStorage.setItem('isLogin', 'true');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
