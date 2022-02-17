@@ -105,9 +105,10 @@ const StyledName = styled.div`
 
 interface Iprops {
   id: number;
+  contents: string;
 }
 
-export const VoteCard = ({ id }: Iprops) => {
+export const VoteCard = ({ id, contents }: Iprops) => {
   const location = useLocation().state as Iprops;
   const navigate = useNavigate();
 
@@ -118,10 +119,10 @@ export const VoteCard = ({ id }: Iprops) => {
   return (
     <VoteCardContainer onClick={OpenVoteHandler}>
       <TitleBox>
-        <TitleCover>Title</TitleCover>
+        <TitleCover>{contents}</TitleCover>
       </TitleBox>
       <StyledBody>
-        <HiddenTitle>Title</HiddenTitle>
+        <HiddenTitle>{contents}</HiddenTitle>
         <StyledNum>참여인원 45명</StyledNum>
         <StyledDate>시작일 ---</StyledDate>
         <StyledDate>마감일 ---</StyledDate>

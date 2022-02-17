@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Option } from '../components/Option';
-
+import '../fonts/font.css';
 import Bubbles from '../components/Bubbles';
 import { Comments } from '../components/Comments';
 
@@ -31,7 +31,8 @@ const VoteContainer = styled.div`
 `;
 
 const SubBox = styled.div`
-  font-size: 40px;
+  font-family: 'SUIT-Medium';
+  font-size: 35px;
   font-weight: bold;
   grid-column: span 12;
   display: flex;
@@ -41,7 +42,9 @@ const SubBox = styled.div`
 `;
 
 const UserNameBox = styled.div`
+  font-family: 'SUIT-Medium';
   font-size: larger;
+  color: gray;
   grid-column: span 12;
   display: flex;
   justify-content: right;
@@ -50,6 +53,7 @@ const UserNameBox = styled.div`
 `;
 
 const OptionsBox = styled.div`
+  font-family: 'SUIT-Medium';
   grid-column: span 12;
 `;
 
@@ -131,7 +135,12 @@ export const Vote = () => {
           <Bubbles options={options} />
         </ResultContainer>
       </VoteContainer>
-      <Comments commentList={commentsList} isVoted={voted !== -1}></Comments>
+      <Comments
+        username={username}
+        commentList={commentsList}
+        setCommentsList={setCommentsList}
+        isVoted={voted !== -1}
+      ></Comments>
     </VoteOuter>
   );
 };

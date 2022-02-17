@@ -4,7 +4,7 @@ import { FaChevronUp } from 'react-icons/fa';
 
 const FloatingBtn = styled.div`
   position: fixed;
-  line-height: 55px;
+  line-height: 63px;
   bottom: 40px;
   right: 40px;
   width: 50px;
