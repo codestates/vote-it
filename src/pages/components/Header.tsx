@@ -1,6 +1,8 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../modules';
 import {
   LoginModal,
   SignupModal,
@@ -154,11 +156,6 @@ const MiniSearch = styled.input`
   height: 35px;
 `;
 
-interface IProps {
-  isLogin: boolean;
-  setIsLogin: Dispatch<SetStateAction<boolean>>;
-}
-
 type Modal = {
   isOn: boolean;
   isShow: boolean;
@@ -169,7 +166,7 @@ type Modal = {
 //   isShow: boolean;
 // };
 
-const Header: React.FunctionComponent<IProps> = ({ isLogin, setIsLogin }) => {
+const Header: React.FunctionComponent = () => {
   const [modalOn, setModalOn] = useState<Modal>({
     isOn: false,
     isShow: false,
@@ -178,6 +175,9 @@ const Header: React.FunctionComponent<IProps> = ({ isLogin, setIsLogin }) => {
   const [noticeOn, setNoticeOn] = useState(false);
   const [modalClass, setModalClass] = useState<number>(0);
   const [isMiniOpen, setIsMiniOpen] = useState(false);
+
+  const isLogin = useSelector((state: RootState) => state.login.isLogin);
+
   const handleModal =
     (key: string) => (e: React.MouseEvent<HTMLDivElement>) => {
       if (key === 'login') {
@@ -249,13 +249,7 @@ const Header: React.FunctionComponent<IProps> = ({ isLogin, setIsLogin }) => {
             <Setting onClick={handleSettingClick}>
               <FaUserCircle />
             </Setting>
-            {dropOn ? (
-              <DropDown
-                dropOn={dropOn}
-                setDropOn={setDropOn}
-                setIsLogin={setIsLogin}
-              />
-            ) : null}
+            {dropOn ? <DropDown dropOn={dropOn} setDropOn={setDropOn} /> : null}
           </SettingWrapper>
         ) : (
           <LoginWrapper>
@@ -277,16 +271,12 @@ const Header: React.FunctionComponent<IProps> = ({ isLogin, setIsLogin }) => {
             modalOn={modalOn}
             setModalOn={setModalOn}
             setModalClass={setModalClass}
-            isLogin={isLogin}
-            setIsLogin={setIsLogin}
           />
         ) : (
           <LoginModal
             modalOn={modalOn}
             setModalOn={setModalOn}
             setModalClass={setModalClass}
-            isLogin={isLogin}
-            setIsLogin={setIsLogin}
           />
         )
       ) : null}
