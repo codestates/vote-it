@@ -1,8 +1,8 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { loginHandler } from '../modules/login';
+import apiAxios from '../utils/apiAxios';
 
 const Canvas = styled.div`
   position: fixed;
@@ -153,18 +153,13 @@ const LoginModal: React.FunctionComponent<IProps> = ({
 
   const handleButtonClick = () => {
     const { email, password } = inputValue;
-    axios
-      .post(
-        'https://voteit.washnix.com:3000/auth/login',
-        { email, password },
-        {
-          headers: { 'Content-Type': 'application/json' },
-        },
-      )
+    apiAxios
+      .post(`auth/login`, { email, password })
       .then((res) => {
         dispatch(loginHandler());
         setModalOn({ isOn: false, isShow: false });
         localStorage.setItem('isLogin', 'true');
+        localStorage.setItem('accessToken', res.data.accessToken);
       })
       .catch((err) => {
         console.log(err);

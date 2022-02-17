@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
+import apiAxios from '../utils/apiAxios';
 
 const Canvas = styled.div`
   position: fixed;
@@ -144,8 +144,8 @@ const SignupModal: React.FunctionComponent<IProps> = ({
     };
 
   const SignupHandler = () => {
-    axios
-      .post('https://voteit.washnix.com:3000/auth/signup', inputValue)
+    apiAxios
+      .post('auth/signup', inputValue)
       .then((res) => {
         console.log(res.data);
         alert('회원가입이 완료되었습니다.');
