@@ -45,16 +45,18 @@ const TitleCover = styled.div`
 const TitleView = styled.div`
   width: 150px;
   height: 30px;
-  background-color: #dbdbdb;
+  background-color: #8b8b8b78;
   border-radius: 20px;
+  filter: blur(10px);
 `;
 
 const StyledView = styled.div`
   width: 150px;
-  height: 20px;
-  background-color: #dbdbdb;
+  height: 15px;
+  background-color: #e6e6e6;
   border-radius: 20px;
   margin-bottom: 10px;
+  filter: blur(10px);
 `;
 
 export const LoadingVoteCard = () => {
@@ -62,7 +64,7 @@ export const LoadingVoteCard = () => {
     <LoadingContainer>
       <TitleBox>
         <TitleCover>
-          <TitleView></TitleView>
+          <TitleView>title</TitleView>
         </TitleCover>
       </TitleBox>
       <StyledBody>
