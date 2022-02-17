@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import FloatBtn from '../components/FloatBtn';
 import { LoadingVoteCard } from '../components/LoadingVoteCard';
 import { VoteCard } from '../components/VoteCard';
-import { getPostList, postType } from '../lib/postList'; //+
+import { getPostList, postType } from '../lib/postList';
 
 const MainOuter = styled.div`
   padding-top: 48px;
