@@ -281,7 +281,9 @@ const VoteList: React.FunctionComponent<IProps> = () => {
     },
   ]);
 
-  const [list, setList] = useState<object[]>([]);
+  const [list, setList] = useState([...dummy.slice(0, 15)]);
+  const [page, setPage] = useState(15);
+  const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const handleScroll = useCallback((): void => {
@@ -295,13 +297,27 @@ const VoteList: React.FunctionComponent<IProps> = () => {
       scrollHeight !== undefined
     ) {
       if (Math.round(scrollTop + innerHeight) >= scrollHeight) {
-        // 배열 불러오기
-        console.log('ok');
+        // 배열 불러오기 Promise 동기처리 => 이후 ajax 요청으로 변환
+        Promise.resolve()
+          .then(() => {
+            setIsLoading(true);
+          })
+          .then(() => {
+            setList([...list, ...dummy.slice(page, page + 5)]);
+            setPage(page + 5);
+          })
+          .then(() => {
+            setIsLoading(false);
+          });
       }
     }
-  }, [dummy]);
+  }, [list, page, dummy]);
 
-  console.log(list.length);
+  // console.log(list.length);
+
+  // useEffect(() => {
+  //   setList([dummy[0]]);
+  // }, []);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, true);
@@ -318,7 +334,7 @@ const VoteList: React.FunctionComponent<IProps> = () => {
       </ChildWrapper>
       <Divider />
       <ScrollWrapper ref={scrollRef}>
-        {dummy.map((v) => {
+        {list.map((v) => {
           return (
             <ChildWrapper key={v.id} sub>
               <div className="votelist-id">{v.id}</div>
@@ -332,8 +348,8 @@ const VoteList: React.FunctionComponent<IProps> = () => {
           );
         })}
         <Divider />
-        무한스크롤
-        <Divider />
+        {isLoading ? '무한스크롤' : null}
+        {/* <Divider /> */}
       </ScrollWrapper>
     </Container>
   );
