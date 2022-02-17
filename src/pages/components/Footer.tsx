@@ -7,7 +7,7 @@ const FooterOuter = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: inset 2px 2px 5px 2px rgb(212, 212, 212);
+  box-shadow: inset 0 8px 10px -6px rgb(212, 212, 212);
 `;
 
 const FooterContainer = styled.div`
