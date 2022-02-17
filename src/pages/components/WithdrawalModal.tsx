@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { AiOutlineClose } from 'react-icons/ai';
 import axios from 'axios';
+import apiAxios from '../../utils/apiAxios';
 
 const ModalBackdrop = styled.div`
   position: fixed;
@@ -86,13 +87,11 @@ export const WithdrawalModal = ({ WithdrawalModalHandler }: Iprop) => {
 
   const WithdrawalReq = () => {
     // TODO : 회원 탈퇴 요청 보내기
-    axios.delete(
-      'https://voteit.washnix.com:3000/users/me',
-
-      {
-        withCredentials: true,
-      },
-    );
+    apiAxios
+      .delete(`users/me`, {
+        // delete 요청 바디
+      })
+      .then();
   };
 
   return (
