@@ -35,6 +35,10 @@ const Wrapper = styled.div`
     width: 80px;
     height: 32px;
   }
+
+  @media only screen and (max-width: 500px) {
+    width: 360px;
+  }
 `;
 
 const SearchWrapper = styled.div`
@@ -75,7 +79,7 @@ const SettingWrapper = styled.div`
   }
 
   @media only screen and (max-width: 500px) {
-    grid-column: 8 / span 4;
+    grid-column: 7 / span 6;
   }
 `;
 
@@ -120,7 +124,7 @@ const LoginWrapper = styled.div`
   }
 
   @media only screen and (max-width: 500px) {
-    grid-column: 7 / span 6;
+    grid-column: 6 / span 7;
   }
 `;
 
