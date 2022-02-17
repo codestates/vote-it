@@ -3,8 +3,6 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { ImageUpload } from '../../components/ImageUpload';
 import apiAxios from '../../utils/apiAxios';
-import axios from 'axios';
-import { url } from '../../utils/url';
 
 const Container = styled.div`
   grid-column: span 8;
@@ -121,8 +119,8 @@ const Profile: React.FunctionComponent<IProps> = () => {
 
   useEffect(() => {
     const access = localStorage.getItem('accessToken');
-    axios
-      .get(`${url}/users/me`, {
+    apiAxios
+      .get(`users/me`, {
         headers: {
           Authorization: `Bearer ${access}`,
         },
