@@ -177,7 +177,7 @@ function CreateVote() {
               );
             })
           )}
-          {PlusBtn ? (
+          {PlusBtn && optionList.length !== 0 ? (
             <PlusOptionBtn onClick={PlusOption}>
               <FaPlus style={{ color: 'white' }} />
             </PlusOptionBtn>

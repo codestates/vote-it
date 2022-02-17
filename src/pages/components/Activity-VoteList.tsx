@@ -298,17 +298,17 @@ const VoteList: React.FunctionComponent<IProps> = () => {
     ) {
       if (Math.round(scrollTop + innerHeight) >= scrollHeight) {
         // 배열 불러오기 Promise 동기처리 => 이후 ajax 요청으로 변환
-        Promise.resolve()
-          .then(() => {
-            setIsLoading(true);
-          })
-          .then(() => {
-            setList([...list, ...dummy.slice(page, page + 5)]);
-            setPage(page + 5);
-          })
-          .then(() => {
-            setIsLoading(false);
-          });
+        // Promise.resolve()
+        //   .then(() => {
+        //     setIsLoading(true);
+        //   })
+        //   .then(() => {
+        setList([...list, ...dummy.slice(page, page + 5)]);
+        setPage(page + 5);
+        // })
+        // .then(() => {
+        //   setIsLoading(false);
+        // });
       }
     }
   }, [list, page, dummy]);
