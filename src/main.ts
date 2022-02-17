@@ -7,6 +7,7 @@ import { HttpsOptions } from '@nestjs/common/interfaces/external/https-options.i
 import { readFileSync } from 'fs';
 import { ValidationPipe } from '@nestjs/common';
 import env from './common/config/env.config';
+import corsConfig from './common/config/cors.config';
 
 const httpsOptions: HttpsOptions = {
   key: readFileSync(env.SSL_KEY),
@@ -16,6 +17,7 @@ const httpsOptions: HttpsOptions = {
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     httpsOptions,
+    cors: corsConfig,
   });
   app.disable('x-powered-by');
 
