@@ -1,6 +1,10 @@
+import { useEffect } from 'react';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { ImageUpload } from '../../components/ImageUpload';
+import apiAxios from '../../utils/apiAxios';
+import axios from 'axios';
+import { url } from '../../utils/url';
 
 const Container = styled.div`
   grid-column: span 8;
@@ -114,6 +118,24 @@ const Profile: React.FunctionComponent<IProps> = () => {
     picture:
       'https://w.namu.la/s/5e8f11a4acfe69bcfea691be09c0a89994a41a1fc06fd2d6b4562d346529ca59061b3998c8da662b83c462a0a81a893fd4551dcbf2d1b0c19d670b55ece8f24e8f5b2b631a8b89121c4c3aad755d4c2d44273656184ff7047a910458fdaa9080',
   });
+
+  useEffect(() => {
+    const access = localStorage.getItem('accessToken');
+    axios
+      .get(`${url}/users/me`, {
+        headers: {
+          Authorization: `Bearer ${access}`,
+        },
+      })
+      .then((res) => {
+        if (!res.data.picture) {
+          res.data.picture =
+            'https://w.namu.la/s/5e8f11a4acfe69bcfea691be09c0a89994a41a1fc06fd2d6b4562d346529ca59061b3998c8da662b83c462a0a81a893fd4551dcbf2d1b0c19d670b55ece8f24e8f5b2b631a8b89121c4c3aad755d4c2d44273656184ff7047a910458fdaa9080';
+        }
+        setUserInfo(res.data);
+      })
+      .catch((e) => console.log(e));
+  }, []);
 
   const UserInfoHandler = () => {
     if (username === '') {

@@ -58,8 +58,9 @@ const DropDown: React.FunctionComponent<IProps> = ({ dropOn, setDropOn }) => {
     (key: string) => (e: React.MouseEvent<HTMLDivElement>) => {
       if (key === 'logout') {
         dispatch(loginHandler());
-        setDropOn(false);
         localStorage.setItem('isLogin', 'false');
+        localStorage.setItem('accessToken', '');
+        setDropOn(false);
         navigate('/');
       } else {
         setDropOn(false);
