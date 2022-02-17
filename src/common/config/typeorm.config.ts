@@ -3,7 +3,7 @@ import { User } from '../../users/entities/user.entity';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import env from './env.config';
 
-export const typeOrmConfig: TypeOrmModuleOptions = {
+const typeOrmConfig: TypeOrmModuleOptions = {
   type: 'mariadb',
   host: env.DB_HOST,
   port: env.DB_PORT,
@@ -11,6 +11,13 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   password: env.DB_PASSWORD,
   database: env.DB_NAME,
   entities: [User, Poll],
-  synchronize: true,
-  logging: true,
 };
+
+if (env.NODE_ENV === 'development') {
+  Object.assign<TypeOrmModuleOptions, TypeOrmModuleOptions>(typeOrmConfig, {
+    synchronize: true,
+    logging: true,
+  });
+}
+
+export default typeOrmConfig;
