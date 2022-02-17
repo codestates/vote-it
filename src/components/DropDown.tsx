@@ -59,6 +59,7 @@ const DropDown: React.FunctionComponent<IProps> = ({ dropOn, setDropOn }) => {
       if (key === 'logout') {
         dispatch(loginHandler());
         setDropOn(false);
+        localStorage.setItem('isLogin', 'false');
         navigate('/');
       } else {
         setDropOn(false);
