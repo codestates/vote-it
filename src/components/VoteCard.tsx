@@ -32,7 +32,7 @@ const VoteCardContainer = styled.div`
   }
 `;
 
-const TitleBox = styled.div`
+export const TitleBox = styled.div`
   background-image: url('https://cdn.discordapp.com/attachments/940138951770001421/940774921255129108/vote-it_LOGO1.png');
   background-position: center;
   background-repeat: no-repeat;
@@ -68,7 +68,7 @@ const TitleCover = styled.div`
   }
 `;
 
-const StyledBody = styled.div`
+export const StyledBody = styled.div`
   flex: 1 1 200px;
   display: flex;
 

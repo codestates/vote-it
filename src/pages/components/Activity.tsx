@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import { VoteList, LogList } from '.';
 
 const Container = styled.div`
   grid-column: span 9;
@@ -40,8 +41,10 @@ const MenuWrapper = styled.div`
 const ContentWrapper = styled.div`
   display: flex;
   flex: 5 0 512px;
+  height: 512px;
   border: 1px solid black;
   margin-right: 24px;
+  /* overflow-y: auto; */
 `;
 
 interface IProps {}
@@ -52,7 +55,7 @@ const Activity: React.FunctionComponent<IProps> = () => {
     (key: number) => (e: React.MouseEvent<HTMLDivElement>) => {
       setActMenu(key);
     };
-  const menu = [<div>투표글임</div>, <div>활동기록임</div>];
+  const menu = [<VoteList />, <LogList />];
 
   return (
     <Container>
