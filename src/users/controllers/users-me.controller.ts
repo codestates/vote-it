@@ -47,7 +47,7 @@ export class UsersMeController {
   async updateMyPassword(
     @User() { userId }: JwtValidatePayload,
     @Body() updateUserPasswordDto: UpdateUserPasswordDto,
-  ) {
+  ): Promise<void> {
     await this.usersService.updateUserPasswordById(
       userId,
       updateUserPasswordDto,
@@ -56,7 +56,7 @@ export class UsersMeController {
 
   @Delete()
   @HttpCode(HttpStatus.NO_CONTENT)
-  async deleteMe(@User() { userId }: JwtValidatePayload) {
+  async deleteMe(@User() { userId }: JwtValidatePayload): Promise<void> {
     await this.usersService.deleteUserById(userId);
   }
 }
