@@ -10,7 +10,7 @@ const MainOuter = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  background-color: #f8f8f8;
+  background-color: var(--bg);
 `;
 
 const MainContainer = styled.div`

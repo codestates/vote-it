@@ -1,6 +1,39 @@
+:root[color-theme='light'] {
+  --bg: #f8f8f8;
+  --menu-bg: #fff;
+  --box-bg: #fff;
+  --box-bg-lighter: #e7e7e7;
+  --box-shadow: #ececec;
+  --box-shadow-darker: #b8b8b8;
+  --button-bg: #fff;
+  --button-bg-lighter: #eee;
+  --font: black;
+  --font-lighter: #222;
+}
+:root[color-theme='dark'] {
+  --bg: #0d1117;
+  --menu-bg: #161b22;
+  --box-bg: #161b22;
+  --box-bg-lighter: #2e343b;
+  --box-shadow: #1a1d20;
+  --box-shadow-darker: #171c20;
+  --button-bg: #111;
+  --button-bg-lighter: #333;
+  --font: white;
+  --font-lighter: #ddd;
+}
+
 :root {
   --main-color: #5d6dbe;
   --main-color-tint: #a2abd9;
+  --modal-width: 320px;
+  --modal-height: 384px;
+  --modal-bg: rgb(255, 255, 255);
+  --modal-border: 1px solid rgba(175, 175, 175, 0.4);
+  --border: #808080;
+  --border-lighter: #bbb;
+  --border-lightest: #ddd;
+
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -23,7 +56,6 @@
     transform: translateX(0);
   }
 }
-
 ::-webkit-scrollbar {
   width: 8px;
 }
