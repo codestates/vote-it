@@ -15,7 +15,14 @@
   /* color: #000; */
 }
 
-
+@keyframes toast-in-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
 
 ::-webkit-scrollbar {
   width: 8px;

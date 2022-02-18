@@ -2,6 +2,8 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { WithdrawalModal } from './WithdrawalModal';
 import apiAxios from '../../utils/apiAxios';
+import { useDispatch } from 'react-redux';
+import { notify } from '../../modules/notification';
 
 const Container = styled.div`
   grid-column: span 9;
@@ -57,7 +59,6 @@ const ButtonWrapper = styled.div`
   display: flex;
   justify-content: right;
   button {
-
     &:hover {
       background-color: #7785c9;
     }
@@ -67,7 +68,6 @@ const ButtonWrapper = styled.div`
     height: 40px;
     color: white;
     background-color: #5d6dbe;
-
   }
   div {
     text-align: center;
@@ -99,6 +99,8 @@ const Security: React.FunctionComponent<IProps> = () => {
   const [checkNew, setCheckNew] = useState('');
   const [isCheck, setIsCheck] = useState(true);
 
+  const dispatch = useDispatch();
+
   const WithdrawalModalHandler = () => {
     setIsWithdrawal(false);
   };
@@ -114,11 +116,11 @@ const Security: React.FunctionComponent<IProps> = () => {
 
   const changePassword = () => {
     if (newPassword === '' || currentPassword === '') {
-      alert('비밀번호를 입력해주세요.');
+      dispatch(notify('비밀번호를 입력해주세요.'));
       return;
     }
     if (!isCheck) {
-      alert('비밀번호가 일치하지 않습니다');
+      dispatch(notify('비밀번호가 일치하지 않습니다.'));
       return;
     }
     const accessToken = localStorage.getItem('accessToken');
@@ -136,12 +138,15 @@ const Security: React.FunctionComponent<IProps> = () => {
         },
       )
       .then((res) => {
-        alert('비밀번호 변경이 완료되었습니다');
+        dispatch(notify('비밀번호 변경이 완료되었습니다.'));
         setCheckNew('');
         setNewPassword('');
         setCurrentPassword('');
       })
-      .catch((err) => alert(err));
+      .catch((err) => {
+        dispatch(notify('err'));
+        console.log(err);
+      });
   };
 
   return (

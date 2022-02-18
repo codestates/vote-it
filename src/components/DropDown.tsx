@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { loginHandler } from '../modules/login';
+import { notify } from '../modules/notification';
 
 const Canvas = styled.div`
   position: fixed;
@@ -61,6 +62,7 @@ const DropDown: React.FunctionComponent<IProps> = ({ dropOn, setDropOn }) => {
         localStorage.setItem('isLogin', 'false');
         localStorage.setItem('accessToken', '');
         setDropOn(false);
+        dispatch(notify('로그아웃이 완료되었습니다.'));
         navigate('/');
       } else {
         setDropOn(false);

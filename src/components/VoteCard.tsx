@@ -142,7 +142,7 @@ export const VoteCard = ({
         <StyledNum>참여인원 45명</StyledNum>
         <StyledDate>시작일 {createdAt}</StyledDate>
         <StyledDate>마감일 {expirationDate}</StyledDate>
-        <StyledName>이름 {author}</StyledName>
+        <StyledName>{author}</StyledName>
       </StyledBody>
     </VoteCardContainer>
   );
