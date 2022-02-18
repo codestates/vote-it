@@ -38,7 +38,7 @@ const SideBarBtn = styled.div`
   position: absolute;
   line-height: 55px;
   top: 0px;
-  left: 100px;
+  left: 30px;
   z-index: 999;
   width: 40px;
   height: 40px;
