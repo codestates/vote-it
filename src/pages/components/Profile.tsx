@@ -136,10 +136,33 @@ const Profile: React.FunctionComponent<IProps> = () => {
   }, []);
 
   const UserInfoHandler = () => {
-    if (username === '') {
+    if (!isUpdating) {
+      setIsUpdating(true);
       return;
     }
-    setUserInfo({ ...userInfo, nickname: username });
+    if (username === '') {
+      setUsername('');
+      return;
+    }
+    const accessToken = localStorage.getItem('accessToken');
+    apiAxios
+      .patch(
+        'users/me',
+        {
+          nickname: username,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      )
+      .then((res) => {
+        setUserInfo({ ...userInfo, nickname: res.data.nickname });
+        setUsername('');
+        setIsUpdating(false);
+      })
+      .catch((err) => alert(err));
   };
 
   return (
@@ -168,11 +191,7 @@ const Profile: React.FunctionComponent<IProps> = () => {
           <ViewValue>{userInfo.nickname}</ViewValue>
         )}
       </ViewBox>
-      <BtnBox
-        onClick={() => {
-          setIsUpdating(!isUpdating);
-        }}
-      >
+      <BtnBox>
         <Btn onClick={UserInfoHandler}>
           {isUpdating ? '완료' : '프로필 업데이트'}
         </Btn>
