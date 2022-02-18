@@ -95,17 +95,17 @@ function Footer() {
         <Container>
           <TitleContainer>TEAM MEMBERS</TitleContainer>
           <TextContainer>
-            <Text href="https://github.com/nix6839" target="_blank">
-              H.Y.W
-            </Text>
             <Text href="https://github.com/alsqja" target="_blank">
-              G.M.W
+              Kim. M. B
+            </Text>
+            <Text href="https://github.com/nix6839" target="_blank">
+              Han. Y. W
             </Text>
             <Text href="https://github.com/citysquirrel" target="_blank">
-              K.M.B
+              Kwak. M. W
             </Text>
             <Text href="https://github.com/yjlim0428" target="_blank">
-              L.Y.J
+              Lim, Y, J
             </Text>
           </TextContainer>
         </Container>
