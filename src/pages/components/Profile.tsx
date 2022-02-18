@@ -8,7 +8,7 @@ const Container = styled.div`
   font-family: 'SUIT-Light';
   grid-column: span 8;
 
-  @media only screen and (max-width: 1200px) {
+  @media only screen and (max-width: 768px) {
     grid-column: span 10;
   }
 
