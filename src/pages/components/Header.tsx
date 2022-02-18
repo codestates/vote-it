@@ -19,10 +19,11 @@ const Container = styled.div`
   justify-content: center;
   top: 0;
   left: 0;
-  box-shadow: -2px -2px 4px #ececec, 3px 3px 8px rgb(184, 184, 184);
+  box-shadow: -2px -2px 4px var(--box-shadow),
+    3px 3px 8px var(--box-shadow-darker);
   height: 48px;
   z-index: 1;
-  background-color: #fff;
+  background-color: var(--menu-bg);
 `;
 
 const Wrapper = styled.div`
@@ -100,6 +101,7 @@ const Notice = styled.div`
 `;
 
 const Setting = styled.div`
+  justify-content: center;
   /* flex: 1 0 auto; */
   cursor: pointer;
 `;
@@ -137,7 +139,7 @@ const MiniSearchContainer = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  background-color: #fff;
+  background-color: var(--box-bg);
   display: flex;
   align-items: center;
 `;

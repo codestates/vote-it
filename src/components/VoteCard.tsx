@@ -13,12 +13,13 @@ const VoteCardContainer = styled.div`
   align-items: center;
   min-height: 400px;
   margin-top: 20px;
-  background-color: #fff;
-  box-shadow: -2px -2px 4px #ececec, 3px 3px 8px rgb(184, 184, 184);
+  background-color: var(--box-bg);
+  box-shadow: -2px -2px 4px var(--box-shadow),
+    3px 3px 8px var(--box-shadow-darker);
 
   cursor: pointer;
   &:hover {
-    background: #e7e7e7;
+    background: var(--box-bg-lighter);
   }
   @media only screen and (max-width: 1200px) {
     grid-column: span 4;
@@ -42,7 +43,7 @@ export const TitleBox = styled.div`
   opacity: 0.8;
   width: 100%;
   flex: 1 1 200px;
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid var(--border-lightest);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -51,7 +52,7 @@ export const TitleBox = styled.div`
   text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;
   @media only screen and (max-width: 500px) {
     border-bottom: 0;
-    border-right: 1px solid #dbdbdb;
+    border-right: 1px solid var(--border-lightest);
     opacity: 0.5;
   }
 `;
@@ -99,9 +100,12 @@ const StyledNum = styled.div`
   }
 `;
 
-const StyledDate = styled.div``;
+const StyledDate = styled.div`
+  font-size: medium;
+`;
 
 const StyledName = styled.div`
+  color: #808080;
   font-size: small;
 `;
 
@@ -142,7 +146,7 @@ export const VoteCard = ({
         <StyledNum>참여인원 45명</StyledNum>
         <StyledDate>시작일 {createdAt}</StyledDate>
         <StyledDate>마감일 {expirationDate}</StyledDate>
-        <StyledName>이름 {author}</StyledName>
+        <StyledName>{author}</StyledName>
       </StyledBody>
     </VoteCardContainer>
   );

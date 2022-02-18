@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
@@ -16,7 +16,7 @@ const Canvas = styled.div`
 const Container = styled.div`
   position: absolute;
   top: 48px;
-  min-height: 144px;
+  min-height: 184px;
   width: 160px;
   background-color: white;
   box-shadow: 0 0 3px 0 gray;
@@ -40,6 +40,13 @@ const Button = styled.div`
   }
 `;
 
+const InputWrapper = styled.div`
+  cursor: pointer;
+  :hover {
+    color: #808080;
+  }
+`;
+
 // interface IDropOn {
 //   isOn: boolean;
 //   isShow: boolean;
@@ -54,6 +61,9 @@ const DropDown: React.FunctionComponent<IProps> = ({ dropOn, setDropOn }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const userColorTheme = localStorage.getItem('color-theme');
+  const [darkMode, setDarkMode] = useState<boolean>(userColorTheme === 'dark');
+
   const handleButtonClick =
     (key: string) => (e: React.MouseEvent<HTMLDivElement>) => {
       if (key === 'logout') {
@@ -65,11 +75,21 @@ const DropDown: React.FunctionComponent<IProps> = ({ dropOn, setDropOn }) => {
       } else {
         setDropOn(false);
         localStorage.setItem('setting', key);
-        navigate('/setting');
+        // navigate('/setting', { replace: true });
+        window.location.replace('/setting');
       }
     };
   const handleDropOff = () => {
     setDropOn(false);
+  };
+
+  const handleDarkMode = () => {
+    localStorage.setItem('color-theme', darkMode ? 'light' : 'dark');
+    document.documentElement.setAttribute(
+      'color-theme',
+      darkMode ? 'light' : 'dark',
+    );
+    setDarkMode(!darkMode);
   };
   return (
     <>
@@ -78,6 +98,10 @@ const DropDown: React.FunctionComponent<IProps> = ({ dropOn, setDropOn }) => {
         <Button onClick={handleButtonClick('profile')}>프로필 설정</Button>
         <Button onClick={handleButtonClick('activity')}>활동 기록</Button>
         <Button onClick={handleButtonClick('security')}>보안</Button>
+        <Divider />
+        <InputWrapper onClick={handleDarkMode}>
+          <input type="checkbox" checked={darkMode} /> 다크모드
+        </InputWrapper>
         <Divider />
         <Button onClick={handleButtonClick('logout')}>로그아웃</Button>
       </Container>
