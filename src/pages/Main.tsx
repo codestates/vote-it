@@ -99,7 +99,7 @@ export const Main = () => {
       <MainContainer>
         {posts.map((el, idx) => {
           console.log(el);
-          return <VoteCard key={idx} id={idx} contents={el.contents} />;
+          return <VoteCard key={idx} id={el.id} contents={el.subject} />;
         })}
         {isLoading
           ? [1, 2, 3, 4].map((el) => <LoadingVoteCard key={el} />)
