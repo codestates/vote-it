@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { WithdrawalModal } from './WithdrawalModal';
+import apiAxios from '../../utils/apiAxios';
 
 const Container = styled.div`
   grid-column: span 9;
@@ -8,6 +9,7 @@ const Container = styled.div`
   flex-direction: column;
   flex: 2 0 auto;
   padding: 8px;
+  font-family: 'SUIT-Light';
   /* border: 1px solid green; */
 
   @media only screen and (max-width: 1200px) {
@@ -30,34 +32,49 @@ const PassWrapper = styled.div`
 const InputWrapper = styled.div`
   display: flex;
   justify-content: center;
-  margin: 4px;
+  margin: 20px;
   > div {
     flex: 1 0 216px;
     width: 150px;
+    line-height: 30px;
     text-align: left;
-    margin-right: 8px;
+    margin-right: 5px;
   }
   > input {
-    width: 150px;
+    &:focus {
+      outline: none;
+      border-bottom: 3px solid var(--main-color);
+    }
+    width: 250px;
+    border: none;
+    border-bottom: 3px solid #919191;
+    padding: 5px;
+    font-size: 15px;
   }
 `;
 
 const ButtonWrapper = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: right;
   button {
+
+    &:hover {
+      background-color: #7785c9;
+    }
     min-width: 100px;
-    margin-right: 10px;
-    border-radius: 10px;
-    border: 1px solid black;
+    margin-right: 20px;
+    border-radius: 20px;
+    height: 40px;
+    color: white;
+    background-color: #5d6dbe;
+
   }
   div {
     text-align: center;
-    border: 1px solid black;
     min-width: 100px;
-    padding: 5px 0;
-    color: red;
-    border-radius: 10px;
+    border-radius: 20px;
+    padding: 9px 0;
+    color: #cf0000;
     background-color: #eee;
     font-weight: bold;
     cursor: pointer;
@@ -67,13 +84,64 @@ const ButtonWrapper = styled.div`
   }
 `;
 
+const Warning = styled.div`
+  font-size: smaller;
+  font-weight: bolder;
+  color: red;
+`;
+
 interface IProps {}
 
 const Security: React.FunctionComponent<IProps> = () => {
   const [isWithdrawal, setIsWithdrawal] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [checkNew, setCheckNew] = useState('');
+  const [isCheck, setIsCheck] = useState(true);
 
   const WithdrawalModalHandler = () => {
     setIsWithdrawal(false);
+  };
+
+  const checkNewHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCheckNew(e.target.value);
+    if (newPassword === e.target.value || e.target.value === '') {
+      setIsCheck(true);
+    } else {
+      setIsCheck(false);
+    }
+  };
+
+  const changePassword = () => {
+    if (newPassword === '' || currentPassword === '') {
+      alert('비밀번호를 입력해주세요.');
+      return;
+    }
+    if (!isCheck) {
+      alert('비밀번호가 일치하지 않습니다');
+      return;
+    }
+    const accessToken = localStorage.getItem('accessToken');
+    apiAxios
+      .patch(
+        'users/me/password',
+        {
+          currentPassword,
+          newPassword,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      )
+      .then((res) => {
+        alert('비밀번호 변경이 완료되었습니다');
+        setCheckNew('');
+        setNewPassword('');
+        setCurrentPassword('');
+      })
+      .catch((err) => alert(err));
   };
 
   return (
@@ -86,19 +154,36 @@ const Security: React.FunctionComponent<IProps> = () => {
       <PassWrapper>
         <InputWrapper>
           <div>이전 비밀번호</div>
-          <input />
+          <input
+            type={'password'}
+            value={currentPassword}
+            onChange={(e) => {
+              setCurrentPassword(e.target.value);
+            }}
+          />
         </InputWrapper>
         <InputWrapper>
           <div>새 비밀번호</div>
-          <input />
+          <input
+            type={'password'}
+            value={newPassword}
+            onChange={(e) => {
+              setNewPassword(e.target.value);
+            }}
+          />
         </InputWrapper>
         <InputWrapper>
           <div>새 비밀번호 확인</div>
-          <input />
+          <input type="password" value={checkNew} onChange={checkNewHandler} />
         </InputWrapper>
+        <Warning style={isCheck ? { display: 'none' } : {}}>
+          비밀번호가 일치하지 않습니다.
+        </Warning>
       </PassWrapper>
-      <ButtonWrapper>
-        <button>비밀번호 변경</button>
+
+      <ButtonWrapper style={{ marginTop: '15px' }}>
+        <button onClick={changePassword}>비밀번호 변경</button>
+
         <div
           onClick={() => {
             setIsWithdrawal(true);

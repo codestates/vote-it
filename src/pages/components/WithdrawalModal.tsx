@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { AiOutlineClose } from 'react-icons/ai';
-import axios from 'axios';
 import apiAxios from '../../utils/apiAxios';
+import { loginHandler } from '../../modules/login';
+import { useDispatch } from 'react-redux';
 
 const ModalBackdrop = styled.div`
+  font-family: 'SUIT-Light';
   position: fixed;
   z-index: 999;
   top: 0;
@@ -81,17 +83,32 @@ interface Iprop {
 export const WithdrawalModal = ({ WithdrawalModalHandler }: Iprop) => {
   const [password, setPassword] = useState('');
 
+  const dispatch = useDispatch();
+
   const PasswordHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
 
   const WithdrawalReq = () => {
-    // TODO : 회원 탈퇴 요청 보내기
+    if (password !== '회원탈퇴') {
+      alert('정확히 입력해주세요.');
+      return;
+    }
+    const accessToken = localStorage.getItem('accessToken');
     apiAxios
       .delete(`users/me`, {
-        // delete 요청 바디
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       })
-      .then();
+      .then((res) => {
+        dispatch(loginHandler());
+        localStorage.setItem('isLogin', 'false');
+        localStorage.setItem('accessToken', '');
+        alert('회원탈퇴가 완료되었습니다.');
+        window.location.href = '/';
+      })
+      .catch((err) => alert(err));
   };
 
   return (

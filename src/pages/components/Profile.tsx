@@ -5,6 +5,7 @@ import { ImageUpload } from '../../components/ImageUpload';
 import apiAxios from '../../utils/apiAxios';
 
 const Container = styled.div`
+  font-family: 'SUIT-Light';
   grid-column: span 8;
 
   @media only screen and (max-width: 1200px) {
@@ -22,10 +23,17 @@ const ViewBox = styled.div`
   align-items: center;
   width: 100%;
   height: 80px;
+  @media only screen and (max-width: 500px) {
+    flex-direction: column;
+  }
 `;
 
 const ViewName = styled.div`
+  font-family: 'KOHIBaeumOTF';
+  font-size: 20px;
   flex: 1;
+  max-width: 300px;
+  min-width: 100px;
   justify-content: left;
   align-items: center;
   /* font-size: large; */
@@ -33,15 +41,27 @@ const ViewName = styled.div`
 
 const ViewValue = styled.div`
   flex: 1;
+  min-width: 200px;
+  max-width: 250px;
   justify-content: right;
   align-items: center;
   font-size: large;
 `;
 
 const ViewInput = styled.input`
+  &:focus {
+    outline: none;
+    border-bottom: 3px solid var(--main-color);
+  }
+  font-family: 'SUIT-Light';
+  /* margin: auto; */
+  max-width: 250px;
+  min-width: 200px;
   flex: 1;
   display: flex;
-  justify-content: center;
+  border: none;
+  border-bottom: 3px solid #adadad;
+  justify-content: right;
   height: 50px;
   align-items: center;
   font-size: large;
@@ -56,19 +76,25 @@ const BtnBox = styled.div`
 `;
 
 const Btn = styled.div`
+  font-family: 'SBAggroM';
   display: flex;
   justify-content: center;
   align-items: center;
   width: 120px;
   height: 50px;
-  border: 1px solid black;
+  margin-top: 30px;
   border-radius: 20px;
   color: white;
   background: #5d6dbe;
   font-weight: bold;
   cursor: pointer;
   &:hover {
-    background: #324ac0;
+    background: #7987d1;
+  }
+  @media only screen and (max-width: 500px) {
+    font-size: 13px;
+    width: 100px;
+    height: 40px;
   }
 `;
 
@@ -88,7 +114,6 @@ const ImgBox = styled.div<IImgProps>`
   width: 100px;
   height: 100px;
   display: flex;
-  border: 1px dashed black;
   justify-content: center;
   border-radius: 100px;
   align-items: center;
@@ -136,10 +161,33 @@ const Profile: React.FunctionComponent<IProps> = () => {
   }, []);
 
   const UserInfoHandler = () => {
-    if (username === '') {
+    if (!isUpdating) {
+      setIsUpdating(true);
       return;
     }
-    setUserInfo({ ...userInfo, nickname: username });
+    if (username === '') {
+      setUsername('');
+      return;
+    }
+    const accessToken = localStorage.getItem('accessToken');
+    apiAxios
+      .patch(
+        'users/me',
+        {
+          nickname: username,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      )
+      .then((res) => {
+        setUserInfo({ ...userInfo, nickname: res.data.nickname });
+        setUsername('');
+        setIsUpdating(false);
+      })
+      .catch((err) => alert(err));
   };
 
   return (
@@ -168,11 +216,7 @@ const Profile: React.FunctionComponent<IProps> = () => {
           <ViewValue>{userInfo.nickname}</ViewValue>
         )}
       </ViewBox>
-      <BtnBox
-        onClick={() => {
-          setIsUpdating(!isUpdating);
-        }}
-      >
+      <BtnBox>
         <Btn onClick={UserInfoHandler}>
           {isUpdating ? '완료' : '프로필 업데이트'}
         </Btn>
