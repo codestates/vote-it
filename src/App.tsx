@@ -7,6 +7,7 @@ import Footer from './pages/components/Footer';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { loginHandler } from './modules/login';
+import NofiticationCenter from './components/NotificationCenter';
 // export type LoginProps = boolean;
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
 
           <Route path="/setting" element={<Setting />}></Route>
         </Routes>
+        <NofiticationCenter />
         <Footer />
       </div>
     </Router>

@@ -3,6 +3,8 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { ImageUpload } from '../../components/ImageUpload';
 import apiAxios from '../../utils/apiAxios';
+import { useDispatch } from 'react-redux';
+import { notify } from '../../modules/notification';
 
 const Container = styled.div`
   font-family: 'SUIT-Light';
@@ -142,6 +144,9 @@ const Profile: React.FunctionComponent<IProps> = () => {
       'https://w.namu.la/s/5e8f11a4acfe69bcfea691be09c0a89994a41a1fc06fd2d6b4562d346529ca59061b3998c8da662b83c462a0a81a893fd4551dcbf2d1b0c19d670b55ece8f24e8f5b2b631a8b89121c4c3aad755d4c2d44273656184ff7047a910458fdaa9080',
   });
 
+  // const state = useSelector((state: RootState) => state.notificationReducer)
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const access = localStorage.getItem('accessToken');
     apiAxios
@@ -186,8 +191,12 @@ const Profile: React.FunctionComponent<IProps> = () => {
         setUserInfo({ ...userInfo, nickname: res.data.nickname });
         setUsername('');
         setIsUpdating(false);
+        dispatch(notify('회원정보 수정이 완료되었습니다.'));
       })
-      .catch((err) => alert(err));
+      .catch((err) => {
+        dispatch(notify('err'));
+        console.log(err);
+      });
   };
 
   return (

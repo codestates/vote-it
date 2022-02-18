@@ -1,6 +1,6 @@
 export interface IPost {
   id: number;
-  page: number;
+  page?: number;
   subject: string;
   author: string;
   isPrivate: boolean;
