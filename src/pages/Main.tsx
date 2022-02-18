@@ -93,12 +93,29 @@ export const Main = () => {
       window.removeEventListener('scroll', handleFollow);
     };
   });
-
+  //   id : "",
+  //   subject: "",
+  //   authorId: "",
+  //   isPrivate: "",
+  //   createdAt: "",
+  //   expirationDate: ""
   return (
     <MainOuter>
       <MainContainer>
         {posts.map((el, idx) => {
-          return <VoteCard key={idx} id={el.id} contents={el.subject} />;
+          if (el.isPrivate) return null; // 이후 삭제: private을 따로 처리해야함
+          return (
+            <VoteCard
+              key={idx}
+              id={el.id}
+              page={el.page}
+              subject={el.subject}
+              author={el.author}
+              isPrivate={el.isPrivate}
+              createdAt={el.createdAt}
+              expirationDate={el.expirationDate}
+            />
+          );
         })}
         {isLoading
           ? [1, 2, 3, 4].map((el) => <LoadingVoteCard key={el} />)

@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import '../fonts/font.css';
+import { IPost } from '../lib/postList';
+
 const VoteCardContainer = styled.div`
   grid-column: span 3;
   display: flex;
@@ -103,13 +105,27 @@ const StyledName = styled.div`
   font-size: small;
 `;
 
-interface Iprops {
-  id: number;
-  contents: string;
-}
+// interface Iprops {
+//   id: number;
+//   subject: string;
+// }
 
-export const VoteCard = ({ id, contents }: Iprops) => {
-  const location = useLocation().state as Iprops;
+//   id : "",
+//   subject: "",
+//   authorId: "",
+//   isPrivate: "",
+//   createdAt: "",
+//   expirationDate: ""
+
+export const VoteCard = ({
+  id,
+  subject,
+  author,
+  isPrivate,
+  createdAt,
+  expirationDate,
+}: IPost) => {
+  const location = useLocation().state as IPost;
   const navigate = useNavigate();
 
   const OpenVoteHandler = () => {
@@ -119,14 +135,14 @@ export const VoteCard = ({ id, contents }: Iprops) => {
   return (
     <VoteCardContainer onClick={OpenVoteHandler}>
       <TitleBox>
-        <TitleCover>{contents}</TitleCover>
+        <TitleCover>{subject}</TitleCover>
       </TitleBox>
       <StyledBody>
-        <HiddenTitle>{contents}</HiddenTitle>
+        <HiddenTitle>{subject}</HiddenTitle>
         <StyledNum>참여인원 45명</StyledNum>
-        <StyledDate>시작일 ---</StyledDate>
-        <StyledDate>마감일 ---</StyledDate>
-        <StyledName>이름</StyledName>
+        <StyledDate>시작일 {createdAt}</StyledDate>
+        <StyledDate>마감일 {expirationDate}</StyledDate>
+        <StyledName>이름 {author}</StyledName>
       </StyledBody>
     </VoteCardContainer>
   );
