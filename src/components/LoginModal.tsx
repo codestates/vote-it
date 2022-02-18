@@ -153,17 +153,26 @@ const LoginModal: React.FunctionComponent<IProps> = ({
 
   const handleButtonClick = () => {
     const { email, password } = inputValue;
-    apiAxios
-      .post(`auth/login`, { email, password })
-      .then((res) => {
-        dispatch(loginHandler());
-        setModalOn({ isOn: false, isShow: false });
-        localStorage.setItem('isLogin', 'true');
-        localStorage.setItem('accessToken', res.data.accessToken);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    //! 테스트용 계정 시작
+    if (email === 'test' && password === 'test') {
+      dispatch(loginHandler());
+      setModalOn({ isOn: false, isShow: false });
+      localStorage.setItem('isLogin', 'true');
+      localStorage.setItem('accessToken', 'test account token');
+    }
+    //! 테스트용 계정 끝
+    else
+      apiAxios
+        .post(`auth/login`, { email, password })
+        .then((res) => {
+          dispatch(loginHandler());
+          setModalOn({ isOn: false, isShow: false });
+          localStorage.setItem('isLogin', 'true');
+          localStorage.setItem('accessToken', res.data.accessToken);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
   };
 
   return (

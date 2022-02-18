@@ -5,7 +5,7 @@ export interface IPost {
   author: string;
   isPrivate: boolean;
   createdAt: string;
-  exporationDate: string;
+  expirationDate: string;
 }
 
 export const getPostList = (page: number): IPost[] => {
@@ -29,7 +29,7 @@ export const postList: IPost[] = [
     author: '민범',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-28',
+    expirationDate: '2022-02-28',
   },
   {
     id: 1,
@@ -38,7 +38,7 @@ export const postList: IPost[] = [
     author: '명우',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-20',
+    expirationDate: '2022-02-20',
   },
   {
     id: 2,
@@ -47,7 +47,7 @@ export const postList: IPost[] = [
     author: '윤정',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-27',
+    expirationDate: '2022-02-27',
   },
   {
     id: 3,
@@ -56,7 +56,7 @@ export const postList: IPost[] = [
     author: '영우',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-08',
+    expirationDate: '2022-02-08',
   },
   {
     id: 4,
@@ -65,7 +65,7 @@ export const postList: IPost[] = [
     author: '윤정',
     isPrivate: true,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-28',
+    expirationDate: '2022-02-28',
   },
   {
     id: 5,
@@ -74,7 +74,7 @@ export const postList: IPost[] = [
     author: '민범',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-27',
+    expirationDate: '2022-02-27',
   },
   {
     id: 6,
@@ -83,7 +83,7 @@ export const postList: IPost[] = [
     author: '명우',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-19',
+    expirationDate: '2022-02-19',
   },
   {
     id: 7,
@@ -92,7 +92,7 @@ export const postList: IPost[] = [
     author: '명우',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-21',
+    expirationDate: '2022-02-21',
   },
   {
     id: 8,
@@ -101,7 +101,7 @@ export const postList: IPost[] = [
     author: '영우',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-21',
+    expirationDate: '2022-02-21',
   },
   {
     id: 9,
@@ -110,7 +110,7 @@ export const postList: IPost[] = [
     author: '윤정',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-21',
+    expirationDate: '2022-02-21',
   },
   {
     id: 10,
@@ -119,7 +119,7 @@ export const postList: IPost[] = [
     author: '민범',
     isPrivate: true,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-21',
+    expirationDate: '2022-02-21',
   },
   {
     id: 11,
@@ -128,7 +128,7 @@ export const postList: IPost[] = [
     author: 'alsqja',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-22',
+    expirationDate: '2022-02-22',
   },
   {
     id: 12,
@@ -137,7 +137,7 @@ export const postList: IPost[] = [
     author: 'dbswjd',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-23',
+    expirationDate: '2022-02-23',
   },
   {
     id: 13,
@@ -146,7 +146,7 @@ export const postList: IPost[] = [
     author: 'auddn',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-22',
+    expirationDate: '2022-02-22',
   },
   {
     id: 14,
@@ -155,7 +155,7 @@ export const postList: IPost[] = [
     author: 'duddn',
     isPrivate: true,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-22',
+    expirationDate: '2022-02-22',
   },
   {
     id: 15,
@@ -164,7 +164,7 @@ export const postList: IPost[] = [
     author: 'dbswjd',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-11',
+    expirationDate: '2022-02-11',
   },
   {
     id: 16,
@@ -173,7 +173,7 @@ export const postList: IPost[] = [
     author: 'alsqja',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-22',
+    expirationDate: '2022-02-22',
   },
   {
     id: 17,
@@ -182,7 +182,7 @@ export const postList: IPost[] = [
     author: 'auddn',
     isPrivate: true,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-23',
+    expirationDate: '2022-02-23',
   },
   {
     id: 18,
@@ -191,7 +191,7 @@ export const postList: IPost[] = [
     author: 'dbswjd',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-22',
+    expirationDate: '2022-02-22',
   },
   {
     id: 19,
@@ -200,7 +200,7 @@ export const postList: IPost[] = [
     author: 'alsqja',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-12',
+    expirationDate: '2022-02-12',
   },
   {
     id: 20,
@@ -209,7 +209,7 @@ export const postList: IPost[] = [
     author: 'alsqja',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-23',
+    expirationDate: '2022-02-23',
   },
   {
     id: 21,
@@ -218,7 +218,7 @@ export const postList: IPost[] = [
     author: 'auddn',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-22',
+    expirationDate: '2022-02-22',
   },
   {
     id: 22,
@@ -227,7 +227,7 @@ export const postList: IPost[] = [
     author: 'duddn',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-22',
+    expirationDate: '2022-02-22',
   },
   {
     id: 23,
@@ -236,7 +236,7 @@ export const postList: IPost[] = [
     author: 'alsqja',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-21',
+    expirationDate: '2022-02-21',
   },
   {
     id: 24,
@@ -245,7 +245,7 @@ export const postList: IPost[] = [
     author: 'duddn',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-22',
+    expirationDate: '2022-02-22',
   },
   {
     id: 25,
@@ -254,7 +254,7 @@ export const postList: IPost[] = [
     author: 'alsqja',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-22',
+    expirationDate: '2022-02-22',
   },
   {
     id: 26,
@@ -263,7 +263,7 @@ export const postList: IPost[] = [
     author: 'dbswjd',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-23',
+    expirationDate: '2022-02-23',
   },
   {
     id: 27,
@@ -272,7 +272,7 @@ export const postList: IPost[] = [
     author: 'dbswjd',
     isPrivate: true,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-19',
+    expirationDate: '2022-02-19',
   },
   {
     id: 28,
@@ -281,7 +281,7 @@ export const postList: IPost[] = [
     author: 'auddn',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-22',
+    expirationDate: '2022-02-22',
   },
   {
     id: 29,
@@ -290,7 +290,7 @@ export const postList: IPost[] = [
     author: 'duddn',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-23',
+    expirationDate: '2022-02-23',
   },
   {
     id: 30,
@@ -299,7 +299,7 @@ export const postList: IPost[] = [
     author: 'alsqja',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-22',
+    expirationDate: '2022-02-22',
   },
   {
     id: 31,
@@ -308,7 +308,7 @@ export const postList: IPost[] = [
     author: 'dbswjd',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-22',
+    expirationDate: '2022-02-22',
   },
   {
     id: 32,
@@ -317,7 +317,7 @@ export const postList: IPost[] = [
     author: 'alsqja',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-22',
+    expirationDate: '2022-02-22',
   },
   {
     id: 33,
@@ -326,7 +326,7 @@ export const postList: IPost[] = [
     author: 'alsqja',
     isPrivate: true,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-23',
+    expirationDate: '2022-02-23',
   },
   {
     id: 34,
@@ -335,7 +335,7 @@ export const postList: IPost[] = [
     author: 'auddn',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-23',
+    expirationDate: '2022-02-23',
   },
   {
     id: 35,
@@ -344,7 +344,7 @@ export const postList: IPost[] = [
     author: 'duddn',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-23',
+    expirationDate: '2022-02-23',
   },
   {
     id: 36,
@@ -353,7 +353,7 @@ export const postList: IPost[] = [
     author: 'auddn',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-23',
+    expirationDate: '2022-02-23',
   },
   {
     id: 37,
@@ -362,7 +362,7 @@ export const postList: IPost[] = [
     author: 'auddn',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-23',
+    expirationDate: '2022-02-23',
   },
   {
     id: 38,
@@ -371,7 +371,7 @@ export const postList: IPost[] = [
     author: 'alsqja',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-02-27',
+    expirationDate: '2022-02-27',
   },
   {
     id: 39,
@@ -380,6 +380,6 @@ export const postList: IPost[] = [
     author: 'dbswjd',
     isPrivate: false,
     createdAt: '2022-02-01',
-    exporationDate: '2022-03-01',
+    expirationDate: '2022-03-01',
   },
 ];
