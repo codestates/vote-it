@@ -6,6 +6,17 @@
   padding: 0;
 }
 
+* {
+  list-style: none;
+  text-decoration: none;
+  border-collapse: collapse;
+  margin: 0 0 1px 0;
+  padding: 0px;
+  /* color: #000; */
+}
+
+
+
 ::-webkit-scrollbar {
   width: 8px;
 }
