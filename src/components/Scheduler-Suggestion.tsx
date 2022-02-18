@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { FaBan } from 'react-icons/fa';
+import { Dispatch, SetStateAction } from 'react';
 
 const ButtonContainer = styled.button`
   display: flex;
@@ -8,11 +10,18 @@ const ButtonContainer = styled.button`
   line-height: 24px;
   outline: none;
   width: 100%;
+
   .scheduler-suggestions-icon {
     display: flex;
     position: relative;
     margin-right: 8px;
     img {
+      width: 18px;
+      height: 18px;
+      margin: auto;
+    }
+    svg {
+      ${(props) => (props.color ? 'color: ' + props.color : '')}
       width: 18px;
       height: 18px;
       margin: auto;
@@ -31,22 +40,36 @@ const ButtonContainer = styled.button`
   }
 `;
 
+interface InputValue {
+  time: string;
+  date: string;
+}
+
 interface IProps {
   content: string;
   imageSource: string;
+  isFa: boolean;
+  faSource: number;
+  dateInfo: string;
+  setInputValue: Dispatch<SetStateAction<InputValue>>;
 }
 
 const Suggestion: React.FunctionComponent<IProps> = ({
   content,
   imageSource,
+  isFa,
+  faSource,
+  dateInfo,
+  setInputValue,
 }) => {
+  const faList = [<FaBan color="gray" />];
   return (
-    <ButtonContainer>
+    <ButtonContainer onClick={() => setInputValue({ date: '', time: '' })}>
       <div className="scheduler-suggestions-icon">
-        <img src={`${process.env.PUBLIC_URL}/vote-it_LOGO1.ico`} alt="icon" />
+        {isFa ? faList[faSource] : <img src={imageSource} alt="icon" />}
       </div>
       <div className="scheduler-suggestions-label">{content}</div>
-      <div className="scheduler-suggestions-alias">수</div>
+      <div className="scheduler-suggestions-alias">{dateInfo}</div>
     </ButtonContainer>
   );
 };
