@@ -113,7 +113,7 @@ export const VoteCard = ({ id, contents }: Iprops) => {
   const navigate = useNavigate();
 
   const OpenVoteHandler = () => {
-    navigate('/vote', { state: location });
+    navigate(`/vote/${id}`, { state: location });
   };
 
   return (

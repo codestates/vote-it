@@ -104,15 +104,6 @@ const thisDay = today.getDate();
 const thisMonth = today.getMonth();
 const thisYear = today.getFullYear();
 let kstDate = new Date(utc + kstGap);
-// let thisMonth = new Date(
-//   today.getFullYear(),
-//   today.getMonth(),
-//   today.getDate(),
-// );
-// let curYear = thisMonth.getFullYear();
-// let curMonth = thisMonth.getMonth() + 1;
-// let curDate = thisMonth.getDate();
-// const startDay = new Date(curYear, curMonth, 0);
 
 // 달력 변수 끝
 
