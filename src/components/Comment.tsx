@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { FaSortDown } from 'react-icons/fa';
+import { FaSortDown, FaSortUp } from 'react-icons/fa';
 
 const CommentInfo = styled.div`
+  font-family: 'SUIT-Light';
   grid-column: span 12;
   border-bottom: 1px solid #dbdbdb;
 `;
 
 const CommentUsername = styled.div`
+  color: #666666;
   padding: 10px;
   font-size: smaller;
   text-align: left;
@@ -16,12 +18,15 @@ const CommentUsername = styled.div`
 const CommentContent = styled.div`
   padding: 10px;
   text-align: left;
+  margin-bottom: 10px;
 `;
 
 const ReplyDiv = styled.div`
   grid-column: span 12;
   text-align: left;
   padding: 0 10px;
+
+  margin: 10px;
   font-size: small;
   cursor: pointer;
 `;
@@ -70,7 +75,11 @@ export const Comment = ({
             setIsRepliesOpen(!isRepliesOpen);
           }}
         >
-          <FaSortDown></FaSortDown>
+          {isRepliesOpen ? (
+            <FaSortUp style={{ marginRight: '5px' }} />
+          ) : (
+            <FaSortDown style={{ marginRight: '5px' }} />
+          )}
           {isRepliesOpen ? '답글접기' : '답글보기'}
         </ReplyDiv>
       ) : (

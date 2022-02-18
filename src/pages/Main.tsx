@@ -49,8 +49,10 @@ export const Main = () => {
     const { innerHeight } = window;
     const { scrollHeight } = document.body;
     const { scrollTop } = document.documentElement;
-
-    if (Math.round(scrollTop + innerHeight) >= scrollHeight) {
+    if (
+      Math.round(scrollTop + innerHeight) > scrollHeight &&
+      getPostList(page + 1).length !== 0
+    ) {
       setIsLoading(true);
       setTimeout(() => {
         setPosts(posts.concat(getPostList(page + 1)));
@@ -96,10 +98,11 @@ export const Main = () => {
     <MainOuter>
       <MainContainer>
         {posts.map((el, idx) => {
-          return <VoteCard key={idx} id={idx} />;
+          console.log(el);
+          return <VoteCard key={idx} id={idx} contents={el.contents} />;
         })}
         {isLoading
-          ? [1, 2, 3, 4, 5, 6, 7, 8].map((el) => <LoadingVoteCard key={el} />)
+          ? [1, 2, 3, 4].map((el) => <LoadingVoteCard key={el} />)
           : ''}
       </MainContainer>
       {btnStatus ? (

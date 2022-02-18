@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import styled from 'styled-components';
 import { Comment } from './Comment';
 
@@ -20,8 +20,17 @@ const CommentsContainer = styled.div`
 `;
 
 const CommentInput = styled.textarea`
+  &:focus {
+    outline: none;
+  }
+  border: 1px solid #6d6d6d;
+  font-family: 'SUIT-Medium';
   grid-column: span 12;
-  height: 100px;
+  height: 70px;
+  font-size: 16px;
+  padding: 10px;
+  border-radius: 15px;
+  resize: none;
 `;
 
 const BtnBox = styled.div`
@@ -32,10 +41,14 @@ const BtnBox = styled.div`
 `;
 
 const CommentBtn = styled.div`
+  &:hover {
+    background: #6b7ac5;
+  }
+  font-family: 'SUIT-Medium';
   width: 100px;
   height: 50px;
   cursor: pointer;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -44,12 +57,6 @@ const CommentBtn = styled.div`
   color: white;
   font-weight: bold;
 `;
-
-interface Iprops {
-  commentList: Icomments[];
-  isVoted: boolean;
-}
-
 interface Icomments {
   id: number;
   content: string;
@@ -57,8 +64,30 @@ interface Icomments {
   parrentId?: number;
 }
 
-export const Comments = ({ commentList, isVoted }: Iprops) => {
+interface Iprops {
+  commentList: Icomments[];
+  setCommentsList: Dispatch<SetStateAction<Icomments[]>>;
+  isVoted: boolean;
+  username: string;
+}
+
+export const Comments = ({
+  commentList,
+  setCommentsList,
+  isVoted,
+  username,
+}: Iprops) => {
   const [comment, setComment] = useState('');
+
+  const CommentBtnFunc = () => {
+    if (comment === '') return;
+    const id = commentList.length;
+    setCommentsList([
+      ...commentList,
+      { id: id, content: comment, username: username },
+    ]);
+    setComment('');
+  };
 
   return (
     <CommentsContainer style={!isVoted ? { display: 'none' } : {}}>
@@ -69,7 +98,7 @@ export const Comments = ({ commentList, isVoted }: Iprops) => {
           setComment(e.target.value);
         }}
       />
-      <BtnBox>
+      <BtnBox onClick={CommentBtnFunc}>
         <CommentBtn>댓글 달기</CommentBtn>
       </BtnBox>
       {commentList.map((obj) => {
@@ -98,6 +127,7 @@ export const Comments = ({ commentList, isVoted }: Iprops) => {
           ></Comment>
         );
       })}
+      <div style={{ margin: '10px' }}></div>
     </CommentsContainer>
   );
 };

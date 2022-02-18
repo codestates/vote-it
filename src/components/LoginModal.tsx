@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { loginHandler } from '../modules/login';
 import apiAxios from '../utils/apiAxios';
-import axios from 'axios';
-import { url } from '../utils/url';
 
 const Canvas = styled.div`
   position: fixed;
@@ -155,8 +153,8 @@ const LoginModal: React.FunctionComponent<IProps> = ({
 
   const handleButtonClick = () => {
     const { email, password } = inputValue;
-    axios
-      .post(`${url}/auth/login`, { email, password })
+    apiAxios
+      .post(`auth/login`, { email, password })
       .then((res) => {
         dispatch(loginHandler());
         setModalOn({ isOn: false, isShow: false });
