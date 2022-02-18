@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { WithdrawalModal } from './WithdrawalModal';
+import apiAxios from '../../utils/apiAxios';
 
 const Container = styled.div`
   grid-column: span 9;
@@ -54,8 +55,9 @@ const InputWrapper = styled.div`
 
 const ButtonWrapper = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: right;
   button {
+
     &:hover {
       background-color: #7785c9;
     }
@@ -65,6 +67,7 @@ const ButtonWrapper = styled.div`
     height: 40px;
     color: white;
     background-color: #5d6dbe;
+
   }
   div {
     text-align: center;
@@ -81,13 +84,64 @@ const ButtonWrapper = styled.div`
   }
 `;
 
+const Warning = styled.div`
+  font-size: smaller;
+  font-weight: bolder;
+  color: red;
+`;
+
 interface IProps {}
 
 const Security: React.FunctionComponent<IProps> = () => {
   const [isWithdrawal, setIsWithdrawal] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [checkNew, setCheckNew] = useState('');
+  const [isCheck, setIsCheck] = useState(true);
 
   const WithdrawalModalHandler = () => {
     setIsWithdrawal(false);
+  };
+
+  const checkNewHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCheckNew(e.target.value);
+    if (newPassword === e.target.value || e.target.value === '') {
+      setIsCheck(true);
+    } else {
+      setIsCheck(false);
+    }
+  };
+
+  const changePassword = () => {
+    if (newPassword === '' || currentPassword === '') {
+      alert('비밀번호를 입력해주세요.');
+      return;
+    }
+    if (!isCheck) {
+      alert('비밀번호가 일치하지 않습니다');
+      return;
+    }
+    const accessToken = localStorage.getItem('accessToken');
+    apiAxios
+      .patch(
+        'users/me/password',
+        {
+          currentPassword,
+          newPassword,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      )
+      .then((res) => {
+        alert('비밀번호 변경이 완료되었습니다');
+        setCheckNew('');
+        setNewPassword('');
+        setCurrentPassword('');
+      })
+      .catch((err) => alert(err));
   };
 
   return (
@@ -100,19 +154,36 @@ const Security: React.FunctionComponent<IProps> = () => {
       <PassWrapper>
         <InputWrapper>
           <div>이전 비밀번호</div>
-          <input />
+          <input
+            type={'password'}
+            value={currentPassword}
+            onChange={(e) => {
+              setCurrentPassword(e.target.value);
+            }}
+          />
         </InputWrapper>
         <InputWrapper>
           <div>새 비밀번호</div>
-          <input />
+          <input
+            type={'password'}
+            value={newPassword}
+            onChange={(e) => {
+              setNewPassword(e.target.value);
+            }}
+          />
         </InputWrapper>
         <InputWrapper>
           <div>새 비밀번호 확인</div>
-          <input />
+          <input type="password" value={checkNew} onChange={checkNewHandler} />
         </InputWrapper>
+        <Warning style={isCheck ? { display: 'none' } : {}}>
+          비밀번호가 일치하지 않습니다.
+        </Warning>
       </PassWrapper>
+
       <ButtonWrapper style={{ marginTop: '15px' }}>
-        <button>비밀번호 변경</button>
+        <button onClick={changePassword}>비밀번호 변경</button>
+
         <div
           onClick={() => {
             setIsWithdrawal(true);
