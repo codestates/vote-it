@@ -5,6 +5,7 @@ import axios from 'axios';
 import apiAxios from '../../utils/apiAxios';
 
 const ModalBackdrop = styled.div`
+  font-family: 'SUIT-Light';
   position: fixed;
   z-index: 999;
   top: 0;

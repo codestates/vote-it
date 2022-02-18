@@ -98,7 +98,6 @@ export const Main = () => {
     <MainOuter>
       <MainContainer>
         {posts.map((el, idx) => {
-          console.log(el);
           return <VoteCard key={idx} id={idx} contents={el.contents} />;
         })}
         {isLoading

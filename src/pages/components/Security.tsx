@@ -8,6 +8,7 @@ const Container = styled.div`
   flex-direction: column;
   flex: 2 0 auto;
   padding: 8px;
+  font-family: 'SUIT-Light';
   /* border: 1px solid green; */
 
   @media only screen and (max-width: 1200px) {
@@ -30,15 +31,24 @@ const PassWrapper = styled.div`
 const InputWrapper = styled.div`
   display: flex;
   justify-content: center;
-  margin: 4px;
+  margin: 20px;
   > div {
     flex: 1 0 216px;
     width: 150px;
+    line-height: 30px;
     text-align: left;
-    margin-right: 8px;
+    margin-right: 5px;
   }
   > input {
-    width: 150px;
+    &:focus {
+      outline: none;
+      border-bottom: 3px solid var(--main-color);
+    }
+    width: 250px;
+    border: none;
+    border-bottom: 3px solid #919191;
+    padding: 5px;
+    font-size: 15px;
   }
 `;
 
@@ -46,18 +56,22 @@ const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
   button {
+    &:hover {
+      background-color: #7785c9;
+    }
     min-width: 100px;
-    margin-right: 10px;
-    border-radius: 10px;
-    border: 1px solid black;
+    margin-right: 20px;
+    border-radius: 20px;
+    height: 40px;
+    color: white;
+    background-color: #5d6dbe;
   }
   div {
     text-align: center;
-    border: 1px solid black;
     min-width: 100px;
-    padding: 5px 0;
-    color: red;
-    border-radius: 10px;
+    border-radius: 20px;
+    padding: 9px 0;
+    color: #cf0000;
     background-color: #eee;
     font-weight: bold;
     cursor: pointer;
@@ -97,7 +111,7 @@ const Security: React.FunctionComponent<IProps> = () => {
           <input />
         </InputWrapper>
       </PassWrapper>
-      <ButtonWrapper>
+      <ButtonWrapper style={{ marginTop: '15px' }}>
         <button>비밀번호 변경</button>
         <div
           onClick={() => {

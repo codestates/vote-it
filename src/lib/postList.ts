@@ -6,9 +6,6 @@ export interface IPost {
 export const getPostList = (page: number): IPost[] => {
   return postList.filter((post: IPost) => post.page === page);
 };
-export const getPostList1 = (page: number): postType[] => {
-  return postList.filter((post: postType) => post.page === page);
-};
 
 // {
 //   id : "",
