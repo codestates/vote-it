@@ -54,20 +54,22 @@ const Container = styled.div`
 const Text = styled.a`
   &:hover {
     color: #5d6dbe;
+    font-size: 16px;
   }
-  font-family: 'S-CoreDream-3Light';
-  font-size: 17px;
+  font-family: 'EliceDigitalBaeum_Regular';
+  font-size: 15px;
   text-decoration: none;
   color: black;
 `;
 
 const TitleContainer = styled.div`
-  font-family: 'S-CoreDream-3Light';
-  font-size: 20px;
+  font-family: 'KOHIBaeumOTF';
+  font-size: 16px;
   flex: 3;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  color: #4a5aac;
 `;
 const TextContainer = styled.div`
   flex: 7;

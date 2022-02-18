@@ -6,6 +6,7 @@ import { loginHandler } from '../../modules/login';
 import { useDispatch } from 'react-redux';
 
 const ModalBackdrop = styled.div`
+  font-family: 'SUIT-Light';
   position: fixed;
   z-index: 999;
   top: 0;

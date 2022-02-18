@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { VoteList, LogList } from '.';
 
 const Container = styled.div`
+  font-family: 'SUIT-Light';
   grid-column: span 9;
   display: flex;
   flex-direction: column;
@@ -19,6 +20,7 @@ const Container = styled.div`
 `;
 
 const MenuWrapper = styled.div`
+  font-family: 'EliceDigitalBaeum_Regular';
   display: flex;
   flex: 1 0 32px;
   max-width: 50%;
@@ -27,13 +29,14 @@ const MenuWrapper = styled.div`
     flex: 1 0 0;
     text-align: center;
     line-height: 32px;
-    border-bottom: 4px solid transparent;
+    border-bottom: 5px solid transparent;
+    transition: all 0.5s ease;
     cursor: pointer;
     :hover {
-      border-bottom: 4px solid var(--main-color-tint);
+      border-bottom: 5px solid #a6a8b35f;
     }
     &.active {
-      border-bottom: 4px solid var(--main-color);
+      border-bottom: 5px solid var(--main-color);
     }
   }
 `;

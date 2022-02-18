@@ -11,12 +11,13 @@ const Container = styled.div<IContainerProps>`
   display: flex;
   flex-direction: column;
   /* flex: 1 0 256px; */
+  font-family: 'SUIT-Medium';
   height: 70vh;
   max-width: 256px;
   margin: 16px;
   border-radius: 8px;
   /* border: 1px solid seagreen; */
-  background-color: #eee;
+  background-color: #f3f3f3;
 
   @media only screen and (max-width: 1200px) {
     grid-column: span 1;
@@ -41,7 +42,8 @@ const Button = styled.button`
   border-radius: 12px;
   cursor: pointer;
   :hover {
-    background-color: var(--main-color-tint);
+    /* background-color: var(--main-color-tint); */
+    color: var(--main-color);
   }
   &.active {
     color: #fff;

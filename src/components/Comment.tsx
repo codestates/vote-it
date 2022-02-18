@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { FaSortDown, FaSortUp } from 'react-icons/fa';
+import { FaCaretDown, FaCaretUp } from 'react-icons/fa';
 
 const CommentInfo = styled.div`
   font-family: 'SUIT-Light';
@@ -25,7 +25,6 @@ const ReplyDiv = styled.div`
   grid-column: span 12;
   text-align: left;
   padding: 0 10px;
-
   margin: 10px;
   font-size: small;
   cursor: pointer;
@@ -76,9 +75,13 @@ export const Comment = ({
           }}
         >
           {isRepliesOpen ? (
-            <FaSortUp style={{ marginRight: '5px' }} />
+            <FaCaretUp
+              style={{
+                marginRight: '5px',
+              }}
+            />
           ) : (
-            <FaSortDown style={{ marginRight: '5px' }} />
+            <FaCaretDown style={{ marginRight: '5px' }} />
           )}
           {isRepliesOpen ? '답글접기' : '답글보기'}
         </ReplyDiv>
