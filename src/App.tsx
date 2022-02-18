@@ -19,6 +19,8 @@ function App() {
     }
   });
 
+  console.log(process.env);
+
   return (
     <Router>
       <div className="App">
@@ -28,7 +30,7 @@ function App() {
 
           <Route path="/createVote" element={<CreateVote />}></Route>
 
-          <Route path="/vote" element={<Vote></Vote>} />
+          <Route path="/vote/:id" element={<Vote></Vote>} />
 
           <Route path="/setting" element={<Setting />}></Route>
         </Routes>

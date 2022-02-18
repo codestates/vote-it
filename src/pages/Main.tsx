@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import FloatBtn from '../components/FloatBtn';
 import { LoadingVoteCard } from '../components/LoadingVoteCard';
 import { VoteCard } from '../components/VoteCard';
-import { getPostList, postType } from '../lib/postList';
+import { getPostList, IPost } from '../lib/postList';
 
 const MainOuter = styled.div`
   padding-top: 48px;
@@ -39,7 +39,7 @@ const MainContainer = styled.div`
 
 export const Main = () => {
   const [page, setPage] = useState<number>(1); //+
-  const [posts, setPosts] = useState<postType[]>(getPostList(1)); //+
+  const [posts, setPosts] = useState<IPost[]>(getPostList(1)); //+
   const [scrollY, setScrollY] = useState(0); //스크롤 값 저장
   const [btnStatus, setBtnStatus] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

@@ -1,16 +1,25 @@
-export type postType = {
+export interface IPost {
   page: number;
   contents: string;
-};
+}
 
-export const getPostList = (page: number): postType[] => {
-  return postList.filter((post: postType) => post.page === page);
+export const getPostList = (page: number): IPost[] => {
+  return postList.filter((post: IPost) => post.page === page);
 };
 export const getPostList1 = (page: number): postType[] => {
   return postList.filter((post: postType) => post.page === page);
 };
 
-export const postList: postType[] = [
+// {
+//   id : "",
+//   subject: "",
+//   authorId: "",
+//   isPrivate: "",
+//   createdAt: "",
+//   expirationDate: ""
+// }
+
+export const postList: IPost[] = [
   {
     page: 1,
     contents: '안녕하세요 1번째 글',
