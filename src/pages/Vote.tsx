@@ -27,6 +27,8 @@ const VoteContainer = styled.div`
 
   @media only screen and (max-width: 768px) {
     width: 360px;
+    column-gap: 16px;
+    grid-template-columns: repeat(6, 1fr);
   }
 `;
 
@@ -39,6 +41,9 @@ const SubBox = styled.div`
   justify-content: center;
   align-items: center;
   padding: 20px 0;
+  @media only screen and (max-width: 768px) {
+    grid-column: span 6;
+  }
 `;
 
 const UserNameBox = styled.div`
@@ -50,17 +55,27 @@ const UserNameBox = styled.div`
   justify-content: right;
   align-items: center;
   margin-bottom: 20px;
+  @media only screen and (max-width: 768px) {
+    grid-column: span 6;
+  }
 `;
 
 const OptionsBox = styled.div`
   font-family: 'SUIT-Medium';
   grid-column: span 12;
+
+  @media only screen and (max-width: 768px) {
+    grid-column: span 6;
+  }
 `;
 
 const ResultContainer = styled.div`
-  grid-column: span 8;
+  grid-column: span 6;
   height: 100%;
   /* width: 100%; */
+  @media only screen and (max-width: 768px) {
+    grid-column: span 6;
+  }
 `;
 
 interface Ioptions {
@@ -118,7 +133,7 @@ export const Vote = () => {
       <VoteContainer>
         <SubBox>{voteSub}</SubBox>
         <UserNameBox>{username}</UserNameBox>
-        <OptionsBox style={voted === -1 ? {} : { gridColumn: 'span 4' }}>
+        <OptionsBox style={voted === -1 ? {} : { gridColumn: 'span 6' }}>
           {options.map((obj) => {
             return (
               <Option

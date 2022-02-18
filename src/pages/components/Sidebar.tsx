@@ -19,7 +19,7 @@ const Container = styled.div<IContainerProps>`
   /* border: 1px solid seagreen; */
   background-color: #f3f3f3;
 
-  @media only screen and (max-width: 1200px) {
+  @media only screen and (max-width: 768px) {
     grid-column: span 1;
   }
 
@@ -50,7 +50,7 @@ const Button = styled.button`
     background-color: var(--main-color);
   }
   > span {
-    @media only screen and (max-width: 1200px) {
+    @media only screen and (max-width: 768px) {
       display: none;
     }
 
