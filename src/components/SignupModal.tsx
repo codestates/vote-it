@@ -1,6 +1,8 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import styled from 'styled-components';
 import apiAxios from '../utils/apiAxios';
+import { useDispatch } from 'react-redux';
+import { notify } from '../modules/notification';
 
 const Canvas = styled.div`
   position: fixed;
@@ -126,6 +128,9 @@ const SignupModal: React.FunctionComponent<IProps> = ({
     password: '',
     nickname: '',
   });
+
+  const dispatch = useDispatch();
+
   const handleModalOff = () => {
     console.log('Modal Off');
     setModalOn({ isOn: false, isShow: false });
@@ -148,11 +153,12 @@ const SignupModal: React.FunctionComponent<IProps> = ({
       .post('auth/signup', inputValue)
       .then((res) => {
         console.log(res.data);
-        alert('회원가입이 완료되었습니다.');
-        window.location.href = './';
+        // window.location.href = './';
+        dispatch(notify('회원가입이 완료되었습니다.'));
+        setModalOn({ isOn: false, isShow: false });
       })
       .catch((err) => {
-        alert(err);
+        dispatch(notify('올바른 양식으로 입력해주세요.'));
       });
   };
 
