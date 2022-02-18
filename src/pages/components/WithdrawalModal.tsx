@@ -4,6 +4,7 @@ import { AiOutlineClose } from 'react-icons/ai';
 import apiAxios from '../../utils/apiAxios';
 import { loginHandler } from '../../modules/login';
 import { useDispatch } from 'react-redux';
+import { notify } from '../../modules/notification';
 
 const ModalBackdrop = styled.div`
   font-family: 'SUIT-Light';
@@ -91,7 +92,7 @@ export const WithdrawalModal = ({ WithdrawalModalHandler }: Iprop) => {
 
   const WithdrawalReq = () => {
     if (password !== '회원탈퇴') {
-      alert('정확히 입력해주세요.');
+      dispatch(notify('정확히 입력해주세요.'));
       return;
     }
     const accessToken = localStorage.getItem('accessToken');
@@ -105,7 +106,7 @@ export const WithdrawalModal = ({ WithdrawalModalHandler }: Iprop) => {
         dispatch(loginHandler());
         localStorage.setItem('isLogin', 'false');
         localStorage.setItem('accessToken', '');
-        alert('회원탈퇴가 완료되었습니다.');
+        dispatch(notify('회원탈퇴가 완료되었습니다.'));
         window.location.href = '/';
       })
       .catch((err) => alert(err));

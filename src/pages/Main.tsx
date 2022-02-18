@@ -108,7 +108,6 @@ export const Main = () => {
             <VoteCard
               key={idx}
               id={el.id}
-              page={el.page}
               subject={el.subject}
               author={el.author}
               isPrivate={el.isPrivate}
