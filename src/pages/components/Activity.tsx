@@ -45,7 +45,8 @@ const ContentWrapper = styled.div`
   display: flex;
   flex: 5 0 512px;
   height: 512px;
-  border: 1px solid black;
+  border-top: 1px solid #808080;
+  border-bottom: 1px solid #808080;
   margin-right: 24px;
   /* overflow-y: auto; */
 `;
