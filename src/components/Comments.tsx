@@ -53,7 +53,7 @@ const CommentBtn = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 20px;
-  background: #5d6dbe;
+  background: var(--main-color);
   color: white;
   font-weight: bold;
 `;
