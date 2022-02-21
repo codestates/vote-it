@@ -23,7 +23,7 @@ export const dequeueNotification = () => {
 };
 
 export const notify =
-  (message: string, dismissTime = 5000) =>
+  (message: string, dismissTime = 2000) =>
   (dispatch: any) => {
     const uuid = Math.random();
     dispatch(enqueueNotification(message, dismissTime, uuid));
