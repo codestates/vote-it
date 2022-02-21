@@ -56,13 +56,6 @@ const InputWrapper = styled.div`
   }
 `;
 
-const InputWrapper = styled.div`
-  cursor: pointer;
-  :hover {
-    color: #808080;
-  }
-`;
-
 // interface IDropOn {
 //   isOn: boolean;
 //   isShow: boolean;
