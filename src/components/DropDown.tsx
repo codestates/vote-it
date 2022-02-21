@@ -12,6 +12,7 @@ const Canvas = styled.div`
   min-height: 100vh;
   width: 100vw;
   /* background-color: #ccc; */
+  opacity: 0;
 `;
 
 const Container = styled.div`

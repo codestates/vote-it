@@ -18,27 +18,30 @@ const Container = styled.div`
   width: 1200px;
   display: grid;
   height: 100vh;
-  /* grid-template-columns: repeat(12, 1fr);
+  grid-template-columns: repeat(12, 1fr);
   column-gap: 24px;
-  /* align-items: center; */
-  /* @media only screen and (max-width: 1200px) {
+  align-items: center;
+  @media only screen and (max-width: 1200px) {
     width: 768px;
   }
   @media only screen and (max-width: 768px) {
+    width: 500px;
+  }
+  @media only screen and (max-width: 500px) {
     width: 360px;
-    column-gap: 16px;
     grid-template-columns: repeat(6, 1fr);
-  } */
+    column-gap: 16px;
+  }
 `;
 
 const SubBox = styled.div`
-  /* grid-column: span 6; */
+  grid-column: 2 / span 10;
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* @media only screen and (max-width: 768px) {
+  @media only screen and (max-width: 500px) {
     grid-column: span 6;
-  } */
+  }
 `;
 
 const Title = styled.textarea`
@@ -230,7 +233,7 @@ function CreateVote() {
             onChange={dateSelect}
             value={calendarValue}
           ></CalendarBtn> */}
-            <Scheduler translate={'0, -700px'} />
+            <Scheduler translate={'0, -650px'} />
           </CheckboxContainer>
           <CreateBtn>투표만들기</CreateBtn>
         </SubBox>

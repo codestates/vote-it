@@ -59,7 +59,7 @@ const Text = styled.a`
   font-family: 'EliceDigitalBaeum_Regular';
   font-size: 15px;
   text-decoration: none;
-  color: black;
+  /* color: black; */
 `;
 
 const TitleContainer = styled.div`

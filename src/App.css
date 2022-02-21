@@ -45,7 +45,7 @@
   border-collapse: collapse;
   margin: 0 0 1px 0;
   padding: 0px;
-  /* color: #000; */
+  /* color: black; */
 }
 
 @keyframes toast-in-right {
@@ -56,7 +56,6 @@
     transform: translateX(0);
   }
 }
-
 ::-webkit-scrollbar {
   width: 8px;
 }
