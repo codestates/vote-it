@@ -66,7 +66,7 @@ const Search = styled.input`
   /* flex: 1 0 auto; */
   width: 70%;
   height: 24px;
-
+  background-color: var(--box-bg-lighter);
   @media only screen and (max-width: 768px) {
     width: 100%;
   }

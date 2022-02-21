@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { loginHandler } from '../modules/login';
+import { notify } from '../modules/notification';
 
 const Canvas = styled.div`
   position: fixed;
@@ -11,6 +12,7 @@ const Canvas = styled.div`
   min-height: 100vh;
   width: 100vw;
   /* background-color: #ccc; */
+  opacity: 0;
 `;
 
 const Container = styled.div`
@@ -48,6 +50,13 @@ const InputWrapper = styled.div`
   }
 `;
 
+const InputWrapper = styled.div`
+  cursor: pointer;
+  :hover {
+    color: #808080;
+  }
+`;
+
 // interface IDropOn {
 //   isOn: boolean;
 //   isShow: boolean;
@@ -72,6 +81,7 @@ const DropDown: React.FunctionComponent<IProps> = ({ dropOn, setDropOn }) => {
         localStorage.setItem('isLogin', 'false');
         localStorage.setItem('accessToken', '');
         setDropOn(false);
+        dispatch(notify('로그아웃이 완료되었습니다.'));
         navigate('/');
       } else {
         setDropOn(false);

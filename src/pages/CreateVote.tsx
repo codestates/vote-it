@@ -2,19 +2,46 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 import { Scheduler } from '../components';
+import '../fonts/font.css';
 
-const Container = styled.div`
+const Outer = styled.div`
+  font-family: 'EliceDigitalBaeum_Regular';
   padding-top: 48px;
   background-color: var(--bg);
   display: flex;
+  width: 100%;
+  /* flex-direction: column; */
+  justify-content: center;
+  align-items: center;
 `;
-const CenterContainer = styled.div`
-  width: 70vw;
+const Container = styled.div`
+  width: 1200px;
+  display: grid;
   height: 100vh;
-  margin: 0 auto;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: 24px;
+  align-items: center;
+  @media only screen and (max-width: 1200px) {
+    width: 768px;
+  }
+  @media only screen and (max-width: 768px) {
+    width: 500px;
+  }
+  @media only screen and (max-width: 500px) {
+    width: 360px;
+    grid-template-columns: repeat(6, 1fr);
+    column-gap: 16px;
+  }
+`;
+
+const SubBox = styled.div`
+  grid-column: 2 / span 10;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: center;
+  @media only screen and (max-width: 500px) {
+    grid-column: span 6;
+  }
 `;
 
 const Title = styled.textarea`
@@ -23,12 +50,12 @@ const Title = styled.textarea`
   }
   box-shadow: -2px -2px 4px var(--box-shadow),
     3px 3px 6px var(--box-shadow-darker);
+  font-family: 'SUIT-Light';
   border-radius: 20px;
   font-size: 18px;
   padding: 20px;
   width: 90%;
   height: 40px;
-  margin: 0 auto;
   margin-top: 30px;
   border: none;
   resize: none;
@@ -38,6 +65,7 @@ const OptionContainer = styled.div`
   margin-top: 30px;
   width: 100%;
   display: flex;
+  align-items: center;
   flex-direction: column;
   height: 50%;
   padding: 10px;
@@ -55,6 +83,7 @@ const Option = styled.div`
   padding: 5px;
 `;
 const OptionInput = styled.input`
+  font-family: 'SUIT-Light';
   &:focus {
     outline: none;
   }
@@ -84,7 +113,10 @@ const PlusOptionBtn = styled.button`
   background-color: var(--main-color);
 `;
 const CheckboxContainer = styled.div`
-  flex-direction: column;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-around;
 `;
 const CheckboxAndTitle = styled.div`
   display: flex;
@@ -99,11 +131,14 @@ const CalendarBtn = styled.input`
 `;
 
 const CreateBtn = styled.button`
+  font-family: 'KOHIBaeumOTF';
   margin: 0 auto;
   font-size: 20px;
   border: none;
+  max-width: 300px;
   width: 50vw;
-  height: 35px;
+  height: 40px;
+  margin-top: 30px;
   border-radius: 15px;
   color: white;
   box-shadow: -2px -2px 4px var(--box-shadow),
@@ -117,36 +152,38 @@ const CreateBtn = styled.button`
 function CreateVote() {
   const [calendarValue, setCalendarValue] = useState('');
   const [title, setTitle] = useState('');
-  const [optionList, setOptionList] = useState<string[]>([]);
+  const [optionList, setOptionList] = useState<string[]>(['', '', '', '']);
   const [option, setOption] = useState('');
-  const [PlusBtn, setPlusBtn] = useState(false);
 
   const onChangeTitle = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     setTitle(value);
   };
-  const onChangeOption = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeOption = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number,
+  ) => {
     const value = e.target.value;
     setOption(value);
-  };
-  const PlusOptionInput = () => {
-    if (option !== '' && !optionList.includes(option)) {
-      const newList = [...optionList, option];
-      setOptionList(newList);
-      setPlusBtn(true);
-      setOption('');
-    }
-  };
-  const PlusOption = () => {
-    setPlusBtn(!PlusBtn);
+
+    setOptionList([
+      ...optionList.slice(undefined, index),
+      value,
+      ...optionList.slice(index + 1),
+    ]);
   };
 
-  const DelBtn = (option: string) => {
-    const newList = optionList.filter((op) => {
-      if (option !== op) {
-        return true;
+  const PlusOption = () => {
+    // setPlusBtn(!PlusBtn);
+    setOptionList([...optionList, '']);
+  };
+
+  const DelBtn = (index: number) => {
+    const newList = optionList.filter((str, num) => {
+      if (index === num) {
+        return false;
       }
-      return false;
+      return true;
     });
     setOptionList(newList);
   };
@@ -154,72 +191,61 @@ function CreateVote() {
   const dateSelect = () => {};
 
   return (
-    <Container>
-      <CenterContainer>
-        <Title placeholder="질문 내용" value={title} onChange={onChangeTitle} />
-        <OptionContainer>
-          {optionList.length === 0 ? (
-            <Option>
-              <OptionInput
-                placeholder="선택지 입력"
-                value={option}
-                onChange={onChangeOption}
-              />
-              <PlusOptionBtn onClick={PlusOptionInput}>
-                <FaPlus />
-              </PlusOptionBtn>
-            </Option>
-          ) : (
-            optionList.map((option, index) => {
+    <Outer>
+      <Container>
+        <SubBox>
+          <Title
+            placeholder="질문 내용"
+            value={title}
+            onChange={onChangeTitle}
+          />
+
+          {/* option section */}
+
+          <OptionContainer>
+            {optionList.map((el, index) => {
               return (
                 <Option key={index}>
-                  <OptionText>{option}</OptionText>
-                  <DelOptionBtn onClick={() => DelBtn(option)}>
+                  <OptionInput
+                    placeholder="선택지 입력"
+                    value={optionList[index]}
+                    onChange={(e) => onChangeOption(e, index)}
+                  />
+                  <DelOptionBtn onClick={() => DelBtn(index)}>
                     <FaMinus style={{ color: 'red' }} />
                   </DelOptionBtn>
                 </Option>
               );
-            })
-          )}
-          {PlusBtn && optionList.length !== 0 ? (
+            })}
             <PlusOptionBtn onClick={PlusOption}>
               <FaPlus style={{ color: 'white' }} />
             </PlusOptionBtn>
-          ) : optionList.length !== 0 ? (
-            <Option>
-              <OptionInput
-                placeholder="선택지 입력"
-                value={option}
-                onChange={onChangeOption}
-              />
-              <PlusOptionBtn
-                style={{ marginTop: '5px', backgroundColor: 'white' }}
-                onClick={PlusOptionInput}
-              >
-                <FaPlus style={{ color: '#5D6DBE' }} />
-              </PlusOptionBtn>
-            </Option>
-          ) : null}
-        </OptionContainer>
-        <CheckboxContainer>
-          <CheckboxAndTitle>
-            <Checkbox type={'checkbox'} />
-            <CheckboxTitle>중복 체크 여부</CheckboxTitle>
-          </CheckboxAndTitle>
-          <CheckboxAndTitle>
-            <Checkbox type={'checkbox'} />
-            <CheckboxTitle>비공개</CheckboxTitle>
-          </CheckboxAndTitle>
-          {/* <CalendarBtn
+          </OptionContainer>
+
+          {/* checkbox & calendar section */}
+
+          <CheckboxContainer>
+            <div>
+              <CheckboxAndTitle>
+                <Checkbox type={'checkbox'} />
+                <CheckboxTitle>중복 체크 여부</CheckboxTitle>
+              </CheckboxAndTitle>
+              <CheckboxAndTitle>
+                <Checkbox type={'checkbox'} />
+                <CheckboxTitle>비공개</CheckboxTitle>
+              </CheckboxAndTitle>
+            </div>
+            {/* <CalendarBtn
             type="date"
             onChange={dateSelect}
             value={calendarValue}
           ></CalendarBtn> */}
-          <Scheduler translate={'0, -700px'} />
-        </CheckboxContainer>
-        <CreateBtn>투표만들기</CreateBtn>
-      </CenterContainer>
-    </Container>
+            <Scheduler translate={'0, -650px'} />
+          </CheckboxContainer>
+          <CreateBtn>투표만들기</CreateBtn>
+        </SubBox>
+      </Container>
+    </Outer>
   );
 }
 

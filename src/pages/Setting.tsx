@@ -7,6 +7,7 @@ const Outer = styled.div`
   padding-top: 48px;
   width: 100%;
   background-color: var(--bg);
+  height: 100vh;
   display: flex;
   justify-content: center;
 `;
@@ -39,7 +40,7 @@ const SideBarBtn = styled.div`
   position: absolute;
   line-height: 55px;
   top: 0px;
-  left: 30px;
+  left: 20px;
   z-index: 999;
   width: 40px;
   height: 40px;

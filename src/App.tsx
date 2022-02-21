@@ -7,6 +7,7 @@ import Footer from './pages/components/Footer';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { loginHandler } from './modules/login';
+import NofiticationCenter from './components/NotificationCenter';
 // export type LoginProps = boolean;
 
 const userColorTheme = localStorage.getItem('color-theme');
@@ -45,6 +46,7 @@ function App() {
 
               <Route path="/setting" element={<Setting />}></Route>
             </Routes>
+            <NofiticationCenter/>
             <Footer />
           </>
         )}

@@ -61,6 +61,7 @@ const Text = styled.a`
   font-size: 15px;
   text-decoration: none;
   color: var(--font);
+
 `;
 
 const TitleContainer = styled.div`
