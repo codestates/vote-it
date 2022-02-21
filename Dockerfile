@@ -8,8 +8,6 @@ RUN npm install
 
 COPY . .
 
-RUN ls -lA
-
 RUN npm run build
 
 CMD [ "npm", "run", "start:prod" ]
