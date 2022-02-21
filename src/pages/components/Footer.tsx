@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../modules';
+import { useEffect } from 'react';
+import { darkHandler } from '../../modules/login';
 
 const FooterOuter = styled.div`
   width: 100%;
@@ -82,6 +84,17 @@ const TextContainer = styled.div`
 `;
 
 function Footer() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const dark = localStorage.getItem('color-theme');
+    if (dark === 'dark') {
+      dispatch(darkHandler(true));
+    } else {
+      dispatch(darkHandler(false));
+    }
+  }, []);
+
   const isDark = useSelector((state: RootState) => state.login.isDark);
 
   return (
@@ -89,7 +102,7 @@ function Footer() {
       <FooterContainer>
         <Img
           src={
-            isDark
+            !isDark
               ? `${process.env.PUBLIC_URL}/MYMY_dark.png`
               : `${process.env.PUBLIC_URL}/MYMY.png`
           }
