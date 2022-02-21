@@ -35,7 +35,6 @@ const Divider = styled.div`
   max-height: 0px;
 
   border-top: 1px solid var(--border-lighter);
-
 `;
 
 const Button = styled.div`

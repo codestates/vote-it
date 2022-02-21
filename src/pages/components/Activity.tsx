@@ -9,7 +9,7 @@ const Container = styled.div`
   flex-direction: column;
   flex: 2 0 auto;
 
-  @media only screen and (max-width: 1200px) {
+  @media only screen and (max-width: 768px) {
     grid-column: span 11;
   }
 

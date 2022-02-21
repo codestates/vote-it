@@ -14,7 +14,7 @@ const Container = styled.div`
   font-family: 'SUIT-Light';
   /* border: 1px solid green; */
 
-  @media only screen and (max-width: 1200px) {
+  @media only screen and (max-width: 768px) {
     grid-column: span 11;
   }
 
