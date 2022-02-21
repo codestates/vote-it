@@ -8,6 +8,7 @@ import {
   SignupModal,
   DropDown,
   Feed,
+  Toggle,
 
   // Scheduler,
 } from '../../components';

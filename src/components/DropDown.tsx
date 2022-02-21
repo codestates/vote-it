@@ -3,6 +3,7 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { darkHandler, loginHandler } from '../modules/login';
+import { Toggle } from '.';
 // import { notify } from '../modules/notification';
 
 const Canvas = styled.div`
@@ -49,10 +50,7 @@ const Button = styled.div`
 `;
 
 const InputWrapper = styled.div`
-  cursor: pointer;
-  :hover {
-    color: #808080;
-  }
+  /* cursor: pointer; */
 `;
 
 // interface IDropOn {
@@ -111,9 +109,11 @@ const DropDown: React.FunctionComponent<IProps> = ({ dropOn, setDropOn }) => {
         <Button onClick={handleButtonClick('activity')}>활동 기록</Button>
         <Button onClick={handleButtonClick('security')}>보안</Button>
         <Divider />
-        <InputWrapper onClick={handleDarkMode}>
-          <input type="checkbox" checked={darkMode} /> 다크모드
+        <InputWrapper>
+          {/* <input type="checkbox" checked={darkMode} /> 다크모드 */}
+          <Toggle darkMode={darkMode} handleDarkMode={handleDarkMode} />
         </InputWrapper>
+        {/* <Toggle /> */}
         <Divider />
         <Button onClick={handleButtonClick('logout')}>로그아웃</Button>
       </Container>
