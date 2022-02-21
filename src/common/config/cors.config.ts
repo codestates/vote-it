@@ -2,10 +2,10 @@ import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.int
 import env from './env.config';
 
 const corsConfig: CorsOptions | true =
-  env.NODE_ENV === 'development'
-    ? true
-    : {
+  env.NODE_ENV === 'production'
+    ? {
         origin: 'https://mymy-project-adfs.com',
-      };
+      }
+    : true;
 
 export default corsConfig;

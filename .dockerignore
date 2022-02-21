@@ -1,0 +1,7 @@
+node_modules
+dist
+appspec.yml
+.git
+.gitignore
+/secrets
+*.pem
