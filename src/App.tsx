@@ -5,10 +5,10 @@ import { Main, Setting, Vote, Loading } from './pages';
 import CreateVote from './pages/CreateVote';
 import Footer from './pages/components/Footer';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { loginHandler } from './modules/login';
 import NofiticationCenter from './components/NotificationCenter';
-import { RootState } from './modules';
+// import { RootState } from './modules';
 // export type LoginProps = boolean;
 
 const userColorTheme = localStorage.getItem('color-theme');
