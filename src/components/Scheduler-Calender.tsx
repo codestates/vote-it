@@ -95,11 +95,11 @@ const Days = styled.div`
     /* cursor: auto; */
   }
   .passed {
-    color: #eee;
+    color: var(--font-pale);
     cursor: auto;
     :hover {
       background-color: transparent;
-      color: #eee;
+      color: var(--font-pale);
     }
   }
 `;
