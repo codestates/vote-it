@@ -184,11 +184,20 @@ function time() {
   console.log('time 함수 실행');
 }
 
-interface IProps {
-  translate: string;
+interface Calender {
+  date: string;
+  time: string;
 }
 
-const Scheduler: React.FunctionComponent<IProps> = ({ translate }) => {
+interface IProps {
+  translate: string;
+  CalenderValueHandler: ({ date, time }: Calender) => void;
+}
+
+const Scheduler: React.FunctionComponent<IProps> = ({
+  translate,
+  CalenderValueHandler,
+}) => {
   const [view, setView] = useState(false);
   const [buttonText, setButtonText] = useState('마감시간');
   const [addTime, setAddTime] = useState(false);
@@ -224,6 +233,9 @@ const Scheduler: React.FunctionComponent<IProps> = ({ translate }) => {
   };
 
   const handleView = () => {
+    if (!!view && !!inputValue) {
+      CalenderValueHandler(inputValue);
+    }
     setView(!view);
   };
 

@@ -15,7 +15,7 @@ const Container = styled.div<IContainerProps>`
   /* flex: 1 0 256px; */
   font-family: 'SUIT-Medium';
   height: 20vh;
-  /* max-width: 256px; */
+  max-width: 256px;
   margin: 16px;
   border-radius: 8px;
   /* border: 1px solid seagreen; */
