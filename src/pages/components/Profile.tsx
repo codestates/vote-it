@@ -202,7 +202,7 @@ const Profile: React.FunctionComponent<IProps> = () => {
   return (
     <Container>
       <ImgContainer>
-        <ImgBox src={userInfo.picture}>
+        <ImgBox className="img" src={userInfo.picture}>
           <ImageUpload />
         </ImgBox>
       </ImgContainer>
