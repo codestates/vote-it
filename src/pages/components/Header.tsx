@@ -8,9 +8,11 @@ import {
   SignupModal,
   DropDown,
   Feed,
+
   // Scheduler,
 } from '../../components';
 import { FaPlus, FaUserCircle, FaBell, FaSearch } from 'react-icons/fa';
+import { FiX } from 'react-icons/fi';
 const Container = styled.div`
   position: fixed;
   width: 100%;
@@ -32,7 +34,6 @@ const Wrapper = styled.div`
   width: 1200px;
   grid-gap: 24px;
   padding: 8px;
-
   img {
     grid-column: 1 / span 1;
     width: 80px;
@@ -65,7 +66,11 @@ const Search = styled.input`
   /* flex: 1 0 auto; */
   width: 70%;
   height: 24px;
-
+  padding: 4px;
+  padding-left: 15px;
+  border-radius: 10px;
+  border: none;
+  box-shadow: inset 2px 2px 3px 2px var(--box-shadow-darker);
   @media only screen and (max-width: 768px) {
     width: 100%;
   }
@@ -87,31 +92,55 @@ const SettingWrapper = styled.div`
 `;
 
 const SearchIcon = styled.div`
+  &:hover {
+    color: var(--main-color);
+  }
   display: none;
   cursor: pointer;
-
+  margin-top: 10px;
   @media only screen and (max-width: 500px) {
     display: block;
   }
 `;
 
 const Notice = styled.div`
+  &:hover {
+    color: var(--main-color);
+  }
   /* flex: 1 0 auto; */
   cursor: pointer;
+  margin-top: 10px;
 `;
 
 const Setting = styled.div`
+  &:hover {
+    color: var(--main-color);
+  }
   justify-content: center;
   /* flex: 1 0 auto; */
   cursor: pointer;
+  margin-top: 10px;
 `;
 
 const TextButton = styled.div`
   /* flex: 1 0 auto; */
+  &:hover {
+    color: var(--main-color);
+  }
+  font-family: 'SUIT-Medium';
+  margin-top: 5px;
+  margin-right: 5px;
+  font-size: 15px;
   cursor: pointer;
 `;
 
-const CreateVoteBtn = styled.div``;
+const CreateVoteBtn = styled.div`
+  &:hover {
+    color: var(--main-color);
+  }
+  color: black;
+  margin-top: 10px;
+`;
 
 const LoginWrapper = styled.div`
   display: flex;
@@ -148,6 +177,7 @@ const CloseMiniSearch = styled.div`
   width: 50px;
   height: 48px;
   display: flex;
+
   justify-content: center;
   align-items: center;
   cursor: pointer;
@@ -156,6 +186,10 @@ const CloseMiniSearch = styled.div`
 const MiniSearch = styled.input`
   width: 75%;
   height: 35px;
+  border: none;
+  padding-left: 10px;
+  border-radius: 10px;
+  box-shadow: inset 2px 2px 3px 2px var(--box-shadow-darker);
 `;
 
 type Modal = {
@@ -213,7 +247,7 @@ const Header: React.FunctionComponent = () => {
               setIsMiniOpen(false);
             }}
           >
-            x
+            <FiX />
           </CloseMiniSearch>
           <MiniSearch type={'text'} />
         </MiniSearchContainer>
@@ -241,15 +275,15 @@ const Header: React.FunctionComponent = () => {
             </SearchIcon>
             <Link to="/createVote">
               <CreateVoteBtn>
-                <FaPlus style={{ color: 'black' }} />
+                <FaPlus style={{ fontSize: '18px' }} />
               </CreateVoteBtn>
             </Link>
             <Notice onClick={handleNoticeClick}>
-              <FaBell />
+              <FaBell style={{ fontSize: '18px' }} />
             </Notice>
             {noticeOn ? <Feed setNoticeOn={setNoticeOn} /> : null}
             <Setting onClick={handleSettingClick}>
-              <FaUserCircle />
+              <FaUserCircle style={{ fontSize: '18px' }} />
             </Setting>
             {dropOn ? <DropDown dropOn={dropOn} setDropOn={setDropOn} /> : null}
           </SettingWrapper>
@@ -260,7 +294,7 @@ const Header: React.FunctionComponent = () => {
                 setIsMiniOpen(true);
               }}
             >
-              <FaSearch />
+              <FaSearch style={{ fontSize: '18px' }} />
             </SearchIcon>
             <TextButton onClick={handleModal('login')}>LOGIN</TextButton>
             <TextButton onClick={handleModal('signup')}>SIGNUP</TextButton>
