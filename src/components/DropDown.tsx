@@ -35,7 +35,6 @@ const Divider = styled.div`
   max-height: 0px;
 
   border-top: 1px solid var(--border-lighter);
-
 `;
 
 const Button = styled.div`
@@ -46,13 +45,6 @@ const Button = styled.div`
     color: white;
     background-color: var(--main-color);
     transition: all 0.3s;
-  }
-`;
-
-const InputWrapper = styled.div`
-  cursor: pointer;
-  :hover {
-    color: #808080;
   }
 `;
 

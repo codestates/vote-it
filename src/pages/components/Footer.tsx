@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 const FooterOuter = styled.div`
@@ -61,7 +61,6 @@ const Text = styled.a`
   font-size: 15px;
   text-decoration: none;
   color: var(--font);
-
 `;
 
 const TitleContainer = styled.div`
@@ -81,10 +80,21 @@ const TextContainer = styled.div`
 `;
 
 function Footer() {
+  const userColorTheme = localStorage.getItem('color-theme');
+  // useEffect(() => {
+  //   const
+  // }, [userColorTheme])
+
   return (
     <FooterOuter>
       <FooterContainer>
-        <Img src={`${process.env.PUBLIC_URL}/MYMY.png`} />
+        <Img
+          src={
+            userColorTheme === 'dark'
+              ? `${process.env.PUBLIC_URL}/MYMY_dark.png`
+              : `${process.env.PUBLIC_URL}/MYMY.png`
+          }
+        />
         <Container>
           <TitleContainer>ABOUT US</TitleContainer>
           <TextContainer>
