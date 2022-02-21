@@ -4,13 +4,14 @@ import { VoteList, LogList } from '.';
 
 const Container = styled.div`
   font-family: 'SUIT-Light';
-  grid-column: span 9;
+  margin-top: 5vh;
+  grid-column: 4 / span 8;
   display: flex;
   flex-direction: column;
   flex: 2 0 auto;
 
   @media only screen and (max-width: 768px) {
-    grid-column: span 11;
+    grid-column: 3 / span 10;
   }
 
   @media only screen and (max-width: 500px) {
@@ -22,7 +23,7 @@ const Container = styled.div`
 const MenuWrapper = styled.div`
   font-family: 'EliceDigitalBaeum_Regular';
   display: flex;
-  flex: 1 0 32px;
+  /* flex: 1 0 32px; */
   max-width: 50%;
   /* border: 1px solid green; */
   div {
@@ -43,8 +44,8 @@ const MenuWrapper = styled.div`
 
 const ContentWrapper = styled.div`
   display: flex;
-  flex: 5 0 512px;
-  height: 512px;
+  /* flex: 5 0 512px; */
+  height: 80vh;
   border-top: 1px solid #808080;
   border-bottom: 1px solid #808080;
   margin-right: 24px;
