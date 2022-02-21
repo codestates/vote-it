@@ -37,6 +37,7 @@ const Wrapper = styled.div`
   width: 1200px;
   grid-gap: 24px;
   padding: 8px;
+  align-items: center;
   img {
     /* color: var(--font); */
     grid-column: 1 / span 1;
@@ -111,7 +112,8 @@ const SearchIcon = styled.div`
   }
   display: none;
   cursor: pointer;
-  margin-top: 10px;
+  /* margin-top: 10px; */
+
   @media only screen and (max-width: 500px) {
     display: block;
   }
@@ -123,7 +125,7 @@ const Notice = styled.div`
   }
   /* flex: 1 0 auto; */
   cursor: pointer;
-  margin-top: 10px;
+  /* margin-top: 10px; */
 `;
 
 const Setting = styled.div`
@@ -133,7 +135,7 @@ const Setting = styled.div`
   justify-content: center;
   /* flex: 1 0 auto; */
   cursor: pointer;
-  margin-top: 10px;
+  /* margin-top: 10px; */
 `;
 
 const TextButton = styled.div`
@@ -142,7 +144,7 @@ const TextButton = styled.div`
     color: var(--main-color);
   }
   font-family: 'SUIT-Medium';
-  margin-top: 5px;
+  /* margin-top: 5px; */
   margin-right: 5px;
   font-size: 15px;
   cursor: pointer;
@@ -153,7 +155,7 @@ const CreateVoteBtn = styled.div`
     color: var(--main-color);
   }
 
-  margin-top: 10px;
+  /* margin-top: 10px; */
 
   color: var(--font);
 `;
@@ -186,14 +188,14 @@ const MiniSearchContainer = styled.div`
   left: 0;
   background-color: var(--box-bg);
   display: flex;
+  justify-content: center;
   align-items: center;
 `;
 
 const CloseMiniSearch = styled.div`
   width: 50px;
-  height: 48px;
+  height: 100%;
   display: flex;
-
   justify-content: center;
   align-items: center;
   cursor: pointer;
