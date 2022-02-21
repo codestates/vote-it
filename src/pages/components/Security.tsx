@@ -67,7 +67,7 @@ const ButtonWrapper = styled.div`
     border-radius: 20px;
     height: 40px;
     color: white;
-    background-color: #5d6dbe;
+    background-color: var(--main-color);
   }
   div {
     text-align: center;
