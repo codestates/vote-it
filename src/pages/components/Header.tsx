@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../modules';
 import {
   LoginModal,
@@ -13,6 +13,8 @@ import {
 } from '../../components';
 import { FaPlus, FaUserCircle, FaBell, FaSearch } from 'react-icons/fa';
 import { FiX } from 'react-icons/fi';
+import { useEffect } from 'react';
+import { darkHandler } from '../../modules/login';
 const Container = styled.div`
   position: fixed;
   width: 100%;
@@ -146,7 +148,6 @@ const TextButton = styled.div`
 `;
 
 const CreateVoteBtn = styled.div`
-
   &:hover {
     color: var(--main-color);
   }
@@ -154,7 +155,6 @@ const CreateVoteBtn = styled.div`
   margin-top: 10px;
 
   color: var(--font);
-
 `;
 
 const LoginWrapper = styled.div`
@@ -229,6 +229,19 @@ const Header: React.FunctionComponent = () => {
 
   const isLogin = useSelector((state: RootState) => state.login.isLogin);
 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const dark = localStorage.getItem('color-theme');
+    if (dark === 'dark') {
+      dispatch(darkHandler(true));
+    } else {
+      dispatch(darkHandler(false));
+    }
+  }, []);
+
+  const isDark = useSelector((state: RootState) => state.login.isDark);
+
   const handleModal =
     (key: string) => (e: React.MouseEvent<HTMLDivElement>) => {
       if (key === 'login') {
@@ -272,7 +285,11 @@ const Header: React.FunctionComponent = () => {
       <Wrapper>
         <Link to="/">
           <img
-            src={`${process.env.PUBLIC_URL}/vote-it_LOGO.png`}
+            src={
+              !isDark
+                ? `${process.env.PUBLIC_URL}/vote-it_LOGO.png`
+                : `${process.env.PUBLIC_URL}/LOGO2.png`
+            }
             alt="vote-it logo"
           />
         </Link>
@@ -290,10 +307,7 @@ const Header: React.FunctionComponent = () => {
             </SearchIcon>
             <Link to="/createVote">
               <CreateVoteBtn>
-
                 <FaPlus style={{ fontSize: '18px' }} />
-
-
               </CreateVoteBtn>
             </Link>
             <Notice onClick={handleNoticeClick}>

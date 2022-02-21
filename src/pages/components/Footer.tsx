@@ -102,7 +102,7 @@ function Footer() {
       <FooterContainer>
         <Img
           src={
-            !isDark
+            isDark
               ? `${process.env.PUBLIC_URL}/MYMY_dark.png`
               : `${process.env.PUBLIC_URL}/MYMY.png`
           }
@@ -131,7 +131,7 @@ function Footer() {
               Kwak. M. W
             </Text>
             <Text href="https://github.com/yjlim0428" target="_blank">
-              Lim, Y, J
+              Lim. Y. J
             </Text>
           </TextContainer>
         </Container>
