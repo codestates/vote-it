@@ -39,6 +39,7 @@ const SubBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100%;
   @media only screen and (max-width: 500px) {
     grid-column: span 6;
   }
@@ -67,7 +68,7 @@ const OptionContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  height: 50%;
+  max-height: 45%;
   padding: 10px;
 `;
 const Option = styled.div`
@@ -75,22 +76,21 @@ const Option = styled.div`
     3px 3px 6px var(--box-shadow-darker);
   display: flex;
   margin: 0 auto;
-
   margin-top: 10px;
   width: 95%;
   background-color: var(--box-bg);
   border-radius: 15px;
   padding: 5px;
+  justify-content: space-around;
 `;
 const OptionInput = styled.input`
   font-family: 'SUIT-Light';
   &:focus {
     outline: none;
   }
-
   height: 40px;
-  width: 90%;
-  padding-left: 10px;
+  width: 80%;
+
   border: none;
 `;
 const OptionText = styled.div`
@@ -99,7 +99,9 @@ const OptionText = styled.div`
   padding-left: 10px;
   line-height: 40px;
 `;
-const DelOptionBtn = styled.button`
+const DelOptionBtn = styled.div`
+  &:hover {
+  }
   all: unset;
   /* margin-right: 10px; */
 `;
@@ -121,8 +123,11 @@ const CheckboxContainer = styled.div`
 const CheckboxAndTitle = styled.div`
   display: flex;
   margin: 10px;
+  align-items: center;
 `;
-const Checkbox = styled.input``;
+const Checkbox = styled.input`
+  margin-right: 10px;
+`;
 const CheckboxTitle = styled.div``;
 const CalendarBtn = styled.input`
   border: none;
@@ -212,7 +217,7 @@ function CreateVote() {
                     onChange={(e) => onChangeOption(e, index)}
                   />
                   <DelOptionBtn onClick={() => DelBtn(index)}>
-                    <FaMinus style={{ color: 'red' }} />
+                    <FaMinus style={{ height: '100%', color: 'red' }} />
                   </DelOptionBtn>
                 </Option>
               );
