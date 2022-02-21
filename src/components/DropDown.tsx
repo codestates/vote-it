@@ -66,7 +66,7 @@ interface IProps {
 }
 
 const DropDown: React.FunctionComponent<IProps> = ({ dropOn, setDropOn }) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const userColorTheme = localStorage.getItem('color-theme');
@@ -78,9 +78,11 @@ const DropDown: React.FunctionComponent<IProps> = ({ dropOn, setDropOn }) => {
         dispatch(loginHandler());
         localStorage.setItem('isLogin', 'false');
         localStorage.setItem('accessToken', '');
+        localStorage.setItem('color-theme', 'light');
         setDropOn(false);
-        dispatch(notify('로그아웃이 완료되었습니다.'));
-        navigate('/');
+        dispatch(darkHandler(false));
+        // dispatch(notify('로그아웃이 완료되었습니다.'));
+        window.location.href = '/';
       } else {
         setDropOn(false);
         localStorage.setItem('setting', key);
@@ -94,7 +96,7 @@ const DropDown: React.FunctionComponent<IProps> = ({ dropOn, setDropOn }) => {
 
   const handleDarkMode = () => {
     localStorage.setItem('color-theme', darkMode ? 'light' : 'dark');
-    dispatch(darkHandler());
+    dispatch(darkHandler(null));
     document.documentElement.setAttribute(
       'color-theme',
       darkMode ? 'light' : 'dark',

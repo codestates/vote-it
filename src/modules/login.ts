@@ -5,9 +5,14 @@ export const loginHandler = () => ({
   type: SET_LOGIN,
 });
 
-export const darkHandler = () => ({
-  type: SET_DARK,
-});
+export const darkHandler = (dark: boolean | null) => {
+  return {
+    type: SET_DARK,
+    payload: {
+      dark,
+    },
+  };
+};
 
 type CounterAction =
   | ReturnType<typeof loginHandler>
@@ -31,7 +36,7 @@ function login(
     case SET_LOGIN:
       return { ...state, isLogin: !state.isLogin };
     case SET_DARK:
-      return { ...state, isDark: !state.isDark };
+      return { ...state, isDark: action.payload.dark || !state.isDark };
     default:
       return state;
   }
