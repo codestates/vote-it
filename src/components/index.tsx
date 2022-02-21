@@ -6,6 +6,7 @@ import Feed from './Feed';
 import Scheduler from './Scheduler';
 import Suggestion from './Scheduler-Suggestion';
 import SchedulerCalender from './Scheduler-Calender';
+import { Toggle } from './ToggleButton';
 
 export {
   LoginModal,
@@ -15,4 +16,5 @@ export {
   Scheduler,
   Suggestion,
   SchedulerCalender,
+  Toggle,
 };
