@@ -8,12 +8,13 @@ interface IContainerProps {
 
 const Container = styled.div<IContainerProps>`
   grid-column: span 3;
-  /* position: fixed; */
+  position: fixed;
+  width: 18vw;
   display: flex;
   flex-direction: column;
   /* flex: 1 0 256px; */
   font-family: 'SUIT-Medium';
-  height: 70vh;
+  height: 20vh;
   max-width: 256px;
   margin: 16px;
   border-radius: 8px;
@@ -23,14 +24,15 @@ const Container = styled.div<IContainerProps>`
 
   @media only screen and (max-width: 768px) {
     grid-column: span 1;
+    width: 50px;
   }
 
   @media only screen and (max-width: 500px) {
-    position: absolute;
+    position: fixed;
     top: 48px;
     margin: 0;
     grid-column: span 6;
-    width: 100%;
+    width: 256px;
     display: ${(props) => props.isSideBar};
   }
 `;

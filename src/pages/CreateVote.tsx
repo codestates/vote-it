@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 import { Scheduler } from '../components';
+import apiAxios from '../utils/apiAxios';
 import '../fonts/font.css';
+import { useDispatch } from 'react-redux';
+import { notify } from '../modules/notification';
 
 const Outer = styled.div`
   font-family: 'EliceDigitalBaeum_Regular';
@@ -155,6 +158,8 @@ function CreateVote() {
   const [optionList, setOptionList] = useState<string[]>(['', '', '', '']);
   const [option, setOption] = useState('');
 
+  const dispatch = useDispatch();
+
   const onChangeTitle = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     setTitle(value);
@@ -173,6 +178,25 @@ function CreateVote() {
     ]);
   };
 
+  interface CalenderValue {
+    date: string;
+    time: string;
+  }
+
+  const CalenderValueHandler = ({ date, time }: CalenderValue) => {
+    setCalendarValue(
+      date.slice(0, 4) +
+        '-' +
+        date.slice(4, 6) +
+        '-' +
+        date.slice(6) +
+        'T' +
+        time +
+        '+00:00',
+    );
+    // TODO : ISO 8601 Time
+  };
+
   const PlusOption = () => {
     // setPlusBtn(!PlusBtn);
     setOptionList([...optionList, '']);
@@ -188,7 +212,35 @@ function CreateVote() {
     setOptionList(newList);
   };
 
-  const dateSelect = () => {};
+  const CreateBtnHandler = () => {
+    if (title === '') {
+      dispatch(notify('제목을 입력해주세요.'));
+      return;
+    }
+    if (optionList.filter((el) => el !== '').length === 0) {
+      dispatch(notify('선택지를 입력해주세요.'));
+      return;
+    }
+    const accessToken = localStorage.getItem('accessToken');
+    apiAxios
+      .post(
+        'users/me/polls',
+        {
+          subject: title,
+          expirationDate: calendarValue,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      )
+      .then((res) => {
+        dispatch(notify('투표가 등록되었습니다.'));
+        window.location.href = '/';
+      })
+      .catch((err) => alert(err));
+  };
 
   return (
     <Outer>
@@ -240,9 +292,12 @@ function CreateVote() {
             onChange={dateSelect}
             value={calendarValue}
           ></CalendarBtn> */}
-            <Scheduler translate={'0, auto'} />
+            <Scheduler
+              translate={'0, auto'}
+              CalenderValueHandler={CalenderValueHandler}
+            />
           </CheckboxContainer>
-          <CreateBtn>투표만들기</CreateBtn>
+          <CreateBtn onClick={CreateBtnHandler}>투표만들기</CreateBtn>
         </SubBox>
       </Container>
     </Outer>
