@@ -12,7 +12,7 @@ const Canvas = styled.div`
   width: 100vw;
   background-color: rgba(0, 0, 0, 0.4);
   opacity: 0;
-  transition: all 0.5s;
+  transition: opacity 0.5s;
   &.show {
     opacity: 1;
   }

@@ -51,23 +51,46 @@ const View = styled.div`
   z-index: 999;
 `;
 
-const InputWrapper = styled.div`
+const InputWrapper = styled.div<{ focus: boolean }>`
   display: flex;
   flex-shrink: 0;
-  padding: 8px;
+  padding: 6px;
   align-items: center;
+  div {
+    display: flex;
+    flex: 1 0 auto;
+    flex-shrink: 0;
+    padding: 2px;
+    align-items: center;
+    border-bottom: ${(props) =>
+      props.focus ? '1px solid #808080' : '1px solid transparent'};
+    transition: all 0.5s;
+  }
+  svg {
+    transform: translate(0, 2px);
+    cursor: pointer;
+    :hover {
+      color: var(--main-color);
+    }
+  }
   input {
-    width: 100%;
+    /* display: inline-block; */
+    width: 216px;
     font-size: 14px;
     line-height: 24px;
     border: none;
     border-bottom: 1px solid transparent;
     outline: none;
     box-sizing: border-box;
-    :focus {
+    ::-webkit-outer-spin-button,
+    ::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    /* :focus {
       border-bottom: 1px solid #808080;
       transition: all 0.5s;
-    }
+    } */
   }
 `;
 
@@ -170,6 +193,12 @@ const Scheduler: React.FunctionComponent<IProps> = ({ translate }) => {
   const [buttonText, setButtonText] = useState('마감시간');
   const [addTime, setAddTime] = useState(false);
   const [inputValue, setInputValue] = useState({ date: '', time: '' });
+  // 형식: {date: "20220222", time: "14:53"} => 22년 2월 22일 오후 2시 53분
+  // DB 저장형식(datetime?): "20220222T14:53"
+
+  //!  날짜 데이터를 state를 재지정해서 뽑아올지, div태그 value값을 가져올지는 편한걸로 결정하심 될듯합니다
+
+  //? 얘는 안쓸것같음. 판단 후 삭제
   const [dateInfo, setDateInfo] = useState({
     thisDay,
     thisMonth,
@@ -178,6 +207,21 @@ const Scheduler: React.FunctionComponent<IProps> = ({ translate }) => {
     thisMinute,
     thisSecond,
   });
+
+  const [inputFocus, setInputFocus] = useState(false);
+
+  const modifyButtonText = () => {
+    //! 예정: Mod 함수 생성 후 날짜 별칭 사용할것임
+    //! 아직 시간만 있을 경우의 로직 없음: 시간만 있을 경우에는 오늘날짜로 적용할것임
+    const textMod =
+      inputValue.date === '' && inputValue.time === ''
+        ? '마감시간'
+        : `${inputValue.date.slice(2, 4)}년 ${inputValue.date.slice(
+            4,
+            6,
+          )}월 ${inputValue.date.slice(6, 8)}일 ${inputValue.time}`;
+    setButtonText(textMod);
+  };
 
   const handleView = () => {
     setView(!view);
@@ -188,8 +232,22 @@ const Scheduler: React.FunctionComponent<IProps> = ({ translate }) => {
       setInputValue({ ...inputValue, [key]: e.target.value });
     };
 
+  const handleOnInput = () => {};
+
+  const handleInputFocus = () => {
+    setInputFocus(true);
+  };
+  const handleInputBlur = () => {
+    setInputFocus(false);
+    modifyButtonText();
+  };
+
   const handleTimeWrapper = () => {
     setAddTime(!addTime);
+  };
+
+  const handleDeleteDate = () => {
+    setInputValue({ ...inputValue, date: '' });
   };
 
   const handleDeleteTime = () => {
@@ -197,13 +255,26 @@ const Scheduler: React.FunctionComponent<IProps> = ({ translate }) => {
     handleTimeWrapper();
   };
 
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    console.log(e.key);
+    if (e.key === 'Escape') setView(false);
+  };
+
   useEffect(() => {
+    //! Suggestion 활용을 위한 매초단위 날짜정보 갱신
     setInterval(time, 1000);
   }, []);
+
+  useEffect(() => {
+    modifyButtonText();
+  }, [inputValue]);
+
+  //! 팝업버튼 이미지는 맘에 드는걸로 바꾸셔도됨
   return (
-    <Container>
+    <Container onKeyUp={handleKeyUp}>
       <PopupButton onClick={handleView}>
         <FaRegCalendarAlt />
+
         {buttonText}
       </PopupButton>
       {view ? (
@@ -211,13 +282,24 @@ const Scheduler: React.FunctionComponent<IProps> = ({ translate }) => {
           <Canvas onClick={handleView}></Canvas>
           <Popper ts={translate}>
             <View>
-              <InputWrapper>
-                <input
-                  onChange={handleInputValue('date')}
-                  placeholder="마감 날짜 입력"
-                  spellCheck="false"
-                  value={inputValue.date}
-                />
+              <InputWrapper focus={inputFocus}>
+                <div>
+                  <input
+                    type="number"
+                    pattern="[0-9]+"
+                    // onInput={handleOnInput}: ValidCheck
+                    onChange={handleInputValue('date')}
+                    onFocus={handleInputFocus}
+                    onBlur={handleInputBlur}
+                    onSubmit={modifyButtonText}
+                    placeholder="마감 날짜 입력"
+                    spellCheck="false"
+                    value={inputValue.date}
+                  />
+                  {inputValue.date === '' ? null : (
+                    <FaRegTimesCircle onClick={handleDeleteDate} />
+                  )}
+                </div>
               </InputWrapper>
               <TimeSelectorWrapper>
                 {addTime ? (
@@ -225,6 +307,7 @@ const Scheduler: React.FunctionComponent<IProps> = ({ translate }) => {
                     <input
                       type="time"
                       onChange={handleInputValue('time')}
+                      onSelect={modifyButtonText}
                       value={inputValue.time}
                     />
                     <div>
@@ -280,7 +363,10 @@ const Scheduler: React.FunctionComponent<IProps> = ({ translate }) => {
                 />
               </SuggestionWrapper>
               <DatePickerWrapper>
-                <SchedulerCalender />
+                <SchedulerCalender
+                  inputValue={inputValue}
+                  setInputValue={setInputValue}
+                />
               </DatePickerWrapper>
             </View>
           </Popper>
