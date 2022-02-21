@@ -27,11 +27,12 @@ services:
       SSL_KEY: 'secrets/key.pem'
       SSL_CERT: 'secrets/cert.pem'
       JWT_SECRET: '${JWT_SECRET:-secret}'
-      NODE_ENV: '${NODE_ENV:-development}'
       DB_USERNAME: 'devuser'
       DB_PASSWORD: 'devuser'
       DB_NAME: 'vote_it'
       DB_HOST: 'mariadb'
+      PORT: '3000'
+      NODE_ENV: 'development'
     networks:
       - vote_it
 
