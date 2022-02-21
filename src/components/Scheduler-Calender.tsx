@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useCallback } from 'react';
 import styled from 'styled-components';
 import { FaRegDotCircle, FaAngleRight, FaAngleLeft } from 'react-icons/fa';
@@ -10,6 +10,7 @@ const Container = styled.div`
   user-select: none;
   display: flex;
   flex-direction: column;
+  min-height: 192px;
 `;
 
 const YearNMonth = styled.div`
@@ -72,7 +73,7 @@ const Days = styled.div`
     font-size: 12px;
     padding: 8px;
     color: #808080;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--border-lighter);
   }
   .calender-day {
     height: 24px;
@@ -90,6 +91,10 @@ const Days = styled.div`
     background-color: var(--main-color);
     color: white;
   }
+  .selected {
+    background-color: red;
+    color: white;
+  }
   .disabled {
     color: #808080;
     /* cursor: auto; */
@@ -104,7 +109,15 @@ const Days = styled.div`
   }
 `;
 
-interface IProps {}
+interface InputValue {
+  date: string;
+  time: string;
+}
+
+interface IProps {
+  inputValue: InputValue;
+  setInputValue: Dispatch<SetStateAction<InputValue>>;
+}
 
 // 달력 변수 시작
 const originDate = new Date();
@@ -118,20 +131,38 @@ let kstDate = new Date(utc + kstGap);
 
 // 달력 변수 끝
 
-const SchedulerCalender: React.FunctionComponent<IProps> = () => {
+const SchedulerCalender: React.FunctionComponent<IProps> = ({
+  inputValue,
+  setInputValue,
+}) => {
   const [dateInfo, setDateInfo] = useState({ viewMonth: '' });
+  const [dayList, setDayList] = useState<number[][]>([
+    [31],
+    [
+      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+      22, 23, 24, 25, 26, 27, 28,
+    ],
+    [1, 2, 3, 4, 5, 6],
+    [2],
+    [2022],
+  ]);
+  const [inputDate, setInputDate] = useState({
+    inputYear: 2022,
+    inputMonth: 2,
+    inputDay: 22,
+  });
   const dateName = ['일', '월', '화', '수', '목', '금', '토'];
-  function handleTest() {
-    console.log('클릭!');
-  }
+  const { date, time } = inputValue;
+  const { inputYear, inputMonth, inputDay } = inputDate;
+  // const [inputYear, inputMonth, inputDay] = [
+  //   Number(date.slice(0, 4)),
+  //   Number(date.slice(4, 6)),
+  //   Number(date.slice(6, 8)),
+  // ];
+
   const renderCalender = () => {
     const viewYear = kstDate.getFullYear();
     const viewMonth = kstDate.getMonth();
-
-    const yearMonthText = document.querySelector(
-      '.calender-year-month-text',
-    ) as HTMLParagraphElement;
-    yearMonthText.textContent = `${viewYear}년 ${viewMonth + 1}월`;
 
     const prevLast = new Date(viewYear, viewMonth, 0);
     const thisLast = new Date(viewYear, viewMonth + 1, 0);
@@ -142,11 +173,9 @@ const SchedulerCalender: React.FunctionComponent<IProps> = () => {
     const TLDate = thisLast.getDate();
     const TLDay = thisLast.getDay();
 
-    const prevDates: (string | number)[] = [];
-    const thisDates: (string | number)[] = [...Array(TLDate + 1).keys()].slice(
-      1,
-    );
-    const nextDates: (string | number)[] = [];
+    const prevDates: number[] = [];
+    const thisDates: number[] = [...Array(TLDate + 1).keys()].slice(1);
+    const nextDates: number[] = [];
 
     if (PLDay !== 6) {
       for (let i = 0; i < PLDay + 1; i++) {
@@ -158,48 +187,7 @@ const SchedulerCalender: React.FunctionComponent<IProps> = () => {
       nextDates.push(i);
     }
 
-    // 이 부분을 따로 렌더링 처리 해야할듯
-    prevDates.forEach((date, i) => {
-      if (viewMonth === thisMonth && viewYear === thisYear)
-        prevDates[i] = `<div class="calender-day passed">${date}</div>`;
-      else prevDates[i] = `<div class="calender-day disabled">${date}</div>`;
-    });
-    thisDates.forEach((date, i) => {
-      if (date < thisDay && viewMonth === thisMonth && viewYear === thisYear)
-        thisDates[i] = `<div class="calender-day passed">${date}</div>`;
-      else if (
-        date === thisDay &&
-        thisMonth === viewMonth &&
-        viewYear === thisYear
-      )
-        thisDates[
-          i
-        ] = `<div class="calender-day current-day calender-active">${date}</div>`;
-      else
-        thisDates[
-          i
-        ] = `<div class="calender-day calender-active" >${date}</div>`;
-    });
-    nextDates.forEach((date, i) => {
-      nextDates[i] = `<div class="calender-day disabled">${date}</div>`;
-    });
-
-    // const dayRef = document.querySelectorAll('calender-active');
-    // [].forEach.call(dayRef, (ele: HTMLParagraphElement) => {
-    //   ele.addEventListener('click', handleTest);
-    // });
-
-    const dates = prevDates.concat(thisDates, nextDates);
-
-    const dayText = document.querySelector('.calender') as HTMLParagraphElement;
-    dayText.innerHTML = dates.join('');
-
-    const buttonText = document.querySelector(
-      '.calender-year-month-button',
-    ) as HTMLParagraphElement;
-    if (thisMonth === viewMonth && thisYear === viewYear) {
-      buttonText.classList.add('disabled');
-    } else buttonText.classList.remove('disabled');
+    return [prevDates, thisDates, nextDates, [viewMonth], [viewYear]];
   };
 
   const handleMonth =
@@ -207,22 +195,55 @@ const SchedulerCalender: React.FunctionComponent<IProps> = () => {
       if (key === 0) {
         kstDate = new Date(utc + kstGap);
       } else kstDate.setMonth(kstDate.getMonth() + key);
-      renderCalender();
+      setDayList(renderCalender());
+    };
+
+  const handleDateSelected =
+    (day: number) => (e: React.MouseEvent<HTMLDivElement>) => {
+      const month = dayList[3][0] + 1;
+      const monthMod = month.toString().length === 1 ? `0${month}` : month;
+      const dateValue = `${dayList[4][0]}${monthMod}${
+        day.toString().length === 1 ? `0${day}` : day
+      }`;
+      setInputValue({ ...inputValue, date: dateValue });
     };
 
   useEffect(() => {
-    renderCalender();
+    setDayList(renderCalender());
   }, []);
+
+  useEffect(() => {
+    setInputDate({
+      inputYear: Number(date.slice(0, 4)),
+      inputMonth: Number(date.slice(4, 6)),
+      inputDay: Number(date.slice(6, 8)),
+    });
+  }, [inputValue]);
 
   return (
     <Container>
       <YearNMonth>
-        <div className="calender-year-month-text">{/* 예시: 2022년 2월 */}</div>
+        <div className="calender-year-month-text">
+          {dayList[4][0]}년 {dayList[3][0] + 1}월
+        </div>
 
         <div className="calender-year-month-remote">
-          <div onClick={handleMonth(-1)} className="calender-year-month-button">
-            <FaAngleLeft />
-          </div>
+          {thisMonth === dayList[3][0] && thisYear === dayList[4][0] ? (
+            <div
+              onClick={handleMonth(-1)}
+              className="calender-year-month-button disabled"
+            >
+              <FaAngleLeft />
+            </div>
+          ) : (
+            <div
+              onClick={handleMonth(-1)}
+              className="calender-year-month-button"
+            >
+              <FaAngleLeft />
+            </div>
+          )}
+
           <div
             onClick={handleMonth(0)}
             className="calender-year-month-button today"
@@ -243,6 +264,85 @@ const SchedulerCalender: React.FunctionComponent<IProps> = () => {
             </div>
           );
         })}
+        {
+          // 지난달
+          dayList[0].map((v, i) => {
+            if (thisMonth === dayList[3][0] && thisYear === dayList[4][0])
+              return (
+                <div key={i} className="calender-day passed">
+                  {v}
+                </div>
+              );
+            return (
+              <div key={i} className="calender-day disabled">
+                {v}
+              </div>
+            );
+          })
+        }
+        {
+          // 이번달
+          dayList[1].map((v, i) => {
+            if (
+              v < thisDay &&
+              thisMonth === dayList[3][0] &&
+              thisYear === dayList[4][0]
+            )
+              return (
+                <div key={i} className="calender-day passed">
+                  {v}
+                </div>
+              );
+            else if (
+              v === inputDay &&
+              dayList[3][0] + 1 === inputMonth &&
+              dayList[4][0] === inputYear
+            )
+              return (
+                <div
+                  key={i}
+                  onClick={handleDateSelected(v)}
+                  className="calender-day selected"
+                >
+                  {v}
+                </div>
+              );
+            else if (
+              v === thisDay &&
+              thisMonth === dayList[3][0] &&
+              thisYear === dayList[4][0]
+            )
+              return (
+                <div
+                  key={i}
+                  onClick={handleDateSelected(v)}
+                  className="calender-day current-day"
+                >
+                  {v}
+                </div>
+              );
+            else
+              return (
+                <div
+                  key={i}
+                  onClick={handleDateSelected(v)}
+                  className="calender-day"
+                >
+                  {v}
+                </div>
+              );
+          })
+        }
+        {
+          // 다음달
+          dayList[2].map((v, i) => {
+            return (
+              <div key={i} className="calender-day disabled">
+                {v}
+              </div>
+            );
+          })
+        }
       </Days>
     </Container>
   );

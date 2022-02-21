@@ -240,7 +240,7 @@ function CreateVote() {
             onChange={dateSelect}
             value={calendarValue}
           ></CalendarBtn> */}
-            <Scheduler translate={'0, -650px'} />
+            <Scheduler translate={'0, auto'} />
           </CheckboxContainer>
           <CreateBtn>투표만들기</CreateBtn>
         </SubBox>

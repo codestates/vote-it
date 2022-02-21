@@ -8,7 +8,8 @@ import { notify } from '../../modules/notification';
 
 const Container = styled.div`
   font-family: 'SUIT-Light';
-  grid-column: span 8;
+  margin-top: 25vh;
+  grid-column: 4 / span 8;
 
   @media only screen and (max-width: 768px) {
     grid-column: span 10;
@@ -171,7 +172,8 @@ const Profile: React.FunctionComponent<IProps> = () => {
       return;
     }
     if (username === '') {
-      setUsername('');
+      // setUsername('');
+      setIsUpdating(false);
       return;
     }
     const accessToken = localStorage.getItem('accessToken');
