@@ -14,7 +14,7 @@ const Container = styled.div`
   font-family: 'SUIT-Light';
   /* border: 1px solid green; */
 
-  @media only screen and (max-width: 1200px) {
+  @media only screen and (max-width: 768px) {
     grid-column: span 11;
   }
 
@@ -67,7 +67,7 @@ const ButtonWrapper = styled.div`
     border-radius: 20px;
     height: 40px;
     color: white;
-    background-color: #5d6dbe;
+    background-color: var(--main-color);
   }
   div {
     text-align: center;

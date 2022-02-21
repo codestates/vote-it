@@ -37,9 +37,9 @@ const Container = styled.div`
 `;
 
 const SideBarBtn = styled.div`
-  position: absolute;
+  position: fixed;
   line-height: 55px;
-  top: 0px;
+  top: 48px;
   left: 20px;
   z-index: 999;
   width: 40px;

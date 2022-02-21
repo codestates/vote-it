@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-
+import '../fonts/font.css';
 const Canvas = styled.div`
   position: absolute;
   top: 0;
@@ -13,11 +13,13 @@ const Canvas = styled.div`
 
 const Container = styled.div`
   position: absolute;
+  top: 35px;
   transform: translate(-50%, 32px);
   /* padding: 8px; */
 `;
 
 const View = styled.div`
+  font-family: 'SUIT-Light';
   display: flex;
   flex-direction: column;
   position: relative;
@@ -25,9 +27,12 @@ const View = styled.div`
   width: 256px;
   min-height: 256px;
   max-height: 400px;
-  border-radius: 4px;
+
+  border-radius: 10px;
   background-color: var(--box-bg);
-  box-shadow: 0 4px 8px 0 var(--box-shadow), 0 0 4px 0 var(--box-shadow-darker);
+  box-shadow: -1px -1px 2px var(--box-shadow),
+    3px 3px 8px var(--box-shadow-darker);
+
   overflow-y: auto;
   z-index: 999;
 `;
@@ -107,7 +112,11 @@ const Feed: React.FunctionComponent<IProps> = ({ setNoticeOn }) => {
             return (
               <FeedWrapper key={v.id} onClick={handleFeedClick(1)}>
                 <div className="feed-text">{v.msg}</div>
-                <div className="feed-icon-check" onClick={handleDelete(v.id)}>
+                <div
+                  className="feed-icon-check"
+                  style={{ fontSize: '15px' }}
+                  onClick={handleDelete(v.id)}
+                >
                   &times;
                 </div>
               </FeedWrapper>

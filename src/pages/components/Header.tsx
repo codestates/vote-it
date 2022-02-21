@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../modules';
 import {
   LoginModal,
   SignupModal,
   DropDown,
   Feed,
+
   // Scheduler,
 } from '../../components';
 import { FaPlus, FaUserCircle, FaBell, FaSearch } from 'react-icons/fa';
+import { FiX } from 'react-icons/fi';
+import { useEffect } from 'react';
+import { darkHandler } from '../../modules/login';
 const Container = styled.div`
   position: fixed;
   width: 100%;
@@ -32,7 +36,6 @@ const Wrapper = styled.div`
   width: 1200px;
   grid-gap: 24px;
   padding: 8px;
-
   img {
     /* color: var(--font); */
     grid-column: 1 / span 1;
@@ -66,7 +69,15 @@ const Search = styled.input`
   /* flex: 1 0 auto; */
   width: 70%;
   height: 24px;
+
+  padding: 4px;
+  padding-left: 15px;
+  border-radius: 10px;
+  border: none;
+  box-shadow: inset 2px 2px 3px 2px var(--box-shadow-darker);
+
   background-color: var(--box-bg-lighter);
+
   @media only screen and (max-width: 768px) {
     width: 100%;
   }
@@ -94,31 +105,55 @@ const SettingWrapper = styled.div`
 `;
 
 const SearchIcon = styled.div`
+  &:hover {
+    color: var(--main-color);
+  }
   display: none;
   cursor: pointer;
-
+  margin-top: 10px;
   @media only screen and (max-width: 500px) {
     display: block;
   }
 `;
 
 const Notice = styled.div`
+  &:hover {
+    color: var(--main-color);
+  }
   /* flex: 1 0 auto; */
   cursor: pointer;
+  margin-top: 10px;
 `;
 
 const Setting = styled.div`
+  &:hover {
+    color: var(--main-color);
+  }
   justify-content: center;
   /* flex: 1 0 auto; */
   cursor: pointer;
+  margin-top: 10px;
 `;
 
 const TextButton = styled.div`
   /* flex: 1 0 auto; */
+  &:hover {
+    color: var(--main-color);
+  }
+  font-family: 'SUIT-Medium';
+  margin-top: 5px;
+  margin-right: 5px;
+  font-size: 15px;
   cursor: pointer;
 `;
 
 const CreateVoteBtn = styled.div`
+  &:hover {
+    color: var(--main-color);
+  }
+
+  margin-top: 10px;
+
   color: var(--font);
 `;
 
@@ -157,6 +192,7 @@ const CloseMiniSearch = styled.div`
   width: 50px;
   height: 48px;
   display: flex;
+
   justify-content: center;
   align-items: center;
   cursor: pointer;
@@ -165,6 +201,10 @@ const CloseMiniSearch = styled.div`
 const MiniSearch = styled.input`
   width: 75%;
   height: 35px;
+  border: none;
+  padding-left: 10px;
+  border-radius: 10px;
+  box-shadow: inset 2px 2px 3px 2px var(--box-shadow-darker);
 `;
 
 type Modal = {
@@ -188,6 +228,19 @@ const Header: React.FunctionComponent = () => {
   const [isMiniOpen, setIsMiniOpen] = useState(false);
 
   const isLogin = useSelector((state: RootState) => state.login.isLogin);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const dark = localStorage.getItem('color-theme');
+    if (dark === 'dark') {
+      dispatch(darkHandler(true));
+    } else {
+      dispatch(darkHandler(false));
+    }
+  }, []);
+
+  const isDark = useSelector((state: RootState) => state.login.isDark);
 
   const handleModal =
     (key: string) => (e: React.MouseEvent<HTMLDivElement>) => {
@@ -222,7 +275,7 @@ const Header: React.FunctionComponent = () => {
               setIsMiniOpen(false);
             }}
           >
-            x
+            <FiX />
           </CloseMiniSearch>
           <MiniSearch type={'text'} />
         </MiniSearchContainer>
@@ -232,7 +285,11 @@ const Header: React.FunctionComponent = () => {
       <Wrapper>
         <Link to="/">
           <img
-            src={`${process.env.PUBLIC_URL}/vote-it_LOGO.png`}
+            src={
+              !isDark
+                ? `${process.env.PUBLIC_URL}/vote-it_LOGO.png`
+                : `${process.env.PUBLIC_URL}/LOGO2.png`
+            }
             alt="vote-it logo"
           />
         </Link>
@@ -250,15 +307,15 @@ const Header: React.FunctionComponent = () => {
             </SearchIcon>
             <Link to="/createVote">
               <CreateVoteBtn>
-                <FaPlus />
+                <FaPlus style={{ fontSize: '18px' }} />
               </CreateVoteBtn>
             </Link>
             <Notice onClick={handleNoticeClick}>
-              <FaBell />
+              <FaBell style={{ fontSize: '18px' }} />
             </Notice>
             {noticeOn ? <Feed setNoticeOn={setNoticeOn} /> : null}
             <Setting onClick={handleSettingClick}>
-              <FaUserCircle />
+              <FaUserCircle style={{ fontSize: '18px' }} />
             </Setting>
             {dropOn ? <DropDown dropOn={dropOn} setDropOn={setDropOn} /> : null}
           </SettingWrapper>
@@ -269,7 +326,7 @@ const Header: React.FunctionComponent = () => {
                 setIsMiniOpen(true);
               }}
             >
-              <FaSearch />
+              <FaSearch style={{ fontSize: '18px' }} />
             </SearchIcon>
             <TextButton onClick={handleModal('login')}>LOGIN</TextButton>
             <TextButton onClick={handleModal('signup')}>SIGNUP</TextButton>

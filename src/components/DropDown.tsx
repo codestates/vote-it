@@ -1,9 +1,9 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import { loginHandler } from '../modules/login';
-import { notify } from '../modules/notification';
+import { darkHandler, loginHandler } from '../modules/login';
+// import { notify } from '../modules/notification';
 
 const Canvas = styled.div`
   position: fixed;
@@ -16,19 +16,24 @@ const Canvas = styled.div`
 `;
 
 const Container = styled.div`
+  font-family: 'SUIT-Light';
   position: absolute;
-  top: 48px;
+  top: 67px;
   min-height: 184px;
   width: 160px;
+
   background-color: var(--menu-bg);
-  box-shadow: 0 0 3px 3px var(--box-shadow);
-  border-radius: 0 0 8px 8px;
+  box-shadow: -1px -1px 2px var(--box-shadow),
+    3px 3px 8px var(--box-shadow-darker);
+  border-radius: 10px;
+
   z-index: 999;
 `;
 
 const Divider = styled.div`
   margin: 4px 0;
   max-height: 0px;
+
   border-top: 1px solid var(--border-lighter);
 `;
 
@@ -61,7 +66,7 @@ interface IProps {
 }
 
 const DropDown: React.FunctionComponent<IProps> = ({ dropOn, setDropOn }) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const userColorTheme = localStorage.getItem('color-theme');
@@ -73,9 +78,11 @@ const DropDown: React.FunctionComponent<IProps> = ({ dropOn, setDropOn }) => {
         dispatch(loginHandler());
         localStorage.setItem('isLogin', 'false');
         localStorage.setItem('accessToken', '');
+        localStorage.setItem('color-theme', 'light');
         setDropOn(false);
-        dispatch(notify('로그아웃이 완료되었습니다.'));
-        navigate('/');
+        dispatch(darkHandler(false));
+        // dispatch(notify('로그아웃이 완료되었습니다.'));
+        window.location.href = '/';
       } else {
         setDropOn(false);
         localStorage.setItem('setting', key);
@@ -89,6 +96,7 @@ const DropDown: React.FunctionComponent<IProps> = ({ dropOn, setDropOn }) => {
 
   const handleDarkMode = () => {
     localStorage.setItem('color-theme', darkMode ? 'light' : 'dark');
+    dispatch(darkHandler(null));
     document.documentElement.setAttribute(
       'color-theme',
       darkMode ? 'light' : 'dark',

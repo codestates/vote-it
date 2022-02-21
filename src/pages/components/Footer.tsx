@@ -1,5 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../modules';
+import { useEffect } from 'react';
+import { darkHandler } from '../../modules/login';
 
 const FooterOuter = styled.div`
   width: 100%;
@@ -61,7 +65,6 @@ const Text = styled.a`
   font-size: 15px;
   text-decoration: none;
   color: var(--font);
-
 `;
 
 const TitleContainer = styled.div`
@@ -81,10 +84,29 @@ const TextContainer = styled.div`
 `;
 
 function Footer() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const dark = localStorage.getItem('color-theme');
+    if (dark === 'dark') {
+      dispatch(darkHandler(true));
+    } else {
+      dispatch(darkHandler(false));
+    }
+  }, []);
+
+  const isDark = useSelector((state: RootState) => state.login.isDark);
+
   return (
     <FooterOuter>
       <FooterContainer>
-        <Img src={`${process.env.PUBLIC_URL}/MYMY.png`} />
+        <Img
+          src={
+            isDark
+              ? `${process.env.PUBLIC_URL}/MYMY_dark.png`
+              : `${process.env.PUBLIC_URL}/MYMY.png`
+          }
+        />
         <Container>
           <TitleContainer>ABOUT US</TitleContainer>
           <TextContainer>
@@ -109,7 +131,7 @@ function Footer() {
               Kwak. M. W
             </Text>
             <Text href="https://github.com/yjlim0428" target="_blank">
-              Lim, Y, J
+              Lim. Y. J
             </Text>
           </TextContainer>
         </Container>
