@@ -1,9 +1,9 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { darkHandler, loginHandler } from '../modules/login';
-import { notify } from '../modules/notification';
+// import { notify } from '../modules/notification';
 
 const Canvas = styled.div`
   position: fixed;

@@ -8,6 +8,7 @@ interface IContainerProps {
 
 const Container = styled.div<IContainerProps>`
   grid-column: span 3;
+  /* position: fixed; */
   display: flex;
   flex-direction: column;
   /* flex: 1 0 256px; */
