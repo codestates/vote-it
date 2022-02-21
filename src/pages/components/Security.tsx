@@ -6,7 +6,8 @@ import { useDispatch } from 'react-redux';
 import { notify } from '../../modules/notification';
 
 const Container = styled.div`
-  grid-column: span 9;
+  margin-top: 25vh;
+  grid-column: 4 / span 8;
   display: flex;
   flex-direction: column;
   flex: 2 0 auto;
@@ -15,7 +16,7 @@ const Container = styled.div`
   /* border: 1px solid green; */
 
   @media only screen and (max-width: 768px) {
-    grid-column: span 11;
+    grid-column: 2 / span 11;
   }
 
   @media only screen and (max-width: 500px) {
@@ -36,8 +37,8 @@ const InputWrapper = styled.div`
   justify-content: center;
   margin: 20px;
   > div {
-    flex: 1 0 216px;
-    width: 150px;
+    /* flex: 1 0 216px; */
+    width: 120px;
     line-height: 30px;
     text-align: left;
     margin-right: 5px;
@@ -47,7 +48,7 @@ const InputWrapper = styled.div`
       outline: none;
       border-bottom: 3px solid var(--main-color);
     }
-    width: 250px;
+    width: 200px;
     border: none;
     border-bottom: 3px solid #919191;
     padding: 5px;
