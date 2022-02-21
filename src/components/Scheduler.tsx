@@ -10,12 +10,12 @@ const Container = styled.div`
 const PopupButton = styled.button`
   padding: 4px 8px;
   color: var(--main-color);
-  border: 1px solid #ccc;
+  border: 1px solid var(--border);
   border-radius: 4px;
-  background-color: white;
+  background-color: var(--button-bg);
   cursor: pointer;
   :hover {
-    background-color: #eee;
+    background-color: var(--button-bg-lighter);
   }
   svg {
     margin-right: 4px;
@@ -45,7 +45,7 @@ const View = styled.div`
   width: 256px;
   max-height: 600px;
   border-radius: 4px;
-  background-color: white;
+  background-color: var(--menu-bg);
   box-shadow: 0 4px 8px 0 rgb(0 0 0 / 15%), 0 0 4px 0 rgb(0 0 0 / 40%);
   overflow: hidden;
   z-index: 999;
@@ -74,8 +74,8 @@ const InputWrapper = styled.div`
 const SuggestionWrapper = styled.div`
   flex-shrink: 0;
   padding: 4px 0;
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
+  border-top: 1px solid var(--border-lighter);
+  border-bottom: 1px solid var(--border-lightest);
 `;
 
 const DatePickerWrapper = styled.div`
@@ -91,25 +91,32 @@ const TimeSelectorWrapper = styled.div`
   justify-content: space-between;
   flex-shrink: 0;
   padding: 8px;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid var(--border-lightest);
+
   input {
     font-size: 14px;
     width: 80%;
     padding: 4px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-lighter);
     border-radius: 4px;
     outline: none;
     cursor: pointer;
+
     :focus {
-      outline: 1px solid #eee;
+      outline: 1px solid var(--border-lightest);
       transition: all 0.5s;
+    }
+
+    ::-webkit-calendar-picker-indicator {
+      cursor: grab;
+      filter: invert(0.5);
     }
   }
   button {
     font-size: 14px;
+    background-color: transparent;
     :hover {
       color: #808080;
-      background-color: transparent;
     }
   }
   div {

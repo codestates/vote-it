@@ -12,6 +12,7 @@ const Canvas = styled.div`
   min-height: 100vh;
   width: 100vw;
   /* background-color: #ccc; */
+  opacity: 0;
 `;
 
 const Container = styled.div`
@@ -20,17 +21,21 @@ const Container = styled.div`
   top: 67px;
   min-height: 184px;
   width: 160px;
-  background-color: white;
+
+  background-color: var(--menu-bg);
   box-shadow: -1px -1px 2px var(--box-shadow),
     3px 3px 8px var(--box-shadow-darker);
   border-radius: 10px;
+
   z-index: 999;
 `;
 
 const Divider = styled.div`
   margin: 4px 0;
   max-height: 0px;
-  border-top: 1px solid #ddd;
+
+  border-top: 1px solid var(--border-lighter);
+
 `;
 
 const Button = styled.div`
@@ -40,6 +45,14 @@ const Button = styled.div`
   :hover {
     color: white;
     background-color: var(--main-color);
+    transition: all 0.3s;
+  }
+`;
+
+const InputWrapper = styled.div`
+  cursor: pointer;
+  :hover {
+    color: #808080;
   }
 `;
 

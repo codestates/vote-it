@@ -9,18 +9,26 @@
   --button-bg-lighter: #eee;
   --font: black;
   --font-lighter: #222;
+  --font-pale: #eee;
+  --border: #808080;
+  --border-lighter: #bbb;
+  --border-lightest: #ddd;
 }
 :root[color-theme='dark'] {
   --bg: #0d1117;
   --menu-bg: #161b22;
   --box-bg: #161b22;
   --box-bg-lighter: #2e343b;
-  --box-shadow: #1a1d20;
-  --box-shadow-darker: #171c20;
+  --box-shadow: #222;
+  --box-shadow-darker: #000;
   --button-bg: #111;
   --button-bg-lighter: #333;
   --font: white;
   --font-lighter: #ddd;
+  --font-pale: #333;
+  --border: #808080;
+  --border-lighter: #444;
+  --border-lightest: #222;
 }
 
 :root {
@@ -30,13 +38,15 @@
   --modal-height: 384px;
   --modal-bg: rgb(255, 255, 255);
   --modal-border: 1px solid rgba(175, 175, 175, 0.4);
-  --border: #808080;
-  --border-lighter: #bbb;
-  --border-lightest: #ddd;
 
+  color: var(--font);
+  background-color: var(--bg);
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+
+  /* transition-duration: 0.5s;
+  transition-property: all; */
 }
 
 * {
@@ -45,7 +55,7 @@
   border-collapse: collapse;
   margin: 0 0 1px 0;
   padding: 0px;
-  /* color: #000; */
+  /* color: black; */
 }
 
 @keyframes toast-in-right {
@@ -111,11 +121,27 @@ button {
   font-family: inherit;
   text-decoration: none;
   cursor: pointer;
-  background-color: transparent;
+  color: var(--font);
+  background-color: var(--button-bg);
   border: none;
   margin: 0;
 }
 
 button:hover {
-  background-color: #eee;
+  background-color: var(--button-bg-lighter);
+}
+
+input,
+textarea {
+  color: inherit;
+  background-color: inherit;
+  border: 1px solid var(--border);
+  outline: none;
+}
+
+input:focus,
+textarea:focus {
+  border-color: var(--border-lighter);
+  transition-duration: 0.3s;
+  transition-property: border-color;
 }

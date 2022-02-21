@@ -7,7 +7,7 @@ import '../fonts/font.css';
 const Outer = styled.div`
   font-family: 'EliceDigitalBaeum_Regular';
   padding-top: 48px;
-  background-color: #fdfdfd;
+  background-color: var(--bg);
   display: flex;
   width: 100%;
   /* flex-direction: column; */
@@ -18,35 +18,39 @@ const Container = styled.div`
   width: 1200px;
   display: grid;
   height: 100vh;
-  /* grid-template-columns: repeat(12, 1fr);
+  grid-template-columns: repeat(12, 1fr);
   column-gap: 24px;
-  /* align-items: center; */
-  /* @media only screen and (max-width: 1200px) {
+  align-items: center;
+  @media only screen and (max-width: 1200px) {
     width: 768px;
   }
   @media only screen and (max-width: 768px) {
+    width: 500px;
+  }
+  @media only screen and (max-width: 500px) {
     width: 360px;
-    column-gap: 16px;
     grid-template-columns: repeat(6, 1fr);
-  } */
+    column-gap: 16px;
+  }
 `;
 
 const SubBox = styled.div`
-  /* grid-column: span 6; */
+  grid-column: 2 / span 10;
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* @media only screen and (max-width: 768px) {
+  @media only screen and (max-width: 500px) {
     grid-column: span 6;
-  } */
+  }
 `;
 
 const Title = styled.textarea`
   &:focus {
     outline: none;
   }
+  box-shadow: -2px -2px 4px var(--box-shadow),
+    3px 3px 6px var(--box-shadow-darker);
   font-family: 'SUIT-Light';
-  box-shadow: -2px -2px 4px #f8f8f8, 3px 3px 6px rgb(184, 184, 184);
   border-radius: 20px;
   font-size: 18px;
   padding: 20px;
@@ -57,7 +61,7 @@ const Title = styled.textarea`
   resize: none;
 `;
 const OptionContainer = styled.div`
-  overflow-y: scroll;
+  overflow-y: auto;
   margin-top: 30px;
   width: 100%;
   display: flex;
@@ -67,13 +71,14 @@ const OptionContainer = styled.div`
   padding: 10px;
 `;
 const Option = styled.div`
-  box-shadow: -2px -2px 4px #f8f8f8, 3px 3px 6px rgb(184, 184, 184);
+  box-shadow: -2px -2px 4px var(--box-shadow),
+    3px 3px 6px var(--box-shadow-darker);
   display: flex;
   margin: 0 auto;
 
   margin-top: 10px;
   width: 95%;
-  background-color: white;
+  background-color: var(--box-bg);
   border-radius: 15px;
   padding: 5px;
 `;
@@ -105,7 +110,7 @@ const PlusOptionBtn = styled.button`
   width: 50px;
   min-height: 40px;
   border-radius: 20px;
-  background-color: #5d6dbe;
+  background-color: var(--main-color);
 `;
 const CheckboxContainer = styled.div`
   display: flex;
@@ -136,9 +141,14 @@ const CreateBtn = styled.button`
   margin-top: 30px;
   border-radius: 15px;
   color: white;
-  box-shadow: -2px -2px 4px #f8f8f8, 3px 3px 6px rgb(184, 184, 184);
-  background-color: #6481d3;
+  box-shadow: -2px -2px 4px var(--box-shadow),
+    3px 3px 6px var(--box-shadow-darker);
+  background-color: var(--main-color);
+  :hover {
+    background-color: var(--main-color-tint);
+  }
 `;
+
 function CreateVote() {
   const [calendarValue, setCalendarValue] = useState('');
   const [title, setTitle] = useState('');
@@ -230,7 +240,7 @@ function CreateVote() {
             onChange={dateSelect}
             value={calendarValue}
           ></CalendarBtn> */}
-            <Scheduler translate={'0, -700px'} />
+            <Scheduler translate={'0, -650px'} />
           </CheckboxContainer>
           <CreateBtn>투표만들기</CreateBtn>
         </SubBox>

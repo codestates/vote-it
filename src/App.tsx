@@ -46,6 +46,7 @@ function App() {
 
               <Route path="/setting" element={<Setting />}></Route>
             </Routes>
+            <NofiticationCenter/>
             <Footer />
           </>
         )}

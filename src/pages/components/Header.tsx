@@ -35,6 +35,7 @@ const Wrapper = styled.div`
   grid-gap: 24px;
   padding: 8px;
   img {
+    /* color: var(--font); */
     grid-column: 1 / span 1;
     width: 80px;
     height: 32px;
@@ -66,11 +67,15 @@ const Search = styled.input`
   /* flex: 1 0 auto; */
   width: 70%;
   height: 24px;
+
   padding: 4px;
   padding-left: 15px;
   border-radius: 10px;
   border: none;
   box-shadow: inset 2px 2px 3px 2px var(--box-shadow-darker);
+
+  background-color: var(--box-bg-lighter);
+
   @media only screen and (max-width: 768px) {
     width: 100%;
   }
@@ -81,6 +86,12 @@ const SettingWrapper = styled.div`
   /* flex: 1 0 auto; */
   grid-column: 11 / span 2;
   justify-content: space-between;
+  svg {
+    transform: translate(0, 6px);
+    :hover {
+      color: var(--font-lighter);
+    }
+  }
   div {
     height: 32px;
     line-height: 32px;
@@ -135,11 +146,15 @@ const TextButton = styled.div`
 `;
 
 const CreateVoteBtn = styled.div`
+
   &:hover {
     color: var(--main-color);
   }
-  color: black;
+
   margin-top: 10px;
+
+  color: var(--font);
+
 `;
 
 const LoginWrapper = styled.div`
@@ -275,7 +290,10 @@ const Header: React.FunctionComponent = () => {
             </SearchIcon>
             <Link to="/createVote">
               <CreateVoteBtn>
+
                 <FaPlus style={{ fontSize: '18px' }} />
+
+
               </CreateVoteBtn>
             </Link>
             <Notice onClick={handleNoticeClick}>
