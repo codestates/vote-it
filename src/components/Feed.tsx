@@ -26,8 +26,8 @@ const View = styled.div`
   min-height: 256px;
   max-height: 400px;
   border-radius: 4px;
-  background-color: white;
-  box-shadow: 0 4px 8px 0 rgb(0 0 0 / 15%), 0 0 4px 0 rgb(0 0 0 / 40%);
+  background-color: var(--box-bg);
+  box-shadow: 0 4px 8px 0 var(--box-shadow), 0 0 4px 0 var(--box-shadow-darker);
   overflow-y: auto;
   z-index: 999;
 `;
@@ -44,7 +44,7 @@ const FeedWrapper = styled.div`
   /* word-break: normal; */
 
   :hover {
-    background-color: #eee;
+    background-color: var(--box-bg-lighter);
   }
   .feed-text {
     /* flex: auto; */

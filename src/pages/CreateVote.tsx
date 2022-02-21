@@ -5,7 +5,7 @@ import { Scheduler } from '../components';
 
 const Container = styled.div`
   padding-top: 48px;
-  background-color: #fdfdfd;
+  background-color: var(--bg);
   display: flex;
 `;
 const CenterContainer = styled.div`
@@ -21,7 +21,8 @@ const Title = styled.textarea`
   &:focus {
     outline: none;
   }
-  box-shadow: -2px -2px 4px #f8f8f8, 3px 3px 6px rgb(184, 184, 184);
+  box-shadow: -2px -2px 4px var(--box-shadow),
+    3px 3px 6px var(--box-shadow-darker);
   border-radius: 20px;
   font-size: 18px;
   padding: 20px;
@@ -33,7 +34,7 @@ const Title = styled.textarea`
   resize: none;
 `;
 const OptionContainer = styled.div`
-  overflow-y: scroll;
+  overflow-y: auto;
   margin-top: 30px;
   width: 100%;
   display: flex;
@@ -42,13 +43,14 @@ const OptionContainer = styled.div`
   padding: 10px;
 `;
 const Option = styled.div`
-  box-shadow: -2px -2px 4px #f8f8f8, 3px 3px 6px rgb(184, 184, 184);
+  box-shadow: -2px -2px 4px var(--box-shadow),
+    3px 3px 6px var(--box-shadow-darker);
   display: flex;
   margin: 0 auto;
 
   margin-top: 10px;
   width: 95%;
-  background-color: white;
+  background-color: var(--box-bg);
   border-radius: 15px;
   padding: 5px;
 `;
@@ -79,7 +81,7 @@ const PlusOptionBtn = styled.button`
   width: 50px;
   min-height: 40px;
   border-radius: 20px;
-  background-color: #5d6dbe;
+  background-color: var(--main-color);
 `;
 const CheckboxContainer = styled.div`
   flex-direction: column;
@@ -104,9 +106,14 @@ const CreateBtn = styled.button`
   height: 35px;
   border-radius: 15px;
   color: white;
-  box-shadow: -2px -2px 4px #f8f8f8, 3px 3px 6px rgb(184, 184, 184);
-  background-color: #6481d3;
+  box-shadow: -2px -2px 4px var(--box-shadow),
+    3px 3px 6px var(--box-shadow-darker);
+  background-color: var(--main-color);
+  :hover {
+    background-color: var(--main-color-tint);
+  }
 `;
+
 function CreateVote() {
   const [calendarValue, setCalendarValue] = useState('');
   const [title, setTitle] = useState('');
@@ -158,11 +165,8 @@ function CreateVote() {
                 value={option}
                 onChange={onChangeOption}
               />
-              <PlusOptionBtn
-                style={{ marginTop: '5px', backgroundColor: 'white' }}
-                onClick={PlusOptionInput}
-              >
-                <FaPlus style={{ color: '#5D6DBE' }} />
+              <PlusOptionBtn onClick={PlusOptionInput}>
+                <FaPlus />
               </PlusOptionBtn>
             </Option>
           ) : (

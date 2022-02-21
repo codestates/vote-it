@@ -8,6 +8,7 @@ const ButtonContainer = styled.button`
   align-items: center;
   padding: 4px 12px;
   line-height: 24px;
+  background-color: var(--box-bg);
   outline: none;
   width: 100%;
 

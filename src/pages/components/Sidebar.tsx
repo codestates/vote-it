@@ -17,7 +17,8 @@ const Container = styled.div<IContainerProps>`
   margin: 16px;
   border-radius: 8px;
   /* border: 1px solid seagreen; */
-  background-color: #f3f3f3;
+
+  background-color: var(--menu-bg);
 
   @media only screen and (max-width: 768px) {
     grid-column: span 1;

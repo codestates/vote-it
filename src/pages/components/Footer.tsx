@@ -4,16 +4,17 @@ import styled from 'styled-components';
 const FooterOuter = styled.div`
   width: 100%;
   height: 250px;
+  background-color: var(--bg);
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: inset 0 8px 10px -6px rgb(212, 212, 212);
+  box-shadow: inset 0 8px 10px -6px var(--box-shadow);
 `;
 
 const FooterContainer = styled.div`
   height: 200px;
   width: 1200px;
-  background-color: #fff;
+  background-color: var(--bg);
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   column-gap: 24px;
@@ -53,13 +54,13 @@ const Container = styled.div`
 
 const Text = styled.a`
   &:hover {
-    color: #5d6dbe;
+    color: var(--main-color-tint);
     font-size: 16px;
   }
   font-family: 'EliceDigitalBaeum_Regular';
   font-size: 15px;
   text-decoration: none;
-  color: black;
+  color: var(--font);
 `;
 
 const TitleContainer = styled.div`
@@ -69,7 +70,7 @@ const TitleContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  color: #4a5aac;
+  color: var(--main-color);
 `;
 const TextContainer = styled.div`
   flex: 7;

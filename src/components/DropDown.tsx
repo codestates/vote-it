@@ -18,8 +18,8 @@ const Container = styled.div`
   top: 48px;
   min-height: 184px;
   width: 160px;
-  background-color: white;
-  box-shadow: 0 0 3px 0 gray;
+  background-color: var(--menu-bg);
+  box-shadow: 0 0 3px 3px var(--box-shadow);
   border-radius: 0 0 8px 8px;
   z-index: 999;
 `;
@@ -27,7 +27,7 @@ const Container = styled.div`
 const Divider = styled.div`
   margin: 4px 0;
   max-height: 0px;
-  border-top: 1px solid gray;
+  border-top: 1px solid var(--border-lighter);
 `;
 
 const Button = styled.div`
@@ -37,6 +37,7 @@ const Button = styled.div`
   :hover {
     color: white;
     background-color: var(--main-color);
+    transition: all 0.3s;
   }
 `;
 
