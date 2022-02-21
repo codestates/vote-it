@@ -34,6 +34,7 @@ const Wrapper = styled.div`
   padding: 8px;
 
   img {
+    /* color: var(--font); */
     grid-column: 1 / span 1;
     width: 80px;
     height: 32px;
@@ -76,6 +77,12 @@ const SettingWrapper = styled.div`
   /* flex: 1 0 auto; */
   grid-column: 11 / span 2;
   justify-content: space-between;
+  svg {
+    transform: translate(0, 6px);
+    :hover {
+      color: var(--font-lighter);
+    }
+  }
   div {
     height: 32px;
     line-height: 32px;
@@ -111,7 +118,9 @@ const TextButton = styled.div`
   cursor: pointer;
 `;
 
-const CreateVoteBtn = styled.div``;
+const CreateVoteBtn = styled.div`
+  color: var(--font);
+`;
 
 const LoginWrapper = styled.div`
   display: flex;
@@ -241,7 +250,7 @@ const Header: React.FunctionComponent = () => {
             </SearchIcon>
             <Link to="/createVote">
               <CreateVoteBtn>
-                <FaPlus style={{ color: 'black' }} />
+                <FaPlus />
               </CreateVoteBtn>
             </Link>
             <Notice onClick={handleNoticeClick}>

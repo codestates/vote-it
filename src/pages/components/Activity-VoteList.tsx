@@ -12,8 +12,10 @@ const Container = styled.div`
 
 const ChildWrapper = styled.div<{ sub: boolean }>`
   display: flex;
-  ${(props) => (props.sub ? 'border-bottom: 1px solid #ddd;' : '')}
-  ${(props) => (props.sub ? ':hover{ background-color: #eee; }' : '')}
+  ${(props) =>
+    props.sub ? 'border-bottom: 1px solid var(--border-lighter);' : ''}
+  ${(props) =>
+    props.sub ? ':hover{ background-color: var(--box-bg-lighter) }' : ''}
     /* .center {
     text-align: center;
   } */ .votelist-id {
@@ -27,7 +29,7 @@ const ChildWrapper = styled.div<{ sub: boolean }>`
     text-align: left;
     width: 100%;
     a {
-      color: black;
+      color: var(--font);
       text-decoration: none;
       :hover {
         text-decoration: underline;

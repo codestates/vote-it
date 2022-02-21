@@ -6,6 +6,7 @@ import { FaBars } from 'react-icons/fa';
 const Outer = styled.div`
   padding-top: 48px;
   width: 100%;
+  background-color: var(--bg);
   height: 100vh;
   display: flex;
   justify-content: center;
