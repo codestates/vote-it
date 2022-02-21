@@ -1,5 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../modules';
 
 const FooterOuter = styled.div`
   width: 100%;
@@ -80,17 +82,14 @@ const TextContainer = styled.div`
 `;
 
 function Footer() {
-  const userColorTheme = localStorage.getItem('color-theme');
-  // useEffect(() => {
-  //   const
-  // }, [userColorTheme])
+  const isDark = useSelector((state: RootState) => state.login.isDark);
 
   return (
     <FooterOuter>
       <FooterContainer>
         <Img
           src={
-            userColorTheme === 'dark'
+            isDark
               ? `${process.env.PUBLIC_URL}/MYMY_dark.png`
               : `${process.env.PUBLIC_URL}/MYMY.png`
           }
