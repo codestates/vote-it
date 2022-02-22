@@ -1,7 +1,14 @@
-import React, { Dispatch, SetStateAction, useRef } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import styled from 'styled-components';
 import { copyClipboard } from '../functions';
-import { FaRegCopy } from 'react-icons/fa';
+import { FaRegCopy, FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 import { share2info } from '../lib/share2info';
 import { useDispatch } from 'react-redux';
 import { notify } from '../modules/notification';
@@ -77,6 +84,10 @@ const View = styled.div`
           display: none;
         }
       }
+      .arrows {
+        position: relative;
+        width: 0;
+      }
       img {
         width: 60px;
       }
@@ -141,6 +152,28 @@ const ShareToSNS = styled.div`
   }
 `;
 
+const SlideButton = styled.div<{ right: boolean }>`
+  user-select: none;
+  position: absolute;
+  top: 40px;
+  left: ${(props) => (props.right ? '346px' : '-10px')};
+  font-size: 22px;
+  line-height: 32px;
+  width: 32px;
+  height: 32px;
+  background-color: var(--button-bg);
+  border-radius: 100px;
+  cursor: pointer;
+  svg {
+    transform: ${(props) =>
+      props.right ? 'translate(1px, 1px)' : 'translate(-1px, 1px)'};
+    margin-top: 4px;
+  }
+  :hover {
+    background-color: var(--button-bg-lighter);
+  }
+`;
+
 interface ShareModal {
   isOn: boolean;
   isShow: boolean;
@@ -153,7 +186,9 @@ interface Props {
 
 export const Share = ({ shareModal, setShareModal }: Props) => {
   const copyUrlRef = useRef(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const urlValue = window.location.href;
+  const [scrollBtn, setScrollBtn] = useState({ left: false, right: true });
   const dispatch = useDispatch();
   const copyUrl = () => {
     copyClipboard(
@@ -179,6 +214,33 @@ export const Share = ({ shareModal, setShareModal }: Props) => {
     (idx: number) => (e: React.MouseEvent<HTMLDivElement>) => {
       console.log(idx + '번');
     };
+
+  const innerWidth = scrollRef.current?.clientWidth || 0;
+  const scrollWidth = scrollRef.current?.scrollWidth || 0;
+  const endOfScroll = scrollWidth - innerWidth;
+  const handleScroll = (key: number) => () => {
+    const scrollLeft = scrollRef.current?.scrollLeft || 0;
+    scrollRef.current?.scrollTo({
+      top: 0,
+      left: scrollLeft + 300 * key,
+      behavior: 'smooth',
+    });
+  };
+  const handleScrollBtn = () => {
+    const scrollLeft = scrollRef.current?.scrollLeft || 0;
+    console.log(scrollLeft);
+    if (scrollLeft !== 0) setScrollBtn({ ...scrollBtn, left: true });
+    else setScrollBtn({ ...scrollBtn, left: false });
+    if (scrollLeft >= endOfScroll) setScrollBtn({ ...scrollBtn, right: false });
+    else setScrollBtn({ ...scrollBtn, right: true });
+  };
+
+  // useEffect(() => {
+  //   return () => {
+  //     handleScrollBtn();
+  //   };
+  // },[handleScroll]);
+
   return (
     <>
       <Canvas
@@ -193,7 +255,15 @@ export const Share = ({ shareModal, setShareModal }: Props) => {
           </div>
         </div>
         <div className="wrapper first">
-          <div className="share2sns">
+          <div className="arrows">
+            <SlideButton onClick={handleScroll(-1)} right={false}>
+              <FaAngleLeft />
+            </SlideButton>
+            <SlideButton onClick={handleScroll(1)} right={true}>
+              <FaAngleRight />
+            </SlideButton>
+          </div>
+          <div ref={scrollRef} className="share2sns">
             {share2info.map((v, i) => {
               return (
                 <ShareToSNS onClick={handleShare2sns(i)}>
