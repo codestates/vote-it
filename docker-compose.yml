@@ -9,7 +9,7 @@ services:
       MARIADB_USER: 'devuser'
       MARIADB_PASSWORD: 'devuser'
       MARIADB_DATABASE: 'vote_it'
-      MARIADB_RANDOM_ROOT_PASSWORD: true
+      MARIADB_RANDOM_ROOT_PASSWORD: 1
     networks:
       - vote_it
 
