@@ -223,9 +223,8 @@ const SignupModal: React.FunctionComponent<IProps> = ({
 
   const SignupHandler = () => {
     handleInputValue();
-    console.log(inputValue);
     apiAxios
-      .post('auth/signup', inputValue)
+      .post('auth/signup', { email, nickname: name, password })
       .then((res) => {
         console.log(res.data);
         // window.location.href = './';
