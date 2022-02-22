@@ -11,15 +11,19 @@ import { EntityNotFoundError } from 'typeorm';
 export class EntityNotFoundErrorFilter
   implements ExceptionFilter<EntityNotFoundError>
 {
-  private static readonly errorMessages: Record<string, string> = {
-    User: '존재하지 않는 유저입니다.',
-    Poll: '존재하지 않는 투표입니다.',
+  private static readonly koreanEntitiesName: Record<string, string> = {
+    User: '유저',
+    Poll: '투표',
   };
 
   catch(exception: EntityNotFoundError, host: ArgumentsHost) {
     const response = host.switchToHttp().getResponse<Response>();
     const errorEntity = exception.message.split('"')[1];
-    const errorMessage = EntityNotFoundErrorFilter.errorMessages[errorEntity];
-    response.status(HttpStatus.NOT_FOUND).json({ message: errorMessage });
+    const koreanEntityName =
+      EntityNotFoundErrorFilter.koreanEntitiesName[errorEntity];
+
+    response
+      .status(HttpStatus.NOT_FOUND)
+      .json({ message: `존재하지 않는 ${koreanEntityName}입니다.` });
   }
 }
