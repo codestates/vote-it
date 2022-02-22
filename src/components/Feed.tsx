@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import '../fonts/font.css';
 const Canvas = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   min-height: 100vh;
   width: 100vw;
   /* background-color: aliceblue; */
+  opacity: 0;
 `;
 
 const Container = styled.div`
@@ -22,7 +23,7 @@ const View = styled.div`
   font-family: 'SUIT-Light';
   display: flex;
   flex-direction: column;
-  position: relative;
+  position: absolute;
   padding: 8px;
   width: 256px;
   min-height: 256px;

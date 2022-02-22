@@ -33,7 +33,7 @@ const VoteContainer = styled.div`
 `;
 
 const SubBox = styled.div`
-  font-family: 'SUIT-Medium';
+  font-family: 'IBMPlexSansKR-Light';
   font-size: 35px;
   font-weight: bold;
   grid-column: span 12;
