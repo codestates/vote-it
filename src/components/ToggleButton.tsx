@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import { Component } from 'react';
 import styled from 'styled-components';
 
@@ -31,7 +31,7 @@ const Circle = styled.button<{ isOn: boolean }>`
 
 interface Props {
   darkMode: boolean;
-  handleDarkMode: React.MouseEventHandler<HTMLButtonElement | HTMLDivElement>;
+  handleDarkMode: () => void;
 }
 
 interface State {}
@@ -44,15 +44,18 @@ export class Toggle extends Component<Props, State> {
 
   //   }
 
-  handleToggle = () => {
-    this.setState({ darkMode: !this.props.darkMode });
-    //! darkMode 켜기/끄기 코드
-  };
+  // handleToggle = () => {
+  //   this.setState({ darkMode: !this.props.darkMode });
+  //   //! darkMode 켜기/끄기 코드
+  // };
 
   render() {
     return (
       <Container>
-        <Base onClick={this.props.handleDarkMode}>
+        <Base
+          onClick={this.props.handleDarkMode}
+          style={this.props.darkMode ? { background: 'blue' } : {}}
+        >
           <Circle
             onClick={this.props.handleDarkMode}
             isOn={this.props.darkMode}
