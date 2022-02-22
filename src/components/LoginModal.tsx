@@ -159,6 +159,11 @@ const LoginModal: React.FunctionComponent<IProps> = ({
     (key: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
       setInputValue({ ...inputValue, [key]: e.target.value });
     };
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleButtonClick();
+    }
+  };
 
   const handleButtonClick = () => {
     const { email, password } = inputValue;
@@ -197,7 +202,11 @@ const LoginModal: React.FunctionComponent<IProps> = ({
         onClick={(e) => e.preventDefault()}
       >
         <Wrapper>
-          <div className="exit-wrapper" onClick={handleModalOff}>
+          <div
+            className="exit-wrapper"
+            style={{ fontSize: '15px' }}
+            onClick={handleModalOff}
+          >
             &times;
           </div>
           <InputWrapper>
@@ -212,6 +221,7 @@ const LoginModal: React.FunctionComponent<IProps> = ({
               type="password"
               placeholder="Password"
               onChange={handleInputValue('password')}
+              onKeyUp={handleKeyPress}
             />
           </InputWrapper>
           <ButtonWrapper>
