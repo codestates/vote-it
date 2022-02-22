@@ -44,7 +44,7 @@ const CommentBtn = styled.div`
   &:hover {
     background: #6b7ac5;
   }
-  font-family: 'SUIT-Medium';
+  font-family: 'IBMPlexSansKR-Light';
   width: 100px;
   height: 50px;
   cursor: pointer;

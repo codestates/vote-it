@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const OptionContainer = styled.div`
   grid-column: span 12;
-  box-shadow: -2px -2px 4px #ececec, 3px 3px 8px rgb(184, 184, 184);
+  box-shadow: var(--option-shadow);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,7 +12,8 @@ const OptionContainer = styled.div`
   border-radius: 20px;
   cursor: pointer;
   &:hover {
-    background: #e9e9e9;
+    color: black;
+    background: var(--option-hover);
   }
 `;
 

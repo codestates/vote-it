@@ -4,7 +4,7 @@ import { Option } from '../components/Option';
 import '../fonts/font.css';
 import Bubbles from '../components/Bubbles';
 import { Comments } from '../components/Comments';
-import { FaShareAlt, FaRegShareSquare, FaShare } from 'react-icons/fa';
+// import { FaShareAlt, FaRegShareSquare, FaShare } from 'react-icons/fa';
 import { Share } from '../components';
 import { getPostById } from '../lib/postList';
 import { useLocation } from 'react-router-dom';
@@ -37,7 +37,7 @@ const VoteContainer = styled.div`
 `;
 
 const SubBox = styled.div`
-  font-family: 'SUIT-Medium';
+  font-family: 'IBMPlexSansKR-Light';
   font-size: 35px;
   font-weight: bold;
   grid-column: span 12;
@@ -65,6 +65,7 @@ const UserNameBox = styled.div`
 `;
 
 const ShareButton = styled.button`
+  grid-column: span 12;
   padding: 4px;
   white-space: pre;
   width: fit-content;
@@ -73,6 +74,9 @@ const ShareButton = styled.button`
   /* svg {
     transform: translate(0, 2px);
   } */
+  @media only screen and (max-width: 500px) {
+    grid-column: span 6;
+  }
 `;
 
 const OptionsBox = styled.div`
