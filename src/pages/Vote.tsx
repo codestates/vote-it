@@ -6,6 +6,8 @@ import Bubbles from '../components/Bubbles';
 import { Comments } from '../components/Comments';
 import { FaShareAlt, FaRegShareSquare, FaShare } from 'react-icons/fa';
 import { Share } from '../components';
+import { getPostById } from '../lib/postList';
+import { useLocation } from 'react-router-dom';
 
 const VoteOuter = styled.div`
   padding-top: 48px;
@@ -103,6 +105,10 @@ interface Icomments {
   parrentId?: number;
 }
 
+// interface Props {
+//   id: number;
+// }
+
 export const Vote = () => {
   const [voteSub, setVoteSub] = useState('');
   const [username, setUsername] = useState('');
@@ -111,7 +117,11 @@ export const Vote = () => {
   const [commentsList, setCommentsList] = useState<Icomments[]>([]);
   const [shareModal, setShareModal] = useState({ isOn: false, isShow: false });
 
+  const location = useLocation().state as number;
+  const id = location;
+
   useEffect(() => {
+    const post = getPostById(id);
     setOptions([
       { id: 0, content: 'option1' },
       { id: 1, content: 'option2' },
@@ -120,8 +130,8 @@ export const Vote = () => {
       { id: 4, content: 'option5' },
       { id: 5, content: 'option6' },
     ]);
-    setVoteSub('코테 언어 선호도 투표');
-    setUsername('kimcoding');
+    setVoteSub(post.subject);
+    setUsername(post.author);
     setCommentsList([
       { id: 0, content: 'comment1', username: 'user1' },
       { id: 1, content: 'comment2', username: 'user2' },

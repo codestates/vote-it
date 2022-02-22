@@ -146,11 +146,6 @@ const SignupModal: React.FunctionComponent<IProps> = ({
   const [isPass, setIsPass] = useState(true);
   const [checkPass, setCheckPass] = useState('');
   const [isCheck, setIsCheck] = useState(true);
-  const [inputValue, setInputValue] = useState({
-    email: '',
-    password: '',
-    nickname: '',
-  });
 
   const dispatch = useDispatch();
 
@@ -165,14 +160,6 @@ const SignupModal: React.FunctionComponent<IProps> = ({
         setModalClass(0);
       }
     };
-
-  // const handleInputValue =
-  //   (key: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
-  //     setInputValue({ ...inputValue, [key]: e.target.value });
-  //   };
-  const handleInputValue = () => {
-    setInputValue({ email: email, password: password, nickname: name });
-  };
 
   const EmailHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -222,10 +209,8 @@ const SignupModal: React.FunctionComponent<IProps> = ({
   };
 
   const SignupHandler = () => {
-    handleInputValue();
-    console.log(inputValue);
     apiAxios
-      .post('auth/signup', inputValue)
+      .post('auth/signup', { email, nickname: name, password })
       .then((res) => {
         console.log(res.data);
         // window.location.href = './';
@@ -248,7 +233,11 @@ const SignupModal: React.FunctionComponent<IProps> = ({
         onClick={(e) => e.preventDefault()}
       >
         <Wrapper>
-          <div className="exit-wrapper" onClick={handleModalOff}>
+          <div
+            className="exit-wrapper"
+            style={{ fontSize: '15px' }}
+            onClick={handleModalOff}
+          >
             &times;
           </div>
           <InputWrapper>

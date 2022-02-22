@@ -1,21 +1,18 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../modules';
 import {
   LoginModal,
   SignupModal,
   DropDown,
   Feed,
-  Toggle,
-
   // Scheduler,
 } from '../../components';
 import { FaPlus, FaUserCircle, FaBell, FaSearch } from 'react-icons/fa';
 import { FiX } from 'react-icons/fi';
-import { useEffect } from 'react';
-import { darkHandler } from '../../modules/login';
+
 const Container = styled.div`
   position: fixed;
   width: 100%;
@@ -37,6 +34,7 @@ const Wrapper = styled.div`
   width: 1200px;
   grid-gap: 24px;
   padding: 8px;
+  align-items: center;
   img {
     /* color: var(--font); */
 
@@ -112,7 +110,8 @@ const SearchIcon = styled.div`
   }
   display: none;
   cursor: pointer;
-  margin-top: 10px;
+  /* margin-top: 10px; */
+
   @media only screen and (max-width: 500px) {
     display: block;
   }
@@ -124,7 +123,7 @@ const Notice = styled.div`
   }
   /* flex: 1 0 auto; */
   cursor: pointer;
-  margin-top: 10px;
+  /* margin-top: 10px; */
 `;
 
 const Setting = styled.div`
@@ -134,7 +133,7 @@ const Setting = styled.div`
   justify-content: center;
   /* flex: 1 0 auto; */
   cursor: pointer;
-  margin-top: 10px;
+  /* margin-top: 10px; */
 `;
 
 const TextButton = styled.div`
@@ -143,7 +142,7 @@ const TextButton = styled.div`
     color: var(--main-color);
   }
   font-family: 'SUIT-Medium';
-  margin-top: 5px;
+  /* margin-top: 5px; */
   margin-right: 5px;
   font-size: 15px;
   cursor: pointer;
@@ -154,7 +153,7 @@ const CreateVoteBtn = styled.div`
     color: var(--main-color);
   }
 
-  margin-top: 10px;
+  /* margin-top: 10px; */
 
   color: var(--font);
 `;
@@ -187,14 +186,14 @@ const MiniSearchContainer = styled.div`
   left: 0;
   background-color: var(--box-bg);
   display: flex;
+  justify-content: center;
   align-items: center;
 `;
 
 const CloseMiniSearch = styled.div`
   width: 50px;
-  height: 48px;
+  height: 100%;
   display: flex;
-
   justify-content: center;
   align-items: center;
   cursor: pointer;
