@@ -6,12 +6,10 @@ import CreateVote from './pages/CreateVote';
 import Footer from './pages/components/Footer';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { loginHandler } from './modules/login';
+import { darkHandler, loginHandler } from './modules/login';
 import NofiticationCenter from './components/NotificationCenter';
 // import { RootState } from './modules';
 // export type LoginProps = boolean;
-
-const userColorTheme = localStorage.getItem('color-theme');
 
 function App() {
   const dispatch = useDispatch();
@@ -21,12 +19,18 @@ function App() {
 
   useEffect(() => {
     const localLogin = localStorage.getItem('isLogin');
+    const userColorTheme = localStorage.getItem('color-theme');
     document.documentElement.setAttribute(
       'color-theme',
       userColorTheme || 'light',
     );
     if (localLogin === 'true') {
       dispatch(loginHandler());
+    }
+    if (userColorTheme === 'dark') {
+      dispatch(darkHandler(true));
+    } else if (userColorTheme === 'light') {
+      dispatch(darkHandler(false));
     }
   });
 
