@@ -13,6 +13,7 @@ const OptionContainer = styled.div`
   cursor: pointer;
   &:hover {
     background: #e9e9e9;
+    color: black;
   }
 `;
 
