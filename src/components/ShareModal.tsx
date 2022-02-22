@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { copyClipboard } from '../functions';
 import { FaRegCopy } from 'react-icons/fa';
 import { share2info } from '../lib/share2info';
+import { useDispatch } from 'react-redux';
+import { notify } from '../modules/notification';
 
 const Canvas = styled.div`
   position: fixed;
@@ -68,7 +70,12 @@ const View = styled.div`
       flex: 4 0 auto;
       .share2sns {
         display: flex;
-        overflow-x: hidden;
+        overflow-x: scroll;
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+        ::-webkit-scrollbar {
+          display: none;
+        }
       }
       img {
         width: 60px;
@@ -147,15 +154,18 @@ interface Props {
 export const Share = ({ shareModal, setShareModal }: Props) => {
   const copyUrlRef = useRef(null);
   const urlValue = window.location.href;
+  const dispatch = useDispatch();
   const copyUrl = () => {
     copyClipboard(
       urlValue,
       () => {
         // 성공했을 경우 Toast 메시지 팝업
+        dispatch(notify('클립보드에 주소가 복사되었습니다.'));
         console.log('링크 복사됨');
       },
       () => {
         // 실패했을 경우 Toast 메시지 팝업
+        dispatch(notify('복사 실패, 다시 시도해주세요.'));
         console.log('복사 실패, 다시 시도해주새오');
       },
     );
