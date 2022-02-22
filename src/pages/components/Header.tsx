@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
@@ -8,14 +8,12 @@ import {
   SignupModal,
   DropDown,
   Feed,
-  Toggle,
-
   // Scheduler,
 } from '../../components';
 import { FaPlus, FaUserCircle, FaBell, FaSearch } from 'react-icons/fa';
 import { FiX } from 'react-icons/fi';
-import { useEffect } from 'react';
 import { darkHandler } from '../../modules/login';
+
 const Container = styled.div`
   position: fixed;
   width: 100%;
@@ -40,6 +38,7 @@ const Wrapper = styled.div`
   align-items: center;
   img {
     /* color: var(--font); */
+
     grid-column: 1 / span 1;
     width: 80px;
     height: 32px;
@@ -234,15 +233,6 @@ const Header: React.FunctionComponent = () => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const dark = localStorage.getItem('color-theme');
-    if (dark === 'dark') {
-      dispatch(darkHandler(true));
-    } else {
-      dispatch(darkHandler(false));
-    }
-  }, []);
-
   const isDark = useSelector((state: RootState) => state.login.isDark);
 
   const handleModal =
@@ -269,6 +259,15 @@ const Header: React.FunctionComponent = () => {
   const handleSettingClick = () => {
     setDropOn(!dropOn);
   };
+
+  useEffect(() => {
+    const dark = localStorage.getItem('color-theme');
+    if (dark === 'dark') {
+      dispatch(darkHandler(true));
+    } else {
+      dispatch(darkHandler(false));
+    }
+  }, []);
   return (
     <Container>
       {isMiniOpen ? (
@@ -289,9 +288,9 @@ const Header: React.FunctionComponent = () => {
         <Link to="/">
           <img
             src={
-              !isDark
-                ? `${process.env.PUBLIC_URL}/vote-it_LOGO.png`
-                : `${process.env.PUBLIC_URL}/LOGO2.png`
+              isDark
+                ? `${process.env.PUBLIC_URL}/vote-it_LOGO-dark.png`
+                : `${process.env.PUBLIC_URL}/vote-it_LOGO.png`
             }
             alt="vote-it logo"
           />

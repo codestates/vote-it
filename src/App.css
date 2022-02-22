@@ -16,6 +16,8 @@
   --border: #808080;
   --border-lighter: #bbb;
   --border-lightest: #ddd;
+  --modal-bg: rgb(255, 255, 255);
+  --modal-border: 1px solid rgba(175, 175, 175, 0.4);
 }
 :root[color-theme='dark'] {
   --bg: #0d1117;
@@ -36,6 +38,8 @@
   --border: #808080;
   --border-lighter: #444;
   --border-lightest: #222;
+  --modal-bg: #212121;
+  --modal-border: 1px solid rgba(83, 83, 83, 0.4);
 }
 
 :root {
@@ -43,8 +47,6 @@
   --main-color-tint: #a2abd9;
   --modal-width: 320px;
   --modal-height: 384px;
-  --modal-bg: rgb(255, 255, 255);
-  --modal-border: 1px solid rgba(175, 175, 175, 0.4);
 
   color: var(--font);
   background-color: var(--bg);
@@ -52,8 +54,8 @@
   margin: 0;
   padding: 0;
 
-  /* transition-duration: 0.5s;
-  transition-property: all; */
+  transition-duration: 0.5s;
+  transition-property: color, background-color;
 }
 
 * {

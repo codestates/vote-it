@@ -12,6 +12,10 @@ export const getPostList = (page: number): IPost[] => {
   return postList.filter((post: IPost) => post.page === page);
 };
 
+export const getPostById = (id: number) => {
+  return postList.filter((obj) => obj.id === id)[0];
+};
+
 // {
 //   id : "",
 //   subject: "",
@@ -27,7 +31,7 @@ export const postList: IPost[] = [
     page: 1,
     subject: 'dummy1',
     author: '민범',
-    isPrivate: false,
+    isPrivate: true,
     createdAt: '2022-02-01',
     expirationDate: '2022-02-28',
   },
@@ -63,7 +67,7 @@ export const postList: IPost[] = [
     page: 1,
     subject: 'dummy5',
     author: '윤정',
-    isPrivate: true,
+    isPrivate: false,
     createdAt: '2022-02-01',
     expirationDate: '2022-02-28',
   },

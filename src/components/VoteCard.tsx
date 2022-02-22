@@ -129,11 +129,11 @@ export const VoteCard = ({
   createdAt,
   expirationDate,
 }: IPost) => {
-  const location = useLocation().state as IPost;
+  // const location = useLocation().state as IPost;
   const navigate = useNavigate();
 
   const OpenVoteHandler = () => {
-    navigate(`/vote/${id}`, { state: location });
+    navigate(`/vote/${id}`, { state: id });
   };
 
   return (

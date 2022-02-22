@@ -3,7 +3,7 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { darkHandler, loginHandler } from '../modules/login';
-import { Toggle } from '.';
+import { Toggle } from './ToggleButton';
 // import { notify } from '../modules/notification';
 
 const Canvas = styled.div`
@@ -94,11 +94,11 @@ const DropDown: React.FunctionComponent<IProps> = ({ dropOn, setDropOn }) => {
 
   const handleDarkMode = () => {
     localStorage.setItem('color-theme', darkMode ? 'light' : 'dark');
-    dispatch(darkHandler(null));
     document.documentElement.setAttribute(
       'color-theme',
       darkMode ? 'light' : 'dark',
     );
+    dispatch(darkHandler(!darkMode));
     setDarkMode(!darkMode);
   };
   return (

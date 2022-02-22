@@ -12,6 +12,7 @@ const OptionContainer = styled.div`
   border-radius: 20px;
   cursor: pointer;
   &:hover {
+    color: black;
     background: var(--option-hover);
   }
 `;
