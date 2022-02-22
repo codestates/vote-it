@@ -17,7 +17,7 @@ const Container = styled.div<IContainerProps>`
   height: 20vh;
   max-width: 256px;
   margin: 16px;
-  border-radius: 8px;
+  border-radius: 20px;
   /* border: 1px solid seagreen; */
 
   background-color: var(--menu-bg);

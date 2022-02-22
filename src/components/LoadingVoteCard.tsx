@@ -11,8 +11,9 @@ const LoadingContainer = styled.div`
   align-items: center;
   min-height: 400px;
   margin-top: 20px;
-  background: #fff;
-  box-shadow: -2px -2px 4px #ececec, 3px 3px 8px rgb(184, 184, 184);
+  background: var(--box-bg);
+  box-shadow: -2px -2px 4px var(--box-shadow),
+    3px 3px 8px var(--box-shadow-darker);
 
   @media only screen and (max-width: 1200px) {
     grid-column: span 4;
@@ -45,18 +46,16 @@ const TitleCover = styled.div`
 const TitleView = styled.div`
   width: 150px;
   height: 30px;
-  background-color: #8b8b8b78;
   border-radius: 20px;
-  filter: blur(10px);
+  filter: blur(8px);
 `;
 
 const StyledView = styled.div`
   width: 150px;
   height: 15px;
-  background-color: #e6e6e6;
   border-radius: 20px;
   margin-bottom: 10px;
-  filter: blur(10px);
+  filter: blur(8px);
 `;
 
 export const LoadingVoteCard = () => {
@@ -64,14 +63,14 @@ export const LoadingVoteCard = () => {
     <LoadingContainer>
       <TitleBox>
         <TitleCover>
-          <TitleView>title</TitleView>
+          <TitleView>title입니다~</TitleView>
         </TitleCover>
       </TitleBox>
       <StyledBody>
-        <StyledView />
-        <StyledView />
-        <StyledView />
-        <StyledView />
+        <StyledView>참여인원 loading~ 명</StyledView>
+        <StyledView>시작일 loading~</StyledView>
+        <StyledView>마감일 loading~~</StyledView>
+        <StyledView>작성자 loading~~</StyledView>
       </StyledBody>
     </LoadingContainer>
   );
