@@ -52,6 +52,7 @@ const Title = styled.textarea`
   &:focus {
     outline: none;
   }
+  background-color: var(--box-bg);
   box-shadow: -2px -2px 4px var(--box-shadow),
     3px 3px 6px var(--box-shadow-darker);
   font-family: 'SUIT-Light';
@@ -153,7 +154,7 @@ const CreateBtn = styled.button`
     3px 3px 6px var(--box-shadow-darker);
   background-color: var(--main-color);
   :hover {
-    background-color: var(--main-color-tint);
+    background-color: var(--border-lighter);
   }
 `;
 

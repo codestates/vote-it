@@ -49,7 +49,7 @@ export const TitleBox = styled.div`
   justify-content: center;
   align-items: center;
   font-family: 'SBAggroM';
-  text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;
+  text-shadow: var(--title-font-shadow);
   @media only screen and (max-width: 500px) {
     border-bottom: 0;
     border-right: 1px solid var(--border-lightest);
@@ -93,7 +93,7 @@ const HiddenTitle = styled.div`
 `;
 
 const StyledNum = styled.div`
-  font-family: 'SUIT-Medium';
+  font-family: 'IBMPlexSansKR-Light';
   @media only screen and (min-width: 501px) {
     font-size: large;
     font-weight: bold;
