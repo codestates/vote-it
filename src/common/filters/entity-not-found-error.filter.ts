@@ -14,6 +14,7 @@ export class EntityNotFoundErrorFilter
 {
   private static readonly errorMessages: Record<string, string> = {
     User: NotFoundErrorMessages.USER,
+    Poll: NotFoundErrorMessages.POLL,
   };
 
   catch(exception: EntityNotFoundError, host: ArgumentsHost) {
