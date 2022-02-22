@@ -1,4 +1,3 @@
-import { NotFoundErrorMessages } from './../not-found-error-messages';
 import {
   ArgumentsHost,
   Catch,
@@ -13,8 +12,8 @@ export class EntityNotFoundErrorFilter
   implements ExceptionFilter<EntityNotFoundError>
 {
   private static readonly errorMessages: Record<string, string> = {
-    User: NotFoundErrorMessages.USER,
-    Poll: NotFoundErrorMessages.POLL,
+    User: '존재하지 않는 유저입니다.',
+    Poll: '존재하지 않는 투표입니다.',
   };
 
   catch(exception: EntityNotFoundError, host: ArgumentsHost) {
