@@ -9,6 +9,9 @@ import {
   Body,
   HttpCode,
   HttpStatus,
+  Delete,
+  Param,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { User } from 'src/common/decorators/user.decorator';
 
@@ -27,5 +30,14 @@ export class UsersMePollsController {
       authorId: userId,
       ...createUserPollDto,
     });
+  }
+
+  @Delete(':pollId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async deleteMyPoll(
+    @User() { userId }: JwtValidatePayload,
+    @Param('pollId', ParseIntPipe) pollId: number,
+  ): Promise<void> {
+    await this.pollsService.deletePollOfAuthor(pollId, userId);
   }
 }
