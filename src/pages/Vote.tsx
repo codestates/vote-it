@@ -4,6 +4,8 @@ import { Option } from '../components/Option';
 import '../fonts/font.css';
 import Bubbles from '../components/Bubbles';
 import { Comments } from '../components/Comments';
+import { FaShareAlt, FaRegShareSquare, FaShare } from 'react-icons/fa';
+import { Share } from '../components';
 import { getPostById } from '../lib/postList';
 import { useLocation } from 'react-router-dom';
 
@@ -62,6 +64,17 @@ const UserNameBox = styled.div`
   }
 `;
 
+const ShareButton = styled.button`
+  padding: 4px;
+  white-space: pre;
+  width: fit-content;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  /* svg {
+    transform: translate(0, 2px);
+  } */
+`;
+
 const OptionsBox = styled.div`
   font-family: 'SUIT-Medium';
   grid-column: span 12;
@@ -102,6 +115,7 @@ export const Vote = () => {
   const [options, setOptions] = useState<Ioptions[]>([]);
   const [voted, setVoted] = useState(-1);
   const [commentsList, setCommentsList] = useState<Icomments[]>([]);
+  const [shareModal, setShareModal] = useState({ isOn: false, isShow: false });
 
   const location = useLocation().state as number;
   const id = location;
@@ -138,11 +152,21 @@ export const Vote = () => {
     }
   };
 
+  const handleShareModal = () => {
+    setShareModal({ isOn: true, isShow: false });
+    setTimeout(() => {
+      setShareModal((prev) => {
+        return { ...prev, isShow: true };
+      });
+    }, 16);
+  };
+
   return (
     <VoteOuter>
       <VoteContainer>
         <SubBox>{voteSub}</SubBox>
         <UserNameBox>{username}</UserNameBox>
+        <ShareButton onClick={handleShareModal}>Share</ShareButton>
         <OptionsBox style={voted === -1 ? {} : { gridColumn: 'span 6' }}>
           {options.map((obj) => {
             return (
@@ -166,6 +190,9 @@ export const Vote = () => {
         setCommentsList={setCommentsList}
         isVoted={voted !== -1}
       ></Comments>
+      {shareModal.isOn ? (
+        <Share shareModal={shareModal} setShareModal={setShareModal} />
+      ) : null}
     </VoteOuter>
   );
 };
