@@ -7,10 +7,10 @@ import {
   ConflictException,
   Injectable,
   ForbiddenException,
-  NotFoundException,
 } from '@nestjs/common';
 import { pickUserData } from '../common/utils/pick-data.util';
-import { NotFoundErrorMessages } from 'src/common/not-found-error-messages';
+import { EntityNotFoundError } from 'typeorm';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -48,7 +48,7 @@ export class UsersService {
       updateUserProfileDto,
     );
     if (updateResult.affected === 0) {
-      throw new NotFoundException(NotFoundErrorMessages.USER);
+      throw new EntityNotFoundError(User, userId);
     }
     return updateUserProfileDto;
   }
@@ -69,7 +69,7 @@ export class UsersService {
   async deleteUserById(userId: number) {
     const deleteResult = await this.userRepository.delete(userId);
     if (deleteResult.affected === 0) {
-      throw new NotFoundException(NotFoundErrorMessages.USER);
+      throw new EntityNotFoundError(User, userId);
     }
   }
 
