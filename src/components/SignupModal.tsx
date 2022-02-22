@@ -247,7 +247,11 @@ const SignupModal: React.FunctionComponent<IProps> = ({
         onClick={(e) => e.preventDefault()}
       >
         <Wrapper>
-          <div className="exit-wrapper" onClick={handleModalOff}>
+          <div
+            className="exit-wrapper"
+            style={{ fontSize: '15px' }}
+            onClick={handleModalOff}
+          >
             &times;
           </div>
           <InputWrapper>
