@@ -1,21 +1,18 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../modules';
 import {
   LoginModal,
   SignupModal,
   DropDown,
   Feed,
-  Toggle,
-
   // Scheduler,
 } from '../../components';
 import { FaPlus, FaUserCircle, FaBell, FaSearch } from 'react-icons/fa';
 import { FiX } from 'react-icons/fi';
-import { useEffect } from 'react';
-import { darkHandler } from '../../modules/login';
+
 const Container = styled.div`
   position: fixed;
   width: 100%;
@@ -231,18 +228,6 @@ const Header: React.FunctionComponent = () => {
   const [isMiniOpen, setIsMiniOpen] = useState(false);
 
   const isLogin = useSelector((state: RootState) => state.login.isLogin);
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const dark = localStorage.getItem('color-theme');
-    if (dark === 'dark') {
-      dispatch(darkHandler(true));
-    } else {
-      dispatch(darkHandler(false));
-    }
-  }, []);
-
   const isDark = useSelector((state: RootState) => state.login.isDark);
 
   const handleModal =
