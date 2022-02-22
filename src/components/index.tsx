@@ -7,6 +7,7 @@ import Scheduler from './Scheduler';
 import Suggestion from './Scheduler-Suggestion';
 import SchedulerCalender from './Scheduler-Calender';
 import { Toggle } from './ToggleButton';
+import { Share } from './ShareModal';
 
 export {
   LoginModal,
@@ -17,4 +18,5 @@ export {
   Suggestion,
   SchedulerCalender,
   Toggle,
+  Share,
 };
