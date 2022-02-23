@@ -1,4 +1,4 @@
-import { pickUserData } from './../common/utils/pick-data.util';
+import { pickUserData } from '../common/utils/pick-data.util';
 import { JwtPayload } from './payloads/jwt.payload';
 import { UserRepository } from '../users/repositories/user.repository';
 import { LoginUserDto } from './dto/login-user.dto';

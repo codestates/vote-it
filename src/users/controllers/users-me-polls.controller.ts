@@ -13,7 +13,7 @@ import {
   Param,
   ParseIntPipe,
 } from '@nestjs/common';
-import { User } from 'src/common/decorators/user.decorator';
+import { User } from '../../common/decorators/user.decorator';
 
 @Controller('users/me/polls')
 @UseGuards(JwtAuthGuard)
