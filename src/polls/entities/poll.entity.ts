@@ -1,7 +1,20 @@
-import { IsBoolean, IsDateString, IsNotEmpty, IsString } from 'class-validator';
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Type } from 'class-transformer';
+import {
+  ArrayMaxSize,
+  ArrayMinSize,
+  ArrayUnique,
+  IsArray,
+  IsBoolean,
+  IsDateString,
+  IsNotEmpty,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { CommonEntity } from '../../common/entities/common.entity';
 import { User } from '../../users/entities/user.entity';
+import { CreatePollOptionDto } from '../dto/create-poll-option.dto';
+import { PollOption } from './poll-option.entity';
 
 @Entity()
 export class Poll extends CommonEntity {
@@ -24,4 +37,13 @@ export class Poll extends CommonEntity {
 
   @ManyToOne(() => User, (user) => user.polls, { nullable: false })
   author: User;
+
+  @OneToMany(() => PollOption, (pollOption) => pollOption.poll)
+  @IsArray()
+  @ArrayMinSize(2)
+  @ArrayMaxSize(20)
+  @Type(() => CreatePollOptionDto)
+  @ValidateNested()
+  @ArrayUnique((option: CreatePollOptionDto) => option.content)
+  options: PollOption[];
 }
