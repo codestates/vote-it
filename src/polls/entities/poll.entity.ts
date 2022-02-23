@@ -1,4 +1,4 @@
-import { IsDateString, IsNotEmpty, IsString } from 'class-validator';
+import { IsBoolean, IsDateString, IsNotEmpty, IsString } from 'class-validator';
 import { CommonEntity } from 'src/common/entities/common.entity';
 import { User } from 'src/users/entities/user.entity';
 import { Column, Entity, ManyToOne } from 'typeorm';
@@ -9,6 +9,10 @@ export class Poll extends CommonEntity {
   @IsString()
   @IsNotEmpty()
   subject: string;
+
+  @Column({ type: 'boolean', default: false, nullable: false })
+  @IsBoolean()
+  isPrivate: boolean;
 
   @Column({ type: 'timestamp', nullable: true })
   @IsDateString()

@@ -3,7 +3,7 @@ import { IntersectionType, PickType, PartialType } from '@nestjs/mapped-types';
 import { IsNumber, IsPositive } from 'class-validator';
 
 export class CreatePollDto extends IntersectionType(
-  PickType(Poll, ['subject']),
+  PickType(Poll, ['subject', 'isPrivate']),
   PartialType(PickType(Poll, ['expirationDate'])),
 ) {
   @IsNumber()
