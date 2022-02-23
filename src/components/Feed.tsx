@@ -8,6 +8,7 @@ const Canvas = styled.div`
   left: 0;
   min-height: 100vh;
   width: 100vw;
+  z-index: 998;
   /* background-color: aliceblue; */
   opacity: 0;
 `;

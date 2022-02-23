@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { darkHandler, loginHandler } from './modules/login';
 import NofiticationCenter from './components/NotificationCenter';
+import { kakaoInit } from './lib/initialize';
 // import { RootState } from './modules';
 // export type LoginProps = boolean;
 
@@ -33,6 +34,10 @@ function App() {
       dispatch(darkHandler(false));
     }
   });
+
+  useEffect(() => {
+    kakaoInit();
+  }, []);
 
   return (
     <Router>
