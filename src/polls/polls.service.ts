@@ -15,27 +15,35 @@ export class PollsService {
     private readonly connection: Connection,
   ) {}
 
-  async createPoll({
-    authorId,
-    options: pollOptions,
-    ...createPollDto
-  }: CreatePollDto) {
+  async createPoll({ authorId, options, ...createPollDto }: CreatePollDto) {
     const author = await this.userRepository.findOneOrFail(authorId);
     return this.connection.transaction(async (manager) => {
-      const pollInsertResult = await manager.insert(Poll, {
-        author,
-        ...createPollDto,
-      });
-      const poll = pollInsertResult.generatedMaps[0] as Poll;
-      await manager
-        .createQueryBuilder(PollOption, 'poll_option')
+      const pollInsertResult = await manager
+        .createQueryBuilder()
         .insert()
+        .into(Poll)
+        .values({ author, ...createPollDto })
+        .updateEntity(false)
+        .execute();
+      const pollId = pollInsertResult.raw.insertId as number;
+      const optionsInsertResult = await manager
+        .createQueryBuilder()
+        .insert()
+        .into(PollOption)
         .values(
-          pollOptions.map((pollOption) => ({ ...pollOption, poll: poll })),
+          options.map((option) => ({
+            ...option,
+            poll: { id: pollId },
+          })),
         )
         .updateEntity(false)
         .execute();
-      return { pollId: pollInsertResult.raw.insertId as Poll };
+      const optionsFirstId = optionsInsertResult.raw.insertId as number;
+      const optionsCount = optionsInsertResult.raw.affectedRows as number;
+      return {
+        pollId,
+        options: { firstId: optionsFirstId, count: optionsCount },
+      };
     });
   }
 
