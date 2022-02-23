@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Suggestion, SchedulerCalender } from './';
 import { FaRegCalendarAlt, FaRegTimesCircle } from 'react-icons/fa';
@@ -156,6 +156,7 @@ const TimeSelectorWrapper = styled.div`
   }
 `;
 
+//! 변수, 함수 시작
 const kstGap = 9 * 60 * 60 * 1000;
 
 const dayList = ['일', '월', '화', '수', '목', '금', '토'];
@@ -163,7 +164,8 @@ const dayList = ['일', '월', '화', '수', '목', '금', '토'];
 let originDate = new Date(),
   utc = originDate.getTime() + originDate.getTimezoneOffset() * 60 * 1000,
   kstDate: Date = new Date(utc + kstGap),
-  thisDay: number,
+  thisDotw: number = kstDate.getDay(),
+  thisDay: number = kstDate.getDate(),
   thisMonth: number,
   thisYear: number,
   thisHour: number,
@@ -174,6 +176,7 @@ function time() {
   originDate = new Date();
   utc = originDate.getTime() + originDate.getTimezoneOffset() * 60 * 1000;
   kstDate = new Date(utc + kstGap);
+  thisDotw = kstDate.getDay();
   thisDay = kstDate.getDate();
   thisMonth = kstDate.getMonth();
   thisYear = kstDate.getFullYear();
@@ -183,6 +186,25 @@ function time() {
 
   console.log('time 함수 실행');
 }
+
+function useInterval(cb: Function, delay: number) {
+  const savedCallback = useRef<Function>();
+  useEffect(() => {
+    savedCallback.current = cb;
+  }, [cb]);
+
+  useEffect(() => {
+    function tick() {
+      if (typeof savedCallback.current === 'function') savedCallback.current();
+    }
+    if (delay !== null) {
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }
+  }, [delay]);
+}
+
+//! 변수, 함수 끝
 
 interface Calender {
   date: string;
@@ -222,13 +244,30 @@ const Scheduler: React.FunctionComponent<IProps> = ({
   const modifyButtonText = () => {
     //! 예정: Mod 함수 생성 후 날짜 별칭 사용할것임
     //! 아직 시간만 있을 경우의 로직 없음: 시간만 있을 경우에는 오늘날짜로 적용할것임
-    const textMod =
+    let textMod,
+      dateMod = `${inputValue.date.slice(2, 4)}년 ${inputValue.date.slice(
+        4,
+        6,
+      )}월 ${inputValue.date.slice(6, 8)}일`,
+      timeMod = inputValue.time;
+
+    if (inputValue.date === '') dateMod = '오늘';
+    if (
+      Number(inputValue.date.slice(0, 4)) === thisYear &&
+      Number(inputValue.date.slice(4, 6)) === thisMonth + 1 &&
+      Number(inputValue.date.slice(6, 8)) === thisDay
+    )
+      dateMod = '오늘';
+    if (
+      Number(inputValue.date.slice(0, 4)) === thisYear &&
+      Number(inputValue.date.slice(4, 6)) === thisMonth + 1 &&
+      Number(inputValue.date.slice(6, 8)) === thisDay + 1
+    )
+      dateMod = '내일';
+    textMod =
       inputValue.date === '' && inputValue.time === ''
         ? '마감시간'
-        : `${inputValue.date.slice(2, 4)}년 ${inputValue.date.slice(
-            4,
-            6,
-          )}월 ${inputValue.date.slice(6, 8)}일 ${inputValue.time}`;
+        : `${dateMod} ${timeMod}`;
     setButtonText(textMod);
   };
 
@@ -272,10 +311,9 @@ const Scheduler: React.FunctionComponent<IProps> = ({
     if (e.key === 'Escape') setView(false);
   };
 
-  useEffect(() => {
-    //! Suggestion 활용을 위한 매초단위 날짜정보 갱신
-    setInterval(time, 1000);
-  }, []);
+  useInterval(() => {
+    time();
+  }, 1000);
 
   useEffect(() => {
     modifyButtonText();
@@ -334,19 +372,11 @@ const Scheduler: React.FunctionComponent<IProps> = ({
               </TimeSelectorWrapper>
               <SuggestionWrapper>
                 <Suggestion
-                  content="30분"
-                  imageSource={`${process.env.PUBLIC_URL}/vote-it_LOGO1.ico`}
-                  isFa={false}
-                  faSource={-1}
-                  dateInfo={`${thisHour} : ${thisMinute + 30}`}
-                  setInputValue={setInputValue}
-                />
-                <Suggestion
                   content="오늘"
                   imageSource={`${process.env.PUBLIC_URL}/vote-it_LOGO1.ico`}
                   isFa={false}
                   faSource={-1}
-                  dateInfo={`${dayList[thisDay]}`}
+                  dateInfo={`${dayList[thisDotw]}`}
                   setInputValue={setInputValue}
                 />
                 <Suggestion
@@ -354,7 +384,7 @@ const Scheduler: React.FunctionComponent<IProps> = ({
                   imageSource={`${process.env.PUBLIC_URL}/vote-it_LOGO1.ico`}
                   isFa={false}
                   faSource={-1}
-                  dateInfo={`${dayList[thisDay + 1 === 7 ? 0 : thisDay + 1]}`}
+                  dateInfo={`${dayList[thisDotw + 1 === 7 ? 0 : thisDotw + 1]}`}
                   setInputValue={setInputValue}
                 />
                 <Suggestion
@@ -363,6 +393,14 @@ const Scheduler: React.FunctionComponent<IProps> = ({
                   isFa={false}
                   faSource={-1}
                   dateInfo={`${dayList[6]}`}
+                  setInputValue={setInputValue}
+                />
+                <Suggestion
+                  content="일주일"
+                  imageSource={`${process.env.PUBLIC_URL}/vote-it_LOGO1.ico`}
+                  isFa={false}
+                  faSource={-1}
+                  dateInfo={`다음주 ${dayList[thisDotw]}`}
                   setInputValue={setInputValue}
                 />
                 <Suggestion

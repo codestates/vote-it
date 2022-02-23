@@ -18,8 +18,9 @@ const Canvas = styled.div`
 
 const Container = styled.div`
   font-family: 'SUIT-Light';
-  position: absolute;
-  top: 67px;
+  position: fixed;
+  top: 48px;
+  right: 10px;
   min-height: 184px;
   width: 160px;
 

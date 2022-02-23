@@ -195,7 +195,7 @@ const LoginModal: React.FunctionComponent<IProps> = ({
         });
   };
 
-  const handleOAuthLogin = () => {
+  const handleKakaoOAuth = () => {
     const redirectURI = 'https://localhost:3000/oauth';
     const link = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_REST_KEY}&redirect_uri=${redirectURI}&response_type=code`;
     window.location.href = link;
@@ -297,7 +297,7 @@ const LoginModal: React.FunctionComponent<IProps> = ({
               </span>
               네이버 로그인
             </Button>
-            <Button onClick={handleOAuthLogin} color="white">
+            <Button onClick={handleKakaoOAuth} color="white">
               <RiKakaoTalkFill
                 style={{
                   marginRight: '5px',
