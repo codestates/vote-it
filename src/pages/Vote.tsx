@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Option } from '../components/Option';
 import '../fonts/font.css';
-import Bubbles from '../components/Bubbles';
 import { Comments } from '../components/Comments';
 // import { FaShareAlt, FaRegShareSquare, FaShare } from 'react-icons/fa';
-import { Share } from '../components';
+//import { Share } from '../components';
+import { Share } from '../components/ShareModal';
 import { getPostById } from '../lib/postList';
 import { useLocation } from 'react-router-dom';
-
+import Chart from '../components/Chart';
 const VoteOuter = styled.div`
   padding-top: 48px;
   width: 100%;
@@ -99,7 +99,8 @@ const ResultContainer = styled.div`
 
 interface Ioptions {
   id: number;
-  content: string;
+  name: string;
+  value: number;
 }
 
 interface Icomments {
@@ -108,10 +109,6 @@ interface Icomments {
   username: string;
   parrentId?: number;
 }
-
-// interface Props {
-//   id: number;
-// }
 
 export const Vote = () => {
   const [voteSub, setVoteSub] = useState('');
@@ -127,12 +124,12 @@ export const Vote = () => {
   useEffect(() => {
     const post = getPostById(id);
     setOptions([
-      { id: 0, content: 'option1' },
-      { id: 1, content: 'option2' },
-      { id: 2, content: 'option3' },
-      { id: 3, content: 'option4' },
-      { id: 4, content: 'option5' },
-      { id: 5, content: 'option6' },
+      { id: 0, name: 'option1', value: 20 },
+      { id: 1, name: 'option2', value: 13 },
+      { id: 2, name: 'option3', value: 5 },
+      { id: 3, name: 'option4', value: 42 },
+      { id: 4, name: 'option5', value: 3 },
+      { id: 5, name: 'option6', value: 9 },
     ]);
     setVoteSub(post.subject);
     setUsername(post.author);
@@ -177,7 +174,7 @@ export const Vote = () => {
               <Option
                 key={obj.id}
                 id={obj.id}
-                content={obj.content}
+                content={obj.name}
                 voted={voted}
                 VoteHandler={VoteHandler}
               ></Option>
@@ -185,7 +182,9 @@ export const Vote = () => {
           })}
         </OptionsBox>
         <ResultContainer style={voted === -1 ? { display: 'none' } : {}}>
-          <Bubbles options={options} />
+          <div style={{ fontFamily: 'OTWelcomeRA' }}>
+            <Chart options={options} />
+          </div>
         </ResultContainer>
       </VoteContainer>
       <Comments
