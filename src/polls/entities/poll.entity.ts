@@ -14,6 +14,10 @@ export class Poll extends CommonEntity {
   @IsBoolean()
   isPrivate: boolean;
 
+  @Column({ type: 'boolean', default: false, nullable: false })
+  @IsBoolean()
+  isPlural: boolean;
+
   @Column({ type: 'timestamp', nullable: true })
   @IsDateString()
   expirationDate: Date | null;
