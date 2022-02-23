@@ -1,19 +1,20 @@
 import { Routes, BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
 import { Header } from './pages/components';
-import { Main, Setting, Vote, Loading } from './pages';
+import { Main, Setting, Vote, Loading, OAuth } from './pages';
 import CreateVote from './pages/CreateVote';
 import Footer from './pages/components/Footer';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { darkHandler, loginHandler } from './modules/login';
 import NofiticationCenter from './components/NotificationCenter';
+import { kakaoInit } from './lib/initialize';
 // import { RootState } from './modules';
 // export type LoginProps = boolean;
 
 function App() {
   const dispatch = useDispatch();
-
+  const [headerVisibility, setHeaderVisibility] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   //! axios 세팅 이후 로딩 컴포넌트 세팅해야함
 
@@ -34,16 +35,25 @@ function App() {
     }
   });
 
+  useEffect(() => {
+    kakaoInit();
+  }, []);
+
   return (
     <Router>
       <div className="App">
+        {/* <Route path="/oauth" element={<OAuth />}></Route> */}
         {isLoading ? (
           <Loading />
         ) : (
           <>
-            <Header />
+            {headerVisibility ? <Header /> : null}
             <Routes>
-              <Route path="/" element={<Main />}></Route>
+              <Route path="/*" element={<Main />} />
+              <Route
+                path="/oauth"
+                element={<OAuth setHeaderVisibility={setHeaderVisibility} />}
+              />
 
               <Route path="/createVote" element={<CreateVote />}></Route>
 
@@ -52,7 +62,7 @@ function App() {
               <Route path="/setting" element={<Setting />}></Route>
             </Routes>
             <NofiticationCenter />
-            <Footer />
+            {headerVisibility ? <Footer /> : null}
           </>
         )}
       </div>
