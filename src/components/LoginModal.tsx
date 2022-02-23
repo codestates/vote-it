@@ -5,6 +5,8 @@ import { loginHandler } from '../modules/login';
 import apiAxios from '../utils/apiAxios';
 import { notify } from '../modules/notification';
 import { RiGoogleFill, RiKakaoTalkFill } from 'react-icons/ri';
+import GoogleLogin from 'react-google-login';
+// import axios from 'axios';
 const Canvas = styled.div`
   position: fixed;
   left: 0;
@@ -194,9 +196,29 @@ const LoginModal: React.FunctionComponent<IProps> = ({
   };
 
   const handleOAuthLogin = () => {
-    const redirectURI = 'https://localhost:3000';
+    const redirectURI = 'https://localhost:3000/oauth';
     const link = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_REST_KEY}&redirect_uri=${redirectURI}&response_type=code`;
-    window.open(link);
+    window.location.href = link;
+  };
+
+  const handleGoogleOAuth = (res: any) => {
+    const params = new URLSearchParams();
+    params.append('idToken', res.tokenObj.id_token);
+
+    const googleLogin = async () => {
+      // const res = await axios.post("https://localhost:8000/", params, {
+      //   headers: {
+      //     "Content-Type": "application/x-www-form-urlencoded",
+      //   },
+      // });
+
+      // localStorage.setItem("accessToken", res.data.accessToken);
+      localStorage.setItem('isLogin', 'true');
+      dispatch(loginHandler());
+      setModalOn({ isOn: false, isShow: false });
+      dispatch(notify('로그인이 완료되었습니다.'));
+    };
+    googleLogin();
   };
 
   return (
@@ -240,12 +262,28 @@ const LoginModal: React.FunctionComponent<IProps> = ({
             >
               이메일로 로그인
             </Button>
-            <Button color="white">
+            <GoogleLogin
+              clientId="36914989367-7i38jmhgl4mikqrc65cine521rrr5ja9.apps.googleusercontent.com"
+              onSuccess={handleGoogleOAuth}
+              render={(renderProps) => (
+                <Button color="white" onClick={renderProps.onClick}>
+                  <RiGoogleFill
+                    style={{
+                      marginRight: '10px',
+                      fontSize: '17px',
+                      color: 'red',
+                    }}
+                  />
+                  구글로그인
+                </Button>
+              )}
+            />
+            {/* <Button color="white">
               <RiGoogleFill
                 style={{ marginRight: '10px', fontSize: '17px', color: 'red' }}
               />
               구글 로그인
-            </Button>
+            </Button> */}
             <Button color="white">
               <span
                 style={{
