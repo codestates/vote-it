@@ -196,9 +196,9 @@ const LoginModal: React.FunctionComponent<IProps> = ({
   };
 
   const handleOAuthLogin = () => {
-    const redirectURI = 'https://localhost:3000';
+    const redirectURI = 'https://localhost:3000/oauth';
     const link = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_REST_KEY}&redirect_uri=${redirectURI}&response_type=code`;
-    window.open(link);
+    window.location.href = link;
   };
 
   const handleGoogleOAuth = (res: any) => {

@@ -97,12 +97,7 @@ const OptionInput = styled.input`
 
   border: none;
 `;
-const OptionText = styled.div`
-  height: 40px;
-  width: 90%;
-  padding-left: 10px;
-  line-height: 40px;
-`;
+
 const DelOptionBtn = styled.div`
   &:hover {
   }
