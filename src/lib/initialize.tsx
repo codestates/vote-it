@@ -40,9 +40,13 @@ export function share2NaverBlog(
   const encodeUrl = encodeURIComponent(url);
   const encodeTitle = encodeURIComponent(title);
   const shareLink =
-    'https://share.naver.com/web/shareView.nhn?url={0}&title={1}';
-  const link = shareLink.format(encodeUrl, encodeTitle);
-  window.open(link, 'share', `width=${width}, height=${height}`);
+    'https://share.naver.com/web/shareView.nhn?url=' +
+    encodeUrl +
+    '&title=' +
+    encodeTitle;
+  //const link = shareLink.format(encodeUrl, encodeTitle);
+  // document.location = shareLink;
+  window.open(shareLink, 'share', `width=${width}, height=${height}`);
 }
 
 export function share2NaverBand(
@@ -53,9 +57,11 @@ export function share2NaverBand(
 ) {
   const encodeBody = encodeURIComponent('{0}\n{1}'.format(content, url));
   const encodeRoute = encodeURIComponent(window.location.href);
-  const shareLink = 'http://band.us/plugin/share?body={0}&route={1}';
+  const shareLink =
+    'http://band.us/plugin/share?body=' + content + '&route=' + url;
   const link = shareLink.format(encodeBody, encodeRoute);
-  window.open(link, 'share', `width=${width}, height=${height}`);
+
+  window.open(shareLink, 'share', `width=${width}, height=${height}`);
 }
 
 export function share2Pinterest(
