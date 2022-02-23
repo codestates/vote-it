@@ -57,9 +57,11 @@ export function share2NaverBand(
 ) {
   const encodeBody = encodeURIComponent('{0}\n{1}'.format(content, url));
   const encodeRoute = encodeURIComponent(window.location.href);
-  const shareLink = 'http://band.us/plugin/share?body={0}&route={1}';
+  const shareLink =
+    'http://band.us/plugin/share?body=' + content + '&route=' + url;
   const link = shareLink.format(encodeBody, encodeRoute);
-  window.open(link, 'share', `width=${width}, height=${height}`);
+
+  window.open(shareLink, 'share', `width=${width}, height=${height}`);
 }
 
 export function share2Pinterest(
