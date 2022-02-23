@@ -131,6 +131,8 @@ type InputValue = {
   password: string;
 };
 
+console.log(process.env);
+
 const LoginModal: React.FunctionComponent<IProps> = ({
   modalOn,
   setModalOn,
@@ -189,6 +191,12 @@ const LoginModal: React.FunctionComponent<IProps> = ({
           dispatch(notify('잘못된 아이디 혹은 비밀번호입니다.'));
           console.log(err);
         });
+  };
+
+  const handleOAuthLogin = () => {
+    const redirectURI = 'https://localhost:3000';
+    const link = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_REST_KEY}&redirect_uri=${redirectURI}&response_type=code`;
+    window.open(link);
   };
 
   return (
@@ -251,7 +259,7 @@ const LoginModal: React.FunctionComponent<IProps> = ({
               </span>
               네이버 로그인
             </Button>
-            <Button color="white">
+            <Button onClick={handleOAuthLogin} color="white">
               <RiKakaoTalkFill
                 style={{
                   marginRight: '5px',
