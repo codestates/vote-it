@@ -12,6 +12,12 @@ import { FaRegCopy, FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 import { share2info } from '../lib/share2info';
 import { useDispatch } from 'react-redux';
 import { notify } from '../modules/notification';
+import {
+  share2NaverBand,
+  share2NaverBlog,
+  share2Pinterest,
+  share2Twitter,
+} from '../lib/initialize';
 
 const Canvas = styled.div`
   position: fixed;
@@ -22,6 +28,7 @@ const Canvas = styled.div`
   background-color: rgba(0, 0, 0, 0.4);
   opacity: 0;
   transition: opacity 0.5s;
+  z-index: 998;
   &.show {
     opacity: 1;
   }
@@ -210,9 +217,52 @@ export const Share = ({ shareModal, setShareModal }: Props) => {
     setShareModal({ isOn: false, isShow: false });
   };
 
+  const { Kakao } = window;
+
   const handleShare2sns =
     (idx: number) => (e: React.MouseEvent<HTMLDivElement>) => {
-      console.log(idx + '번');
+      const funcList = [
+        () => {},
+        () => {
+          Kakao.Link.sendDefault({
+            objectType: 'text',
+            text: '기본 템플릿으로 제공되는 텍스트 템플릿은 텍스트를 최대 200자까지 표시할 수 있습니다. 텍스트 템플릿은 텍스트 영역과 하나의 기본 버튼을 가집니다. 임의의 버튼을 설정할 수도 있습니다. 여러 장의 이미지, 프로필 정보 등 보다 확장된 형태의 카카오링크는 다른 템플릿을 이용해 보낼 수 있습니다.',
+            link: {
+              mobileWebUrl: `${urlValue}`,
+              webUrl: `${urlValue}`,
+            },
+          });
+        },
+        () => {
+          window.open(
+            `https://www.facebook.com/sharer/sharer.php?u=${urlValue}`,
+          );
+        },
+        () => {},
+        () => {
+          share2NaverBlog(
+            urlValue,
+            'Vote-it 네이버 블로그 공유 Title',
+            500,
+            500,
+          );
+        },
+        () => {
+          share2NaverBand(
+            urlValue,
+            'Vote-it 네이버 밴드 공유 Content',
+            500,
+            500,
+          );
+        },
+        () => {
+          share2Pinterest(urlValue, 'Voit-it 핀터레스트 공유 Text', 500, 500);
+        },
+        () => {
+          share2Twitter(urlValue, 'Vote-it 트위터 공유 Text', 500, 500);
+        },
+      ];
+      funcList[idx]();
     };
 
   const innerWidth = scrollRef.current?.clientWidth || 0;
@@ -240,6 +290,7 @@ export const Share = ({ shareModal, setShareModal }: Props) => {
   //     handleScrollBtn();
   //   };
   // },[handleScroll]);
+  // const { Kakao } = window;
 
   return (
     <>
@@ -266,7 +317,7 @@ export const Share = ({ shareModal, setShareModal }: Props) => {
           <div ref={scrollRef} className="share2sns">
             {share2info.map((v, i) => {
               return (
-                <ShareToSNS onClick={handleShare2sns(i)}>
+                <ShareToSNS key={i} onClick={handleShare2sns(i)}>
                   <img src={v.src} alt={v.alt} />
                   <div>{v.name}</div>
                 </ShareToSNS>
@@ -276,7 +327,7 @@ export const Share = ({ shareModal, setShareModal }: Props) => {
         </div>
         <div className="wrapper second">
           <div className="input-wrapper">
-            <input ref={copyUrlRef} value={urlValue} />
+            <input ref={copyUrlRef} value={urlValue} readOnly />
             <button onClick={copyUrl}>
               <FaRegCopy />
             </button>
