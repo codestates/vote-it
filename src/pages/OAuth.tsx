@@ -12,7 +12,7 @@ export const OAuth = ({ setHeaderVisibility }: Props) => {
 
   const sendKakaoTokenToServer = (token: string) => {
     apiAxios
-      .post('auth/kakao', { access_token: token })
+      .post('auth/kakao', { token })
       .then((res) => {
         if (res.status === 201 || res.status === 200) {
           // const user = res.data.user;
