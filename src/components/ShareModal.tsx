@@ -222,8 +222,12 @@ export const Share = ({ shareModal, setShareModal }: Props) => {
   const handleShare2sns =
     (idx: number) => (e: React.MouseEvent<HTMLDivElement>) => {
       const funcList = [
-        () => {},
         () => {
+          // 이메일 공유하기
+        },
+        () => {
+          // 카카오 메시지 템플릿 종류는 다음 링크 참고 후 적절한 것으로 변경 가능
+          // https://developers.kakao.com/docs/latest/ko/message/message-template#type
           Kakao.Link.sendDefault({
             objectType: 'text',
             text: '기본 템플릿으로 제공되는 텍스트 템플릿은 텍스트를 최대 200자까지 표시할 수 있습니다. 텍스트 템플릿은 텍스트 영역과 하나의 기본 버튼을 가집니다. 임의의 버튼을 설정할 수도 있습니다. 여러 장의 이미지, 프로필 정보 등 보다 확장된 형태의 카카오링크는 다른 템플릿을 이용해 보낼 수 있습니다.',
@@ -238,7 +242,10 @@ export const Share = ({ shareModal, setShareModal }: Props) => {
             `https://www.facebook.com/sharer/sharer.php?u=${urlValue}`,
           );
         },
-        () => {},
+        () => {
+          // 인스타그램 공유하기
+          //! 아직 적절한 API를 찾지 못했습니다.
+        },
         () => {
           share2NaverBlog(
             urlValue,
@@ -259,6 +266,8 @@ export const Share = ({ shareModal, setShareModal }: Props) => {
           share2Pinterest(urlValue, 'Voit-it 핀터레스트 공유 Text', 500, 500);
         },
         () => {
+          // 트위터 공유하기
+          //! 현재 렌더링하지는 않았음. 이후 트위터 아이콘 따고 등록할것임
           share2Twitter(urlValue, 'Vote-it 트위터 공유 Text', 500, 500);
         },
       ];
