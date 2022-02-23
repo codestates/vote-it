@@ -1,9 +1,10 @@
 import { UserRepository } from '../users/repositories/user.repository';
-import { Repository } from 'typeorm';
+import { Connection, Repository } from 'typeorm';
 import { CreatePollDto } from './dto/create-poll.dto';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Poll } from './entities/poll.entity';
+import { PollOption } from './entities/poll-option.entity';
 
 @Injectable()
 export class PollsService {
@@ -11,15 +12,31 @@ export class PollsService {
     @InjectRepository(Poll)
     private readonly pollRepository: Repository<Poll>,
     private readonly userRepository: UserRepository,
+    private readonly connection: Connection,
   ) {}
 
-  async createPoll({ authorId, ...createPollDto }: CreatePollDto) {
+  async createPoll({
+    authorId,
+    options: pollOptions,
+    ...createPollDto
+  }: CreatePollDto) {
     const author = await this.userRepository.findOneOrFail(authorId);
-    const insertResult = await this.pollRepository.insert({
-      author,
-      ...createPollDto,
+    return this.connection.transaction(async (manager) => {
+      const pollInsertResult = await manager.insert(Poll, {
+        author,
+        ...createPollDto,
+      });
+      const poll = pollInsertResult.generatedMaps[0] as Poll;
+      await manager
+        .createQueryBuilder(PollOption, 'poll_option')
+        .insert()
+        .values(
+          pollOptions.map((pollOption) => ({ ...pollOption, poll: poll })),
+        )
+        .updateEntity(false)
+        .execute();
+      return { pollId: pollInsertResult.raw.insertId as Poll };
     });
-    return { pollId: insertResult.raw.insertId as number };
   }
 
   async deletePollOfAuthor(pollId: number, authorId: number): Promise<void> {
