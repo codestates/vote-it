@@ -135,7 +135,6 @@ const SchedulerCalender: React.FunctionComponent<IProps> = ({
   inputValue,
   setInputValue,
 }) => {
-  const [dateInfo, setDateInfo] = useState({ viewMonth: '' });
   const [dayList, setDayList] = useState<number[][]>([
     [31],
     [
