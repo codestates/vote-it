@@ -1,7 +1,7 @@
 import { IsBoolean, IsDateString, IsNotEmpty, IsString } from 'class-validator';
-import { CommonEntity } from 'src/common/entities/common.entity';
-import { User } from 'src/users/entities/user.entity';
 import { Column, Entity, ManyToOne } from 'typeorm';
+import { CommonEntity } from '../../common/entities/common.entity';
+import { User } from '../../users/entities/user.entity';
 
 @Entity()
 export class Poll extends CommonEntity {

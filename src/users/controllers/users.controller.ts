@@ -1,4 +1,4 @@
-import { UsersService } from './../users.service';
+import { UsersService } from '../users.service';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import {
   Controller,

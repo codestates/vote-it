@@ -1,6 +1,6 @@
-import { UpdateUserPasswordDto } from './../dto/update-user-password.dto';
+import { UpdateUserPasswordDto } from '../dto/update-user-password.dto';
 import { UpdateUserProfileDto } from '../dto/update-user-profile.dto';
-import { UsersService } from './../users.service';
+import { UsersService } from '../users.service';
 import { JwtValidatePayload } from '../../auth/payloads/jwt-validate.payload';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import {
@@ -14,7 +14,7 @@ import {
   NotImplementedException,
   Delete,
 } from '@nestjs/common';
-import { User } from 'src/common/decorators/user.decorator';
+import { User } from '../../common/decorators/user.decorator';
 
 @Controller('users/me')
 @UseGuards(JwtAuthGuard)
