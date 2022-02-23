@@ -221,26 +221,6 @@ const LoginModal: React.FunctionComponent<IProps> = ({
     googleLogin();
   };
 
-  const handleGoogleOAuth = (res: any) => {
-    const params = new URLSearchParams();
-    params.append('idToken', res.tokenObj.id_token);
-
-    const googleLogin = async () => {
-      // const res = await axios.post("https://localhost:8000/", params, {
-      //   headers: {
-      //     "Content-Type": "application/x-www-form-urlencoded",
-      //   },
-      // });
-
-      // localStorage.setItem("accessToken", res.data.accessToken);
-      localStorage.setItem('isLogin', 'true');
-      dispatch(loginHandler());
-      setModalOn({ isOn: false, isShow: false });
-      dispatch(notify('로그인이 완료되었습니다.'));
-    };
-    googleLogin();
-  };
-
   return (
     <>
       <Canvas
