@@ -109,23 +109,24 @@ interface Icomments {
   parrentId?: number;
 }
 
-// interface Props {
-//   id: number;
-// }
+interface Post {
+  id: number;
+  subject: string;
+  author: string;
+}
 
 export const Vote = () => {
+  const location = useLocation().state as number;
+  const id = location;
   const [voteSub, setVoteSub] = useState('');
   const [username, setUsername] = useState('');
   const [options, setOptions] = useState<Ioptions[]>([]);
   const [voted, setVoted] = useState(-1);
   const [commentsList, setCommentsList] = useState<Icomments[]>([]);
   const [shareModal, setShareModal] = useState({ isOn: false, isShow: false });
-
-  const location = useLocation().state as number;
-  const id = location;
+  const [post, setPost] = useState<Post>(getPostById(id));
 
   useEffect(() => {
-    const post = getPostById(id);
     setOptions([
       { id: 0, content: 'option1' },
       { id: 1, content: 'option2' },
@@ -146,7 +147,7 @@ export const Vote = () => {
       { id: 6, content: 'comment1', username: 'user1', parrentId: 1 },
     ]);
     // TODO {id}로 get 받아와서 setState
-  }, []);
+  }, [post]);
 
   const VoteHandler = (optionId: number) => {
     if (optionId === voted) {
