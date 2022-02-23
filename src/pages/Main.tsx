@@ -4,6 +4,8 @@ import FloatBtn from '../components/FloatBtn';
 import { LoadingVoteCard } from '../components/LoadingVoteCard';
 import { VoteCard } from '../components/VoteCard';
 import { getPostList, IPost } from '../lib/postList';
+import queryString from 'query-string';
+import axios from 'axios';
 
 const MainOuter = styled.div`
   padding-top: 48px;
@@ -38,6 +40,8 @@ const MainContainer = styled.div`
 `;
 
 export const Main = () => {
+  const query = queryString.parse(window.location.search);
+
   const [page, setPage] = useState<number>(1); //+
   const [posts, setPosts] = useState<IPost[]>(getPostList(1)); //+
   const [scrollY, setScrollY] = useState(0); //스크롤 값 저장
@@ -84,6 +88,30 @@ export const Main = () => {
     setBtnStatus(false);
   };
 
+  const getKakaoTokenHandler = async (code: string) => {
+    const data: any = {
+      grant_type: 'authorization_code',
+      client_id: process.env.REACT_APP_KAKAO_REST_KEY,
+      redirect_url: 'redirect URI 입력',
+      code: code,
+    };
+    const queryStr = Object.keys(data)
+      .map(
+        (k: any) => encodeURIComponent(k) + '=' + encodeURIComponent(data[k]),
+      )
+      .join('&');
+    axios
+      .post('https://kauth.kakao.com/oauth/token', queryStr, {
+        headers: {
+          'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+        },
+      })
+      .then((res) => {
+        console.log(res.data.access_token);
+        // sendKakaoTokenToServer(res.data.access_token)
+      });
+  };
+
   useEffect(() => {
     const watch = () => {
       window.addEventListener('scroll', handleFollow);
@@ -93,6 +121,10 @@ export const Main = () => {
       window.removeEventListener('scroll', handleFollow);
     };
   });
+
+  useEffect(() => {
+    if (query.code) getKakaoTokenHandler(query.code.toString());
+  }, []);
   //   id : "",
   //   subject: "",
   //   authorId: "",
