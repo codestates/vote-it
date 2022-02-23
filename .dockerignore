@@ -5,3 +5,4 @@ appspec.yml
 .gitignore
 /secrets
 *.pem
+.env*
