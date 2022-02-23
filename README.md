@@ -16,13 +16,17 @@
 
 ## 멤버
 
-| 이름              | Github 프로필  | 포지션     | 역할 |
-| ----------------- | -------------- | ---------- | ---- |
-| [곽명우](#곽명우) | [citysquirrel] | 풀스택     | 팀장 |
-| [김민범](#김민범) | [alsqja]       | 프론트엔드 | 팀원 |
-| [임윤정](#임윤정) | [yjlim0428]    | 프론트엔드 | 팀원 |
-| [한영우](#한영우) | [nix6839]      | 백엔드     | 팀원 |
+| 이름     | GitHub 프로필  | 포지션     | 역할 |
+| -------- | -------------- | ---------- | ---- |
+| [곽명우] | [citysquirrel] | 풀스택     | 팀장 |
+| [김민범] | [alsqja]       | 프론트엔드 | 팀원 |
+| [임윤정] | [yjlim0428]    | 프론트엔드 | 팀원 |
+| [한영우] | [nix6839]      | 백엔드     | 팀원 |
 
+[곽명우]: https://github.com/codestates/vote-it/wiki/Members#곽명우
+[김민범]: https://github.com/codestates/vote-it/wiki/Members#김민범
+[임윤정]: https://github.com/codestates/vote-it/wiki/Members#임윤정
+[한영우]: https://github.com/codestates/vote-it/wiki/Members#한영우
 [citysquirrel]: https://github.com/citysquirrel
 [alsqja]: https://github.com/alsqja
 [yjlim0428]: https://github.com/yjlim0428
