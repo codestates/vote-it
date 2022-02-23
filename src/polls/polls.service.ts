@@ -5,6 +5,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Poll } from './entities/poll.entity';
 import { PollOption } from './entities/poll-option.entity';
+import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 
 @Injectable()
 export class PollsService {
@@ -14,6 +15,24 @@ export class PollsService {
     private readonly userRepository: UserRepository,
     private readonly connection: Connection,
   ) {}
+
+  async getSpecificRangePolls({ offset = 0, limit }: PaginationQueryDto) {
+    const [polls, count] = await this.pollRepository
+      .createQueryBuilder('poll')
+      .select([
+        'poll.id',
+        'poll.createdAt',
+        'poll.expirationDate',
+        'poll.subject',
+        'author.nickname',
+      ])
+      .leftJoin('poll.author', 'author')
+      .where('poll.isPrivate = false')
+      .offset(offset)
+      .limit(limit)
+      .getManyAndCount();
+    return { polls, count };
+  }
 
   async createPoll({ authorId, options, ...createPollDto }: CreatePollDto) {
     const author = await this.userRepository.findOneOrFail(authorId);
