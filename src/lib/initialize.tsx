@@ -40,9 +40,13 @@ export function share2NaverBlog(
   const encodeUrl = encodeURIComponent(url);
   const encodeTitle = encodeURIComponent(title);
   const shareLink =
-    'https://share.naver.com/web/shareView.nhn?url={0}&title={1}';
-  const link = shareLink.format(encodeUrl, encodeTitle);
-  window.open(link, 'share', `width=${width}, height=${height}`);
+    'https://share.naver.com/web/shareView.nhn?url=' +
+    encodeUrl +
+    '&title=' +
+    encodeTitle;
+  //const link = shareLink.format(encodeUrl, encodeTitle);
+  // document.location = shareLink;
+  window.open(shareLink, 'share', `width=${width}, height=${height}`);
 }
 
 export function share2NaverBand(
