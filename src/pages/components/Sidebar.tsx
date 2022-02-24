@@ -29,12 +29,15 @@ const Container = styled.div<IContainerProps>`
 
   @media only screen and (max-width: 500px) {
     position: fixed;
+    /* width: 400px; */
     top: 100px;
-    right: 20px;
+    left: 20px;
     margin: 0;
-    grid-column: span 6;
+    /* grid-column: span 6; */
     width: 200px;
     display: ${(props) => props.isSideBar};
+    /* display: flex; */
+    /* flex-direction: row; */
   }
 `;
 
