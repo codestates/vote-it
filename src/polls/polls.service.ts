@@ -16,7 +16,7 @@ export class PollsService {
     private readonly connection: Connection,
   ) {}
 
-  async getSpecificRangePolls({ offset = 0, limit }: PaginationQueryDto) {
+  async getSpecificRangePolls({ offset, limit }: PaginationQueryDto) {
     const [polls, count] = await this.pollRepository
       .createQueryBuilder('poll')
       .select([
