@@ -1,8 +1,11 @@
 const SET_LOGIN = 'SET_LOGIN' as const;
 const SET_DARK = 'SET_DARK' as const;
 
-export const loginHandler = () => ({
+export const loginHandler = (login: boolean) => ({
   type: SET_LOGIN,
+  payload: {
+    login,
+  },
 });
 
 export const darkHandler = (dark: boolean) => {
@@ -34,7 +37,7 @@ function login(
 ): LoginState {
   switch (action.type) {
     case SET_LOGIN:
-      return { ...state, isLogin: !state.isLogin };
+      return { ...state, isLogin: action.payload.login };
     case SET_DARK:
       return { ...state, isDark: action.payload.dark };
     default:

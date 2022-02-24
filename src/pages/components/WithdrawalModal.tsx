@@ -103,7 +103,7 @@ export const WithdrawalModal = ({ WithdrawalModalHandler }: Iprop) => {
         },
       })
       .then((res) => {
-        dispatch(loginHandler());
+        dispatch(loginHandler(false));
         localStorage.setItem('isLogin', 'false');
         localStorage.setItem('accessToken', '');
         dispatch(notify('회원탈퇴가 완료되었습니다.'));

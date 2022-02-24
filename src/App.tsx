@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { darkHandler, loginHandler } from './modules/login';
 import NofiticationCenter from './components/NotificationCenter';
 import { kakaoInit } from './lib/initialize';
+import { notify } from './modules/notification';
 // import { RootState } from './modules';
 // export type LoginProps = boolean;
 
@@ -26,7 +27,7 @@ function App() {
       userColorTheme || 'light',
     );
     if (localLogin === 'true') {
-      dispatch(loginHandler());
+      dispatch(loginHandler(true));
     }
     if (userColorTheme === 'dark') {
       dispatch(darkHandler(true));
@@ -37,6 +38,16 @@ function App() {
 
   useEffect(() => {
     kakaoInit();
+  }, []);
+
+  useEffect(() => {
+    window.location.href.includes('access_token') && GetUser();
+    function GetUser() {
+      const location = window.location.href.split('=')[1];
+      const token = location.split('&')[0];
+      console.log('token: ', token);
+      dispatch(loginHandler(true));
+    }
   }, []);
 
   return (
