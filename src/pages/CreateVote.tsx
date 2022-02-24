@@ -116,7 +116,7 @@ const PlusOptionBtn = styled.button`
 `;
 const CheckboxContainer = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   width: 100%;
   justify-content: space-around;
 `;
@@ -297,35 +297,30 @@ function CreateVote() {
           {/* checkbox & calendar section */}
 
           <CheckboxContainer>
-            <div>
-              <CheckboxAndTitle>
-                <Checkbox
-                  type={'checkbox'}
-                  onChange={() => {
-                    setIsPlural(!isPlural);
-                  }}
-                />
-                <CheckboxTitle>중복 체크 여부</CheckboxTitle>
-              </CheckboxAndTitle>
-              <CheckboxAndTitle>
-                <Checkbox
-                  type={'checkbox'}
-                  onChange={() => {
-                    setIsPrivate(!isPrivate);
-                  }}
-                />
-                <CheckboxTitle>비공개</CheckboxTitle>
-              </CheckboxAndTitle>
-            </div>
-            {/* <CalendarBtn
-            type="date"
-            onChange={dateSelect}
-            value={calendarValue}
-          ></CalendarBtn> */}
-            <Scheduler
-              translate={'0, auto'}
-              CalenderValueHandler={CalenderValueHandler}
-            />
+            <CheckboxAndTitle>
+              <Checkbox
+                type={'checkbox'}
+                onChange={() => {
+                  setIsPlural(!isPlural);
+                }}
+              />
+              <CheckboxTitle>중복 체크 여부</CheckboxTitle>
+            </CheckboxAndTitle>
+            <CheckboxAndTitle>
+              <Checkbox
+                type={'checkbox'}
+                onChange={() => {
+                  setIsPrivate(!isPrivate);
+                }}
+              />
+              <CheckboxTitle>비공개</CheckboxTitle>
+            </CheckboxAndTitle>
+            <CheckboxAndTitle>
+              <Scheduler
+                translate={'0px, -550px'}
+                CalenderValueHandler={CalenderValueHandler}
+              />
+            </CheckboxAndTitle>
           </CheckboxContainer>
           <CreateBtn onClick={CreateBtnHandler}>투표만들기</CreateBtn>
         </SubBox>
