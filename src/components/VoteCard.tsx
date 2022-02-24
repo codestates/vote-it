@@ -125,7 +125,6 @@ export const VoteCard = ({
   id,
   subject,
   author,
-  isPrivate,
   createdAt,
   expirationDate,
 }: IPost) => {
@@ -143,9 +142,18 @@ export const VoteCard = ({
       </TitleBox>
       <StyledBody>
         <HiddenTitle>{subject}</HiddenTitle>
-        <StyledNum>참여인원 45명</StyledNum>
-        <StyledDate>시작일 {createdAt}</StyledDate>
-        <StyledDate>마감일 {expirationDate}</StyledDate>
+        {/* <StyledNum>참여인원 45명</StyledNum> */}
+        <StyledDate>시작일 {createdAt.split('T')[0]}</StyledDate>
+        <StyledDate>
+          {!expirationDate
+            ? expirationDate
+            : '마감일 ' + expirationDate.split('T')[0]}
+        </StyledDate>
+        <StyledDate>
+          {!expirationDate
+            ? expirationDate
+            : expirationDate.split('T')[1].split('.')[0] + ' 까지'}
+        </StyledDate>
         <StyledName>{author}</StyledName>
       </StyledBody>
     </VoteCardContainer>

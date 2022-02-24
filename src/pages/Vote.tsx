@@ -9,6 +9,10 @@ import { Share } from '../components/ShareModal';
 import { getPostById } from '../lib/postList';
 import { useLocation } from 'react-router-dom';
 import Chart from '../components/Chart';
+import { BiShareAlt } from 'react-icons/bi';
+import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
+import VoteDelModal from '../components/VoteDelModal';
+
 const VoteOuter = styled.div`
   padding-top: 48px;
   width: 100%;
@@ -63,14 +67,28 @@ const UserNameBox = styled.div`
     grid-column: span 6;
   }
 `;
+const EditDelBtn = styled.div`
+  font-family: 'SUIT-Medium';
+  font-size: larger;
+  color: var(--font-lighter);
+  grid-column: span 12;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  margin-bottom: 20px;
+  @media only screen and (max-width: 768px) {
+    grid-column: span 6;
+  }
+`;
 
-const ShareButton = styled.button`
+const ShareButton = styled.div`
+  &:hover {
+    color: var(--main-color);
+  }
   grid-column: span 12;
   padding: 4px;
   white-space: pre;
   width: fit-content;
-  border: 1px solid var(--border);
-  border-radius: 4px;
   /* svg {
     transform: translate(0, 2px);
   } */
@@ -126,7 +144,7 @@ export const Vote = () => {
   const [commentsList, setCommentsList] = useState<Icomments[]>([]);
   const [shareModal, setShareModal] = useState({ isOn: false, isShow: false });
   const [post, setPost] = useState<Post>(getPostById(id));
-
+  const [del, setDel] = useState(false);
   useEffect(() => {
     setOptions([
       { id: 0, name: 'option1', value: 20 },
@@ -166,13 +184,22 @@ export const Vote = () => {
       });
     }, 16);
   };
+  const handelDelBtn = () => {
+    setDel(true);
+  };
 
   return (
     <VoteOuter>
       <VoteContainer>
         <SubBox>{voteSub}</SubBox>
+        <EditDelBtn>
+          <AiOutlineEdit style={{ marginRight: '10px' }} />
+          <AiOutlineDelete onClick={handelDelBtn} />
+        </EditDelBtn>
         <UserNameBox>{username}</UserNameBox>
-        <ShareButton onClick={handleShareModal}>Share</ShareButton>
+        <ShareButton onClick={handleShareModal}>
+          <BiShareAlt style={{ width: '20px', height: 'auto' }} />
+        </ShareButton>
         <OptionsBox style={voted === -1 ? {} : { gridColumn: 'span 6' }}>
           {options.map((obj) => {
             return (
@@ -201,6 +228,7 @@ export const Vote = () => {
       {shareModal.isOn ? (
         <Share shareModal={shareModal} setShareModal={setShareModal} />
       ) : null}
+      {del ? <VoteDelModal setDel={setDel} /> : null}
     </VoteOuter>
   );
 };

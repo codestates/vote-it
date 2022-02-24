@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Dispatch, SetStateAction, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
@@ -6,6 +7,8 @@ import apiAxios from '../utils/apiAxios';
 import { notify } from '../modules/notification';
 import { RiGoogleFill, RiKakaoTalkFill } from 'react-icons/ri';
 import GoogleLogin from 'react-google-login';
+
+const { naver } = window as any;
 // import axios from 'axios';
 const Canvas = styled.div`
   position: fixed;
@@ -133,7 +136,7 @@ type InputValue = {
   password: string;
 };
 
-console.log(process.env);
+// console.log(process.env);
 
 const LoginModal: React.FunctionComponent<IProps> = ({
   modalOn,
@@ -173,7 +176,7 @@ const LoginModal: React.FunctionComponent<IProps> = ({
     const { email, password } = inputValue;
     //! 테스트용 계정 시작
     if (email === 'test' && password === 'test') {
-      dispatch(loginHandler());
+      dispatch(loginHandler(true));
       setModalOn({ isOn: false, isShow: false });
       localStorage.setItem('isLogin', 'true');
       localStorage.setItem('accessToken', 'test account token');
@@ -183,7 +186,7 @@ const LoginModal: React.FunctionComponent<IProps> = ({
       apiAxios
         .post(`auth/login`, { email, password })
         .then((res) => {
-          dispatch(loginHandler());
+          dispatch(loginHandler(true));
           setModalOn({ isOn: false, isShow: false });
           localStorage.setItem('isLogin', 'true');
           localStorage.setItem('accessToken', res.data.accessToken);
@@ -213,13 +216,42 @@ const LoginModal: React.FunctionComponent<IProps> = ({
       // });
 
       // localStorage.setItem("accessToken", res.data.accessToken);
-      localStorage.setItem('isLogin', 'true');
-      dispatch(loginHandler());
-      setModalOn({ isOn: false, isShow: false });
-      dispatch(notify('로그인이 완료되었습니다.'));
+      if (!!res.tokenObj.id_token) {
+        localStorage.setItem('isLogin', 'true');
+        dispatch(loginHandler(true));
+        setModalOn({ isOn: false, isShow: false });
+        dispatch(notify('로그인이 완료되었습니다.'));
+      }
     };
     googleLogin();
   };
+
+  const initializeNaverLogin = () => {
+    const naverLogin = new naver.LoginWithNaverId({
+      clientId: 'ZZSSVSxep8EvMx2ZFltZ',
+      callbackUrl: 'https://localhost:3000',
+      isPopup: false, // popup 형식으로 띄울것인지 설정
+      loginButton: { color: 'white', type: 3, height: '40', width: '192' }, //버튼의 스타일, 타입, 크기를 지정
+      callbackHandle: true,
+    });
+    naverLogin.init();
+    // naverLogin.logout(); // TODO: logout
+  };
+
+  useEffect(() => {
+    initializeNaverLogin();
+    // window.location.href.includes('access_token') && GetUser();
+    // function GetUser() {
+    //   const location = window.location.href.split('=')[1];
+    //   const token = location.split('&')[0];
+    //   console.log("token: ", token);
+    //   if (!token) return ;
+    //   localStorage.setItem('isLogin', 'true');
+    //   dispatch(loginHandler());
+    //   setModalOn({ isOn: false, isShow: false });
+    //   dispatch(notify('로그인이 완료되었습니다.'));
+    // }
+  }, []);
 
   return (
     <>
@@ -285,6 +317,10 @@ const LoginModal: React.FunctionComponent<IProps> = ({
               구글 로그인
             </Button> */}
             <Button color="white">
+              <div
+                id="naverIdLogin"
+                style={{ opacity: '0', position: 'absolute' }}
+              ></div>
               <span
                 style={{
                   marginRight: '5px',

@@ -3,7 +3,7 @@ export interface IPost {
   page?: number;
   subject: string;
   author: string;
-  isPrivate: boolean;
+  isPrivate?: boolean;
   createdAt: string;
   expirationDate: string;
 }
@@ -25,7 +25,14 @@ export const getPostById = (id: number) => {
 //   expirationDate: ""
 // }
 
-export const postList: IPost[] = [
+export const EditpostList = (index: number) => {
+  postList = postList.filter((obj) => {
+    if (index === obj.id) return false;
+    return true;
+  });
+};
+
+export let postList: IPost[] = [
   {
     id: 0,
     page: 1,
