@@ -13,7 +13,7 @@ import {
   Param,
   ParseIntPipe,
 } from '@nestjs/common';
-import { User } from '../../common/decorators/user.decorator';
+import { CurrentUser } from '../../common/decorators/current-user.decorator';
 
 @Controller('users/me/polls')
 @UseGuards(JwtAuthGuard)
@@ -23,7 +23,7 @@ export class UsersMePollsController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   createMyPoll(
-    @User() { userId }: JwtValidatePayload,
+    @CurrentUser() { userId }: JwtValidatePayload,
     @Body() createUserPollDto: CreateUserPollDto,
   ) {
     return this.pollsService.createPoll({
@@ -35,7 +35,7 @@ export class UsersMePollsController {
   @Delete(':pollId')
   @HttpCode(HttpStatus.NO_CONTENT)
   async deleteMyPoll(
-    @User() { userId }: JwtValidatePayload,
+    @CurrentUser() { userId }: JwtValidatePayload,
     @Param('pollId', ParseIntPipe) pollId: number,
   ): Promise<void> {
     await this.pollsService.deletePollOfAuthor(pollId, userId);
