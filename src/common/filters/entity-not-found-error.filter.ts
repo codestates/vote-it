@@ -17,12 +17,13 @@ export class EntityNotFoundErrorFilter
   };
 
   catch(exception: EntityNotFoundError, host: ArgumentsHost) {
-    const response = host.switchToHttp().getResponse<Response>();
     const errorEntity = exception.message.split('"')[1];
     const koreanEntityName =
       EntityNotFoundErrorFilter.koreanEntitiesName[errorEntity];
 
-    response
+    host
+      .switchToHttp()
+      .getResponse<Response>()
       .status(HttpStatus.NOT_FOUND)
       .json({ message: `존재하지 않는 ${koreanEntityName}입니다.` });
   }
