@@ -26,7 +26,8 @@ const Container = styled.div`
     3px 3px 8px var(--box-shadow-darker);
   height: 48px;
   z-index: 1;
-  background-color: var(--menu-bg);
+  background-color: var(--menu-bg-tp);
+  backdrop-filter: blur(5px);
 `;
 
 const Wrapper = styled.div`
