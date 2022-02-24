@@ -11,8 +11,8 @@ export class PollOption extends CommonEntity {
   content: string;
 
   @ManyToOne(() => Poll, (poll) => poll.options, {
-    nullable: false,
     onDelete: 'CASCADE',
+    nullable: false,
   })
   poll: Poll;
 }
