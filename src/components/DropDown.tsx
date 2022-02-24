@@ -20,7 +20,6 @@ const Container = styled.div`
   font-family: 'SUIT-Light';
   position: fixed;
   top: 48px;
-  right: 10px;
   min-height: 184px;
   width: 160px;
 
