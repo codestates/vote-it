@@ -26,12 +26,13 @@ export class UsersService {
       throw new ConflictException('이미 존재하는 닉네임입니다.');
     }
 
-    const insertResult = await this.userRepository.insert({
-      email,
-      nickname,
-      password,
-    });
-    return { userId: insertResult.raw.insertId as number };
+    const insertResult = await this.userRepository
+      .createQueryBuilder()
+      .insert()
+      .values({ email, nickname, password })
+      .returning('id')
+      .execute();
+    return { userId: insertResult.raw[0].id as number };
   }
 
   async getUserById(userId: number) {
