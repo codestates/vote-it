@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import FloatBtn from '../components/FloatBtn';
 import { LoadingVoteCard } from '../components/LoadingVoteCard';
 import { VoteCard } from '../components/VoteCard';
-import { getPostList, IPost } from '../lib/postList';
+import apiAxios from '../utils/apiAxios';
+import { useDispatch } from 'react-redux';
+import { notify } from '../modules/notification';
 
 const MainOuter = styled.div`
   padding-top: 48px;
@@ -37,30 +39,59 @@ const MainContainer = styled.div`
   padding-bottom: 20px;
 `;
 
+interface Author {
+  nickname: string;
+}
+
+interface Post {
+  id: number;
+  createdAt: string;
+  subject: string;
+  expirationDate: string;
+  author: Author;
+}
+
 export const Main = () => {
-  const [page, setPage] = useState<number>(1); //+
-  const [posts, setPosts] = useState<IPost[]>(getPostList(1)); //+
+  const [posts, setPosts] = useState<Post[]>([]); //+
   const [scrollY, setScrollY] = useState(0); //스크롤 값 저장
   const [btnStatus, setBtnStatus] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [offset, setOffset] = useState(1);
+  const [isEnd, setIsEnd] = useState(false);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    apiAxios.get(`/polls?offset=${offset}&limit=${12}`).then((res) => {
+      setPosts(res.data.polls);
+      setOffset(offset + 12);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleScroll = useCallback((): void => {
     //+
     const { innerHeight } = window;
     const { scrollHeight } = document.body;
     const { scrollTop } = document.documentElement;
-    if (
-      Math.round(scrollTop + innerHeight) > scrollHeight &&
-      getPostList(page + 1).length !== 0
-    ) {
+    if (Math.round(scrollTop + innerHeight) > scrollHeight && !isEnd) {
       setIsLoading(true);
-      setTimeout(() => {
-        setPosts(posts.concat(getPostList(page + 1)));
-        setPage(page + 1);
-        setIsLoading(false);
-      }, 2000);
+      apiAxios
+        .get(`/polls?offset=${offset}&limit=${12}`)
+        .then((res) => {
+          if (res.data.polls.length === 0) {
+            dispatch(notify('모든 투표를 불러왔습니다.'));
+            setIsLoading(false);
+            setIsEnd(true);
+            return;
+          }
+          setPosts([...posts, ...res.data.polls]);
+          setOffset(offset + 12);
+          setIsLoading(false);
+        })
+        .catch((err) => alert(err));
     }
-  }, [page, posts]);
+  }, [dispatch, isEnd, offset, posts]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, true);
@@ -104,14 +135,12 @@ export const Main = () => {
     <MainOuter>
       <MainContainer>
         {posts.map((el, idx) => {
-          if (el.isPrivate) return null; // 이후 삭제: private을 따로 처리해야함
           return (
             <VoteCard
               key={idx}
               id={el.id}
               subject={el.subject}
-              author={el.author}
-              isPrivate={el.isPrivate}
+              author={el.author.nickname}
               createdAt={el.createdAt}
               expirationDate={el.expirationDate}
             />
