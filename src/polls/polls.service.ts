@@ -42,9 +42,9 @@ export class PollsService {
         .insert()
         .into(Poll)
         .values({ author, ...createPollDto })
-        .updateEntity(false)
+        .returning('id')
         .execute();
-      const pollId = pollInsertResult.raw.insertId as number;
+      const pollId = pollInsertResult.raw[0].id as number;
       const optionsInsertResult = await manager
         .createQueryBuilder()
         .insert()
@@ -55,13 +55,14 @@ export class PollsService {
             poll: { id: pollId },
           })),
         )
-        .updateEntity(false)
+        .returning('id')
         .execute();
-      const optionsFirstId = optionsInsertResult.raw.insertId as number;
-      const optionsCount = optionsInsertResult.raw.affectedRows as number;
+      const optionIds = (optionsInsertResult.raw as { id: number }[]).map(
+        (option) => option.id,
+      );
       return {
         pollId,
-        options: { firstId: optionsFirstId, count: optionsCount },
+        optionIds,
       };
     });
   }
