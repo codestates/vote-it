@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Suggestion, SchedulerCalender } from './';
 import { FaRegCalendarAlt, FaRegTimesCircle } from 'react-icons/fa';
-import { checkValidDate, dateInfoMod, setDateAlias } from '../functions';
+import { checkValidDate, setDateAlias } from '../functions';
 
 const Container = styled.div`
   padding: 4px;
@@ -196,14 +196,15 @@ function time() {
   thisDay = kstDate.getDate();
   thisMonth = kstDate.getMonth() + 1;
   thisYear = kstDate.getFullYear();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   thisHour = kstDate.getHours();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   thisMinute = kstDate.getMinutes();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   thisSecond = kstDate.getSeconds();
   dateStr = `${thisYear}${
     thisMonth.toString().length === 1 ? `0${thisMonth}` : thisMonth
   }${thisDay.toString().length === 1 ? `0${thisDay}` : thisDay}`;
-
-  console.log('time 함수 실행');
 }
 
 function useInterval(cb: Function, delay: number) {
@@ -246,24 +247,16 @@ const Scheduler: React.FunctionComponent<IProps> = ({
   // 형식: {date: "20220222", time: "14:53"} => 22년 2월 22일 오후 2시 53분
   // DB 저장형식(datetime?): "20220222T14:53"
 
-  //!  날짜 데이터를 state를 재지정해서 뽑아올지, div태그 value값을 가져올지는 편한걸로 결정하심 될듯합니다
-
-  //? 얘는 안쓸것같음. 판단 후 삭제
-  const [dateInfo, setDateInfo] = useState({
-    thisDay,
-    thisMonth,
-    thisYear,
-    thisHour,
-    thisMinute,
-    thisSecond,
-  });
+  //! 날짜 데이터 뽑아올 방식 논의 필요
+  //? 예시:
+  // useEffect(() => {
+  //   // props로 받은 변수 변경 코드
+  // },[inputValue])
 
   const [inputFocus, setInputFocus] = useState(false);
   const [inputValidCheck, setInputValidCheck] = useState(true);
 
   const modifyButtonText = () => {
-    //! 예정: Mod 함수 생성 후 날짜 별칭 사용할것임
-    //! 아직 시간만 있을 경우의 로직 없음: 시간만 있을 경우에는 오늘날짜로 적용할것임
     const yearText = Number(inputValue.date.slice(0, 4));
     const monthText = Number(inputValue.date.slice(4, 6));
     const dayText = Number(inputValue.date.slice(6, 8));
@@ -271,17 +264,8 @@ const Scheduler: React.FunctionComponent<IProps> = ({
       dateMod = `${yearText}년 ${monthText}월 ${dayText}일`,
       timeMod = inputValue.time;
     const dateAlias = setDateAlias(yearText, monthText, dayText);
-    dateMod = dateAlias;
+    if (dateAlias !== 'none') dateMod = dateAlias;
     if (inputValue.date === '') dateMod = '오늘';
-    // if (yearText === thisYear && monthText === thisMonth && dayText === thisDay)
-    //   dateMod = '오늘';
-    // if (
-    //   yearText === thisYear &&
-    //   monthText === thisMonth &&
-    //   dayText === thisDay + 1
-    // )
-    //   dateMod = '내일';
-
     if (inputValue.time === '12:00') timeMod = '정오';
     if (inputValue.time === '00:00') timeMod = '자정';
     textMod =
@@ -452,7 +436,7 @@ const Scheduler: React.FunctionComponent<IProps> = ({
                   isFa={false}
                   faSource={-1}
                   dateInfo={{
-                    dotw: `다음주 ${dayList[thisDotw]}`,
+                    dotw: `${dayList[thisDotw]}`,
                     date: dateStr,
                     mod: 7,
                     time: '',

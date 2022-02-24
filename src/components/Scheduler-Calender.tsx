@@ -1,5 +1,4 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { useCallback } from 'react';
 import styled from 'styled-components';
 import { FaRegDotCircle, FaAngleRight, FaAngleLeft } from 'react-icons/fa';
 
@@ -123,7 +122,7 @@ interface IProps {
   setInputValue: Dispatch<SetStateAction<InputValue>>;
 }
 
-// 달력 변수 시작
+//! 달력 변수 시작
 const originDate = new Date();
 const utc = originDate.getTime() + originDate.getTimezoneOffset() * 60 * 1000;
 const kstGap = 9 * 60 * 60 * 1000;
@@ -133,7 +132,7 @@ const thisMonth = today.getMonth();
 const thisYear = today.getFullYear();
 let kstDate = new Date(utc + kstGap);
 
-// 달력 변수 끝
+//! 달력 변수 끝
 
 const SchedulerCalender: React.FunctionComponent<IProps> = ({
   inputValue,
@@ -155,13 +154,9 @@ const SchedulerCalender: React.FunctionComponent<IProps> = ({
     inputDay: 22,
   });
   const dateName = ['일', '월', '화', '수', '목', '금', '토'];
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { date, time } = inputValue;
   const { inputYear, inputMonth, inputDay } = inputDate;
-  // const [inputYear, inputMonth, inputDay] = [
-  //   Number(date.slice(0, 4)),
-  //   Number(date.slice(4, 6)),
-  //   Number(date.slice(6, 8)),
-  // ];
 
   const renderCalender = () => {
     const viewYear = kstDate.getFullYear();
@@ -221,9 +216,8 @@ const SchedulerCalender: React.FunctionComponent<IProps> = ({
       inputMonth: Number(date.slice(4, 6)),
       inputDay: Number(date.slice(6, 8)),
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputValue]);
-
-  //
 
   return (
     <Container>
@@ -279,7 +273,11 @@ const SchedulerCalender: React.FunctionComponent<IProps> = ({
                 </div>
               );
             return (
-              <div key={i} className="calender-day disabled">
+              <div
+                key={i}
+                onClick={handleMonth(-1)}
+                className="calender-day disabled"
+              >
                 {v}
               </div>
             );
@@ -342,7 +340,11 @@ const SchedulerCalender: React.FunctionComponent<IProps> = ({
           // 다음달
           dayList[2].map((v, i) => {
             return (
-              <div key={i} className="calender-day disabled">
+              <div
+                key={i}
+                onClick={handleMonth(1)}
+                className="calender-day disabled"
+              >
                 {v}
               </div>
             );
