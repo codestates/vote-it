@@ -16,7 +16,6 @@ const Canvas = styled.div`
 const Container = styled.div`
   position: fixed;
   top: 48px;
-  right: 10px;
   /* transform: translate(-50%, 32px); */
   /* padding: 8px; */
   z-index: 999;

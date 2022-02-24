@@ -41,7 +41,7 @@ const SideBarBtn = styled.div`
   line-height: 55px;
   top: 48px;
   left: 20px;
-  z-index: 999;
+  z-index: 10;
   width: 40px;
   height: 40px;
   /* border-radius: 30px; */
@@ -95,7 +95,7 @@ const Setting: React.FunctionComponent<IProps> = () => {
           SideBarHandler();
         }}
       >
-        <FaBars />
+        <FaBars style={{ zIndex: '10' }} />
       </SideBarBtn>
       <Container>
         <Sidebar
