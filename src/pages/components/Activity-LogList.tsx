@@ -58,7 +58,7 @@ const VoteList: React.FunctionComponent<IProps> = () => {
     {
       id: 0,
       message: 'message1',
-      createdAt: '2022-02-22T13:32:00',
+      createdAt: '2022-02-24T16:31:00',
     },
     {
       id: 1,
