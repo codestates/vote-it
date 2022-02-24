@@ -76,9 +76,13 @@ const Days = styled.div`
     border-bottom: 1px solid var(--border-lighter);
   }
   .calender-day {
+    font-size: 14px;
     height: 24px;
+    line-height: 24px;
     margin: 4px;
+
     border-radius: 100px;
+
     cursor: pointer;
     :hover {
       background-color: var(--main-color-tint);
