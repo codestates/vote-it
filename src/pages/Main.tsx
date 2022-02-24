@@ -56,7 +56,7 @@ export const Main = () => {
   const [scrollY, setScrollY] = useState(0); //스크롤 값 저장
   const [btnStatus, setBtnStatus] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [offset, setOffset] = useState(1);
+  const [offset, setOffset] = useState(0);
   const [isEnd, setIsEnd] = useState(false);
 
   const dispatch = useDispatch();
