@@ -3,7 +3,7 @@ export interface IPost {
   page?: number;
   subject: string;
   author: string;
-  isPrivate: boolean;
+  isPrivate?: boolean;
   createdAt: string;
   expirationDate: string;
 }
