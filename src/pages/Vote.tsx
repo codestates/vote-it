@@ -228,7 +228,7 @@ export const Vote = () => {
       {shareModal.isOn ? (
         <Share shareModal={shareModal} setShareModal={setShareModal} />
       ) : null}
-      {del ? <VoteDelModal setDel={setDel} /> : null}
+      {del ? <VoteDelModal setDel={setDel} id={id} /> : null}
     </VoteOuter>
   );
 };

@@ -1,8 +1,10 @@
 import React, { Dispatch, SetStateAction } from 'react';
-
+import apiAxios from '../utils/apiAxios';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { EditpostList } from '../lib/postList';
+import { notify } from '../modules/notification';
 const Canvas = styled.div`
   position: fixed;
   left: 0;
@@ -51,20 +53,32 @@ const Button = styled.div`
 
 interface IProps {
   setDel: Dispatch<SetStateAction<boolean>>;
+  id: number;
 }
 
-const VoteModal: React.FunctionComponent<IProps> = ({ setDel }) => {
+const VoteModal: React.FunctionComponent<IProps> = ({ setDel, id }) => {
   const handleDropOff = () => {
     setDel(false);
   };
 
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const handleDelBtn = () => {
-    let url = window.location.href.split('/');
-    const index = Number(url[url.length - 1]);
-    EditpostList(index);
-    navigate(`/`);
+    const access = localStorage.getItem('accessToken');
+    apiAxios
+      .delete(`users/me/polls/${id}`, {
+        headers: {
+          Authorization: `Bearer ${access}`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        EditpostList(id);
+
+        navigate(`/`);
+        dispatch(notify('투표가 삭제 되었습니다.'));
+      })
+      .catch((err) => alert(err));
   };
 
   return (
