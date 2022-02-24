@@ -14,7 +14,7 @@ import {
   NotImplementedException,
   Delete,
 } from '@nestjs/common';
-import { User } from '../../common/decorators/user.decorator';
+import { CurrentUser } from '../../common/decorators/current-user.decorator';
 
 @Controller('users/me')
 @UseGuards(JwtAuthGuard)
@@ -22,13 +22,13 @@ export class UsersMeController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  getMyData(@User() { userId }: JwtValidatePayload) {
+  getMyData(@CurrentUser() { userId }: JwtValidatePayload) {
     return this.usersService.getUserById(userId);
   }
 
   @Patch()
   updateMyProfile(
-    @User() { userId }: JwtValidatePayload,
+    @CurrentUser() { userId }: JwtValidatePayload,
     @Body() updateUserProfileDto: UpdateUserProfileDto,
   ) {
     return this.usersService.updateUserProfileById(
@@ -38,14 +38,14 @@ export class UsersMeController {
   }
 
   @Patch('picture')
-  async updateMyPicture(@User() {}: JwtValidatePayload) {
+  async updateMyPicture(@CurrentUser() {}: JwtValidatePayload) {
     throw new NotImplementedException();
   }
 
   @Patch('password')
   @HttpCode(HttpStatus.NO_CONTENT)
   async updateMyPassword(
-    @User() { userId }: JwtValidatePayload,
+    @CurrentUser() { userId }: JwtValidatePayload,
     @Body() updateUserPasswordDto: UpdateUserPasswordDto,
   ): Promise<void> {
     await this.usersService.updateUserPasswordById(
@@ -56,7 +56,7 @@ export class UsersMeController {
 
   @Delete()
   @HttpCode(HttpStatus.NO_CONTENT)
-  async deleteMe(@User() { userId }: JwtValidatePayload): Promise<void> {
+  async deleteMe(@CurrentUser() { userId }: JwtValidatePayload): Promise<void> {
     await this.usersService.deleteUserById(userId);
   }
 }
