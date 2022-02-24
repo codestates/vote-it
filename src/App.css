@@ -1,6 +1,7 @@
 :root[color-theme='light'] {
   --bg: #f8f8f8;
   --menu-bg: #fff;
+  --menu-bg-tp: rgba(255, 255, 255, 0.7);
   --box-bg: #fff;
   --box-bg-lighter: #e7e7e7;
   --box-shadow: #ececec;
@@ -22,6 +23,7 @@
 :root[color-theme='dark'] {
   --bg: #0d1117;
   --menu-bg: #161b22;
+  --menu-bg-tp: rgba(22, 27, 34, 0.7);
   --box-bg: #161b22;
   --box-bg-lighter: #2e343b;
   --box-shadow: #222;

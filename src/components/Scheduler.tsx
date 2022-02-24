@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Suggestion, SchedulerCalender } from './';
 import { FaRegCalendarAlt, FaRegTimesCircle } from 'react-icons/fa';
+import { checkValidDate, dateInfoMod, setDateAlias } from '../functions';
 
 const Container = styled.div`
   padding: 4px;
@@ -56,7 +57,7 @@ const InputWrapper = styled.div<{ focus: boolean }>`
   flex-shrink: 0;
   padding: 6px;
   align-items: center;
-  div {
+  .input-wrapper {
     display: flex;
     flex: 1 0 auto;
     flex-shrink: 0;
@@ -92,6 +93,18 @@ const InputWrapper = styled.div<{ focus: boolean }>`
       transition: all 0.5s;
     } */
   }
+`;
+
+const InputValidCheck = styled.div`
+  top: 32px;
+  position: absolute;
+  font-size: 12px;
+  color: red;
+  padding: 4px;
+  background-color: var(--box-bg);
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 4px 0 rgb(0 0 0 / 15%), 0 0 2px 0 rgb(0 0 0 / 40%);
+  white-space: pre;
 `;
 
 const SuggestionWrapper = styled.div`
@@ -156,6 +169,7 @@ const TimeSelectorWrapper = styled.div`
   }
 `;
 
+//! 변수, 함수 시작
 const kstGap = 9 * 60 * 60 * 1000;
 
 const dayList = ['일', '월', '화', '수', '목', '금', '토'];
@@ -163,26 +177,53 @@ const dayList = ['일', '월', '화', '수', '목', '금', '토'];
 let originDate = new Date(),
   utc = originDate.getTime() + originDate.getTimezoneOffset() * 60 * 1000,
   kstDate: Date = new Date(utc + kstGap),
-  thisDay: number,
-  thisMonth: number,
-  thisYear: number,
+  thisDotw: number = kstDate.getDay(),
+  thisDay: number = kstDate.getDate(),
+  thisMonth: number = kstDate.getMonth() + 1,
+  thisYear: number = kstDate.getFullYear(),
   thisHour: number,
   thisMinute: number,
-  thisSecond: number;
+  thisSecond: number,
+  dateStr: string = `${thisYear}${
+    thisMonth.toString().length === 1 ? `0${thisMonth}` : thisMonth
+  }${thisDay.toString().length === 1 ? `0${thisDay}` : thisDay}`;
 
 function time() {
   originDate = new Date();
   utc = originDate.getTime() + originDate.getTimezoneOffset() * 60 * 1000;
   kstDate = new Date(utc + kstGap);
+  thisDotw = kstDate.getDay();
   thisDay = kstDate.getDate();
-  thisMonth = kstDate.getMonth();
+  thisMonth = kstDate.getMonth() + 1;
   thisYear = kstDate.getFullYear();
   thisHour = kstDate.getHours();
   thisMinute = kstDate.getMinutes();
   thisSecond = kstDate.getSeconds();
+  dateStr = `${thisYear}${
+    thisMonth.toString().length === 1 ? `0${thisMonth}` : thisMonth
+  }${thisDay.toString().length === 1 ? `0${thisDay}` : thisDay}`;
 
   console.log('time 함수 실행');
 }
+
+function useInterval(cb: Function, delay: number) {
+  const savedCallback = useRef<Function>();
+  useEffect(() => {
+    savedCallback.current = cb;
+  }, [cb]);
+
+  useEffect(() => {
+    function tick() {
+      if (typeof savedCallback.current === 'function') savedCallback.current();
+    }
+    if (delay !== null) {
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }
+  }, [delay]);
+}
+
+//! 변수, 함수 끝
 
 interface Calender {
   date: string;
@@ -218,17 +259,35 @@ const Scheduler: React.FunctionComponent<IProps> = ({
   });
 
   const [inputFocus, setInputFocus] = useState(false);
+  const [inputValidCheck, setInputValidCheck] = useState(true);
 
   const modifyButtonText = () => {
     //! 예정: Mod 함수 생성 후 날짜 별칭 사용할것임
     //! 아직 시간만 있을 경우의 로직 없음: 시간만 있을 경우에는 오늘날짜로 적용할것임
-    const textMod =
+    const yearText = Number(inputValue.date.slice(0, 4));
+    const monthText = Number(inputValue.date.slice(4, 6));
+    const dayText = Number(inputValue.date.slice(6, 8));
+    let textMod,
+      dateMod = `${yearText}년 ${monthText}월 ${dayText}일`,
+      timeMod = inputValue.time;
+    const dateAlias = setDateAlias(yearText, monthText, dayText);
+    dateMod = dateAlias;
+    if (inputValue.date === '') dateMod = '오늘';
+    // if (yearText === thisYear && monthText === thisMonth && dayText === thisDay)
+    //   dateMod = '오늘';
+    // if (
+    //   yearText === thisYear &&
+    //   monthText === thisMonth &&
+    //   dayText === thisDay + 1
+    // )
+    //   dateMod = '내일';
+
+    if (inputValue.time === '12:00') timeMod = '정오';
+    if (inputValue.time === '00:00') timeMod = '자정';
+    textMod =
       inputValue.date === '' && inputValue.time === ''
         ? '마감시간'
-        : `${inputValue.date.slice(2, 4)}년 ${inputValue.date.slice(
-            4,
-            6,
-          )}월 ${inputValue.date.slice(6, 8)}일 ${inputValue.time}`;
+        : `${dateMod} ${timeMod}`;
     setButtonText(textMod);
   };
 
@@ -241,10 +300,20 @@ const Scheduler: React.FunctionComponent<IProps> = ({
 
   const handleInputValue =
     (key: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
-      setInputValue({ ...inputValue, [key]: e.target.value });
+      const value = e.target.value;
+      if (key === 'date') {
+        const y = value.slice(0, 4);
+        const m = value.slice(4, 6);
+        const d = value.slice(6, 8);
+        const leng = value.length;
+        const validCheck = checkValidDate(y, m, d, leng);
+        if (validCheck !== inputValidCheck) {
+          // console.log('validcheck');
+          setInputValidCheck(validCheck);
+        }
+      }
+      setInputValue({ ...inputValue, [key]: value });
     };
-
-  const handleOnInput = () => {};
 
   const handleInputFocus = () => {
     setInputFocus(true);
@@ -272,13 +341,13 @@ const Scheduler: React.FunctionComponent<IProps> = ({
     if (e.key === 'Escape') setView(false);
   };
 
-  useEffect(() => {
-    //! Suggestion 활용을 위한 매초단위 날짜정보 갱신
-    setInterval(time, 1000);
-  }, []);
+  useInterval(() => {
+    time();
+  }, 1000);
 
   useEffect(() => {
     modifyButtonText();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputValue]);
 
   //! 팝업버튼 이미지는 맘에 드는걸로 바꾸셔도됨
@@ -295,7 +364,7 @@ const Scheduler: React.FunctionComponent<IProps> = ({
           <Popper ts={translate}>
             <View>
               <InputWrapper focus={inputFocus}>
-                <div>
+                <div className="input-wrapper">
                   <input
                     type="number"
                     pattern="[0-9]+"
@@ -312,6 +381,11 @@ const Scheduler: React.FunctionComponent<IProps> = ({
                     <FaRegTimesCircle onClick={handleDeleteDate} />
                   )}
                 </div>
+                {inputValidCheck ? null : (
+                  <InputValidCheck>
+                    올바른 날짜를 기입해주세요: 'yyyymmdd'
+                  </InputValidCheck>
+                )}
               </InputWrapper>
               <TimeSelectorWrapper>
                 {addTime ? (
@@ -334,19 +408,16 @@ const Scheduler: React.FunctionComponent<IProps> = ({
               </TimeSelectorWrapper>
               <SuggestionWrapper>
                 <Suggestion
-                  content="30분"
-                  imageSource={`${process.env.PUBLIC_URL}/vote-it_LOGO1.ico`}
-                  isFa={false}
-                  faSource={-1}
-                  dateInfo={`${thisHour} : ${thisMinute + 30}`}
-                  setInputValue={setInputValue}
-                />
-                <Suggestion
                   content="오늘"
                   imageSource={`${process.env.PUBLIC_URL}/vote-it_LOGO1.ico`}
                   isFa={false}
                   faSource={-1}
-                  dateInfo={`${dayList[thisDay]}`}
+                  dateInfo={{
+                    dotw: `${dayList[thisDotw]}`,
+                    date: dateStr,
+                    mod: 0,
+                    time: '',
+                  }}
                   setInputValue={setInputValue}
                 />
                 <Suggestion
@@ -354,7 +425,12 @@ const Scheduler: React.FunctionComponent<IProps> = ({
                   imageSource={`${process.env.PUBLIC_URL}/vote-it_LOGO1.ico`}
                   isFa={false}
                   faSource={-1}
-                  dateInfo={`${dayList[thisDay + 1 === 7 ? 0 : thisDay + 1]}`}
+                  dateInfo={{
+                    dotw: `${dayList[thisDotw + 1 === 7 ? 0 : thisDotw + 1]}`,
+                    date: dateStr,
+                    mod: 1,
+                    time: '',
+                  }}
                   setInputValue={setInputValue}
                 />
                 <Suggestion
@@ -362,15 +438,38 @@ const Scheduler: React.FunctionComponent<IProps> = ({
                   imageSource={`${process.env.PUBLIC_URL}/vote-it_LOGO1.ico`}
                   isFa={false}
                   faSource={-1}
-                  dateInfo={`${dayList[6]}`}
+                  dateInfo={{
+                    dotw: `${dayList[6]}`,
+                    date: dateStr,
+                    mod: 6 - thisDotw,
+                    time: '',
+                  }}
                   setInputValue={setInputValue}
                 />
                 <Suggestion
-                  content="날짜 지우기"
+                  content="일주일"
+                  imageSource={`${process.env.PUBLIC_URL}/vote-it_LOGO1.ico`}
+                  isFa={false}
+                  faSource={-1}
+                  dateInfo={{
+                    dotw: `다음주 ${dayList[thisDotw]}`,
+                    date: dateStr,
+                    mod: 7,
+                    time: '',
+                  }}
+                  setInputValue={setInputValue}
+                />
+                <Suggestion
+                  content="지우기"
                   imageSource={'FaBan'}
                   isFa={true}
                   faSource={0}
-                  dateInfo=""
+                  dateInfo={{
+                    dotw: '',
+                    date: '',
+                    mod: 0,
+                    time: '',
+                  }}
                   setInputValue={setInputValue}
                 />
               </SuggestionWrapper>
