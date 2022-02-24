@@ -229,6 +229,11 @@ function CreateVote() {
         {
           subject: title,
           expirationDate: calendarValue,
+          isPrivate: false,
+          isPlural: false,
+          options: optionList.map((el) => {
+            return { content: el };
+          }),
         },
         {
           headers: {
