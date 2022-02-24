@@ -6,6 +6,7 @@ import apiAxios from '../utils/apiAxios';
 import '../fonts/font.css';
 import { useDispatch } from 'react-redux';
 import { notify } from '../modules/notification';
+import { useNavigate } from 'react-router-dom';
 
 const Outer = styled.div`
   font-family: 'EliceDigitalBaeum_Regular';
@@ -157,7 +158,9 @@ function CreateVote() {
   const [calendarValue, setCalendarValue] = useState('');
   const [title, setTitle] = useState('');
   const [optionList, setOptionList] = useState<string[]>(['', '', '', '']);
-  const [option, setOption] = useState('');
+  const [isPrivate, setIsPrivate] = useState(false);
+  const [isPlural, setIsPlural] = useState(false);
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
@@ -170,7 +173,6 @@ function CreateVote() {
     index: number,
   ) => {
     const value = e.target.value;
-    setOption(value);
 
     setOptionList([
       ...optionList.slice(undefined, index),
@@ -185,6 +187,9 @@ function CreateVote() {
   }
 
   const CalenderValueHandler = ({ date, time }: CalenderValue) => {
+    if (time === '') {
+      time = '23:59:59';
+    }
     setCalendarValue(
       date.slice(0, 4) +
         '-' +
@@ -218,8 +223,12 @@ function CreateVote() {
       dispatch(notify('제목을 입력해주세요.'));
       return;
     }
-    if (optionList.filter((el) => el !== '').length === 0) {
-      dispatch(notify('선택지를 입력해주세요.'));
+    if (optionList.filter((el) => el !== '').length < 2) {
+      dispatch(notify('선택지는 최소 2개 이상입니다.'));
+      return;
+    }
+    if (calendarValue === '') {
+      dispatch(notify('마감 시간을 입력해주세요.'));
       return;
     }
     const accessToken = localStorage.getItem('accessToken');
@@ -229,11 +238,13 @@ function CreateVote() {
         {
           subject: title,
           expirationDate: calendarValue,
-          isPrivate: false,
-          isPlural: false,
-          options: optionList.map((el) => {
-            return { content: el };
-          }),
+          isPrivate: isPrivate,
+          isPlural: isPlural,
+          options: optionList
+            .filter((el) => el !== '')
+            .map((el) => {
+              return { content: el };
+            }),
         },
         {
           headers: {
@@ -243,9 +254,12 @@ function CreateVote() {
       )
       .then((res) => {
         dispatch(notify('투표가 등록되었습니다.'));
-        window.location.href = '/';
+        // window.location.href = '/';
+        navigate('/');
       })
-      .catch((err) => alert(err));
+      .catch((err) => {
+        console.log(err.response.data);
+      });
   };
 
   return (
@@ -285,11 +299,21 @@ function CreateVote() {
           <CheckboxContainer>
             <div>
               <CheckboxAndTitle>
-                <Checkbox type={'checkbox'} />
+                <Checkbox
+                  type={'checkbox'}
+                  onChange={() => {
+                    setIsPlural(!isPlural);
+                  }}
+                />
                 <CheckboxTitle>중복 체크 여부</CheckboxTitle>
               </CheckboxAndTitle>
               <CheckboxAndTitle>
-                <Checkbox type={'checkbox'} />
+                <Checkbox
+                  type={'checkbox'}
+                  onChange={() => {
+                    setIsPrivate(!isPrivate);
+                  }}
+                />
                 <CheckboxTitle>비공개</CheckboxTitle>
               </CheckboxAndTitle>
             </div>
