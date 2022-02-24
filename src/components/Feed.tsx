@@ -14,17 +14,19 @@ const Canvas = styled.div`
 `;
 
 const Container = styled.div`
-  position: absolute;
-  top: 35px;
-  transform: translate(-50%, 32px);
+  position: fixed;
+  top: 48px;
+  right: 10px;
+  /* transform: translate(-50%, 32px); */
   /* padding: 8px; */
+  z-index: 999;
 `;
 
 const View = styled.div`
   font-family: 'SUIT-Light';
   display: flex;
   flex-direction: column;
-  position: absolute;
+  /* position: absolute; */
   padding: 8px;
   width: 256px;
   min-height: 256px;
@@ -36,7 +38,6 @@ const View = styled.div`
     3px 3px 8px var(--box-shadow-darker);
 
   overflow-y: auto;
-  z-index: 999;
 `;
 
 const FeedWrapper = styled.div`

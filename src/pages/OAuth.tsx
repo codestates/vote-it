@@ -2,12 +2,15 @@ import { Dispatch, SetStateAction, useEffect } from 'react';
 import queryString from 'query-string';
 import axios from 'axios';
 import apiAxios from '../utils/apiAxios';
+import { useDispatch } from 'react-redux';
+import { notify } from '../modules/notification';
 
 interface Props {
   setHeaderVisibility: Dispatch<SetStateAction<boolean>>;
 }
 
 export const OAuth = ({ setHeaderVisibility }: Props) => {
+  const dispatch = useDispatch();
   const query = queryString.parse(window.location.search);
 
   const sendKakaoTokenToServer = (token: string) => {
@@ -28,7 +31,7 @@ export const OAuth = ({ setHeaderVisibility }: Props) => {
       })
       .catch((err) => {
         window.location.href = '/';
-        window.alert('로그인 서버에 오류가 있습니다');
+        dispatch(notify('뭔가 잘못됐어요!'));
       });
   };
 
@@ -51,7 +54,7 @@ export const OAuth = ({ setHeaderVisibility }: Props) => {
         },
       })
       .then((res) => {
-        console.log(res.data.access_token);
+        // console.log(res.data.access_token);
         sendKakaoTokenToServer(res.data.access_token);
       });
   };
@@ -64,6 +67,7 @@ export const OAuth = ({ setHeaderVisibility }: Props) => {
     return () => {
       setHeaderVisibility(true);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return <div>투표 용지 만드는중..</div>;
 };
