@@ -29,10 +29,11 @@ const Container = styled.div<IContainerProps>`
 
   @media only screen and (max-width: 500px) {
     position: fixed;
-    top: 48px;
+    top: 100px;
+    right: 20px;
     margin: 0;
     grid-column: span 6;
-    width: 256px;
+    width: 200px;
     display: ${(props) => props.isSideBar};
   }
 `;
