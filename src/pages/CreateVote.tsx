@@ -43,7 +43,7 @@ const SubBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100%;
+  height: 100vh;
   @media only screen and (max-width: 500px) {
     grid-column: span 6;
   }
@@ -73,7 +73,7 @@ const OptionContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  max-height: 45%;
+  max-height: 40%;
   padding: 10px;
 `;
 const Option = styled.div`
