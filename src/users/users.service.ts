@@ -8,7 +8,6 @@ import {
   Injectable,
   ForbiddenException,
 } from '@nestjs/common';
-import { pickUserData } from '../common/utils/pick-data.util';
 import { EntityNotFoundError } from 'typeorm';
 import { User } from './entities/user.entity';
 
@@ -36,18 +35,23 @@ export class UsersService {
   }
 
   async getUserById(userId: number) {
-    const user = await this.userRepository.findOneOrFail(userId);
-    return pickUserData(user);
+    const user = await this.userRepository
+      .createQueryBuilder('user')
+      .select(['user.id', 'user.email', 'user.nickname', 'user.picture'])
+      .where('user.id = :userId', { userId })
+      .getOneOrFail();
+    return user;
   }
 
   async updateUserProfileById(
     userId: number,
     updateUserProfileDto: UpdateUserProfileDto,
   ) {
-    const updateResult = await this.userRepository.update(
-      userId,
-      updateUserProfileDto,
-    );
+    const updateResult = await this.userRepository
+      .createQueryBuilder('user')
+      .update(updateUserProfileDto)
+      .where('user.id = :userId', { userId })
+      .execute();
     if (updateResult.affected === 0) {
       throw new EntityNotFoundError(User, userId);
     }
@@ -58,17 +62,27 @@ export class UsersService {
     userId: number,
     { currentPassword, newPassword }: UpdateUserPasswordDto,
   ) {
-    const user = await this.userRepository.findOneOrFail(userId, {
-      select: ['password'],
-    });
+    const user = await this.userRepository
+      .createQueryBuilder('user')
+      .select('user.password')
+      .where('user.id = :userId', { userId })
+      .getOneOrFail();
     if (user.password !== currentPassword) {
       throw new ForbiddenException('currentPassword가 유효하지 않습니다.');
     }
-    this.userRepository.update(userId, { password: newPassword });
+    this.userRepository
+      .createQueryBuilder('user')
+      .update({ password: newPassword })
+      .where('user.id = :userId', { userId })
+      .execute();
   }
 
   async deleteUserById(userId: number) {
-    const deleteResult = await this.userRepository.delete(userId);
+    const deleteResult = await this.userRepository
+      .createQueryBuilder()
+      .delete()
+      .where('id = :userId', { userId })
+      .execute();
     if (deleteResult.affected === 0) {
       throw new EntityNotFoundError(User, userId);
     }
