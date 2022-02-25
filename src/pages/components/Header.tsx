@@ -89,7 +89,7 @@ const SettingWrapper = styled.div`
   display: flex;
   /* flex: 1 0 auto; */
   grid-column: 11 / span 2;
-  justify-content: space-between;
+  justify-content: space-around;
   svg {
     transform: translate(0, 6px);
     :hover {
@@ -164,7 +164,7 @@ const LoginWrapper = styled.div`
   display: flex;
   /* flex: 1 0 auto; */
   grid-column: 11 / span 2;
-  justify-content: space-between;
+  justify-content: space-around;
   div {
     height: 32px;
     line-height: 32px;
@@ -364,8 +364,9 @@ const Header: React.FunctionComponent = () => {
               onClick={() => {
                 setIsMiniOpen(true);
               }}
+              style={{ marginTop: '5px' }}
             >
-              <FaSearch style={{ fontSize: '18px' }} />
+              <FaSearch />
             </SearchIcon>
             <TextButton onClick={handleModal('login')}>LOGIN</TextButton>
             <TextButton onClick={handleModal('signup')}>SIGNUP</TextButton>

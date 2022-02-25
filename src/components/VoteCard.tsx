@@ -97,13 +97,13 @@ const HiddenTitle = styled.div`
   }
 `;
 
-// const StyledNum = styled.div`
-//   font-family: 'IBMPlexSansKR-Light';
-//   @media only screen and (min-width: 501px) {
-//     font-size: large;
-//     font-weight: bold;
-//   }
-// `;
+const StyledNum = styled.div`
+  font-family: 'IBMPlexSansKR-Light';
+  @media only screen and (min-width: 501px) {
+    font-size: large;
+    font-weight: bold;
+  }
+`;
 
 const StyledDate = styled.div`
   font-size: medium;
@@ -147,7 +147,7 @@ export const VoteCard = ({
       </TitleBox>
       <StyledBody>
         <HiddenTitle>{subject}</HiddenTitle>
-        {/* <StyledNum>참여인원 45명</StyledNum> */}
+        <StyledNum>참여인원 45명</StyledNum>
         <StyledDate>시작일 {createdAt.split('T')[0]}</StyledDate>
         <StyledDate>
           {!expirationDate
