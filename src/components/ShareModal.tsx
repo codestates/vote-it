@@ -1,11 +1,4 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { Dispatch, SetStateAction, useRef } from 'react';
 import styled from 'styled-components';
 import { copyClipboard } from '../functions';
 import { FaRegCopy, FaAngleLeft, FaAngleRight } from 'react-icons/fa';
@@ -195,7 +188,7 @@ export const Share = ({ shareModal, setShareModal }: Props) => {
   const copyUrlRef = useRef(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const urlValue = window.location.href;
-  const [scrollBtn, setScrollBtn] = useState({ left: false, right: true });
+  // const [scrollBtn, setScrollBtn] = useState({ left: false, right: true });
   const dispatch = useDispatch();
   const copyUrl = () => {
     copyClipboard(
@@ -274,9 +267,9 @@ export const Share = ({ shareModal, setShareModal }: Props) => {
       funcList[idx]();
     };
 
-  const innerWidth = scrollRef.current?.clientWidth || 0;
-  const scrollWidth = scrollRef.current?.scrollWidth || 0;
-  const endOfScroll = scrollWidth - innerWidth;
+  // const innerWidth = scrollRef.current?.clientWidth || 0;
+  // const scrollWidth = scrollRef.current?.scrollWidth || 0;
+  // const endOfScroll = scrollWidth - innerWidth;
   const handleScroll = (key: number) => () => {
     const scrollLeft = scrollRef.current?.scrollLeft || 0;
     scrollRef.current?.scrollTo({
@@ -285,14 +278,14 @@ export const Share = ({ shareModal, setShareModal }: Props) => {
       behavior: 'smooth',
     });
   };
-  const handleScrollBtn = () => {
-    const scrollLeft = scrollRef.current?.scrollLeft || 0;
-    console.log(scrollLeft);
-    if (scrollLeft !== 0) setScrollBtn({ ...scrollBtn, left: true });
-    else setScrollBtn({ ...scrollBtn, left: false });
-    if (scrollLeft >= endOfScroll) setScrollBtn({ ...scrollBtn, right: false });
-    else setScrollBtn({ ...scrollBtn, right: true });
-  };
+  // const handleScrollBtn = () => {
+  //   const scrollLeft = scrollRef.current?.scrollLeft || 0;
+  //   console.log(scrollLeft);
+  //   if (scrollLeft !== 0) setScrollBtn({ ...scrollBtn, left: true });
+  //   else setScrollBtn({ ...scrollBtn, left: false });
+  //   if (scrollLeft >= endOfScroll) setScrollBtn({ ...scrollBtn, right: false });
+  //   else setScrollBtn({ ...scrollBtn, right: true });
+  // };
 
   // useEffect(() => {
   //   return () => {

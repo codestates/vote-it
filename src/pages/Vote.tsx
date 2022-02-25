@@ -146,6 +146,7 @@ export const Vote = () => {
   const [post, setPost] = useState<Post>(getPostById(id));
   const [del, setDel] = useState(false);
   useEffect(() => {
+    setPost(post);
     setOptions([
       { id: 0, name: 'option1', value: 20 },
       { id: 1, name: 'option2', value: 13 },

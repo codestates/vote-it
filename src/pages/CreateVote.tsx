@@ -129,11 +129,6 @@ const Checkbox = styled.input`
   margin-right: 10px;
 `;
 const CheckboxTitle = styled.div``;
-const CalendarBtn = styled.input`
-  border: none;
-  height: 38px;
-  margin: 10px;
-`;
 
 const CreateBtn = styled.button`
   font-family: 'KOHIBaeumOTF';
