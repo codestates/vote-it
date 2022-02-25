@@ -257,6 +257,22 @@ function CreateVote() {
       });
   };
 
+  const [isUnique, setIsUnique] = useState(-1);
+
+  const handleOption = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number,
+  ) => {
+    const one = e.target.value;
+    if (optionList.includes(one)) {
+      setIsUnique(index);
+    }
+    if (one === '') {
+      setIsUnique(-1);
+    }
+    onChangeOption(e, index);
+  };
+
   return (
     <Outer>
       <Container>
@@ -276,7 +292,10 @@ function CreateVote() {
                   <OptionInput
                     placeholder="선택지 입력"
                     value={optionList[index]}
-                    onChange={(e) => onChangeOption(e, index)}
+                    onChange={(e) => {
+                      handleOption(e, index);
+                    }}
+                    style={isUnique === index ? { color: 'red' } : {}}
                   />
                   <DelOptionBtn onClick={() => DelBtn(index)}>
                     <FaMinus style={{ height: '100%', color: 'red' }} />

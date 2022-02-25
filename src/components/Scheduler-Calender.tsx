@@ -154,8 +154,7 @@ const SchedulerCalender: React.FunctionComponent<IProps> = ({
     inputDay: 22,
   });
   const dateName = ['일', '월', '화', '수', '목', '금', '토'];
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { date, time } = inputValue;
+  const { date } = inputValue;
   const { inputYear, inputMonth, inputDay } = inputDate;
 
   const renderCalender = () => {
@@ -216,8 +215,7 @@ const SchedulerCalender: React.FunctionComponent<IProps> = ({
       inputMonth: Number(date.slice(4, 6)),
       inputDay: Number(date.slice(6, 8)),
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inputValue]);
+  }, [date, inputValue]);
 
   return (
     <Container>

@@ -10,17 +10,16 @@ declare global {
   }
 }
 
-// eslint-disable-next-line no-extend-native
-String.prototype.format = function format(): string {
-  let args = arguments;
-  return args[0].replace(
-    /{(\d+)}/g,
-    function (match: string, num: string | number) {
-      num = Number(num) + 1;
-      return typeof args[num] != undefined ? args[num] : match;
-    },
-  );
-};
+// String.prototype.format = function format(): string {
+//   let args = arguments;
+//   return args[0].replace(
+//     /{(\d+)}/g,
+//     function (match: string, num: string | number) {
+//       num = Number(num) + 1;
+//       return typeof args[num] != undefined ? args[num] : match;
+//     },
+//   );
+// };
 
 const { Kakao } = window;
 

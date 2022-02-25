@@ -1,7 +1,7 @@
 import { Routes, BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
 import { Header } from './pages/components';
-import { Main, Setting, Vote, Loading, OAuth } from './pages';
+import { Main, Setting, Vote, OAuth } from './pages';
 import CreateVote from './pages/CreateVote';
 import Footer from './pages/components/Footer';
 import { useEffect, useState } from 'react';
@@ -16,9 +16,6 @@ import { notify } from './modules/notification';
 function App() {
   const dispatch = useDispatch();
   const [headerVisibility, setHeaderVisibility] = useState(true);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isLoading, setIsLoading] = useState(false);
-  //! axios 세팅 이후 로딩 컴포넌트 세팅해야함
 
   useEffect(() => {
     const localLogin = localStorage.getItem('isLogin');
@@ -59,29 +56,24 @@ function App() {
   return (
     <Router>
       <div className="App">
-        {/* <Route path="/oauth" element={<OAuth />}></Route> */}
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <>
-            {headerVisibility ? <Header /> : null}
-            <Routes>
-              <Route path="/*" element={<Main />} />
-              <Route
-                path="/oauth"
-                element={<OAuth setHeaderVisibility={setHeaderVisibility} />}
-              />
+        <>
+          {headerVisibility ? <Header /> : null}
+          <Routes>
+            <Route path="/*" element={<Main />} />
+            <Route
+              path="/oauth"
+              element={<OAuth setHeaderVisibility={setHeaderVisibility} />}
+            />
 
-              <Route path="/createVote" element={<CreateVote />}></Route>
+            <Route path="/createVote" element={<CreateVote />}></Route>
 
-              <Route path="/vote/:id" element={<Vote></Vote>} />
+            <Route path="/vote/:id" element={<Vote></Vote>} />
 
-              <Route path="/setting" element={<Setting />}></Route>
-            </Routes>
-            <NofiticationCenter />
-            {headerVisibility ? <Footer /> : null}
-          </>
-        )}
+            <Route path="/setting" element={<Setting />}></Route>
+          </Routes>
+          <NofiticationCenter />
+          {headerVisibility ? <Footer /> : null}
+        </>
       </div>
     </Router>
   );
