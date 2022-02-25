@@ -185,6 +185,19 @@ function CreateVote() {
     if (time === '') {
       time = '23:59:59';
     }
+    if (date === '') {
+      if (time === '') {
+        setCalendarValue('');
+        return;
+      }
+      const today = new Date();
+      const todayArr = today.toLocaleDateString().split('. ');
+      if (todayArr[1].length === 1) {
+        todayArr[1] = '0' + todayArr[1];
+      }
+      todayArr[2] = todayArr[2].slice(0, todayArr[2].length - 1);
+      date = todayArr.join('');
+    }
     setCalendarValue(
       date.slice(0, 4) +
         '-' +
@@ -253,7 +266,7 @@ function CreateVote() {
         navigate('/');
       })
       .catch((err) => {
-        console.log(err.response.data);
+        console.log(err.response);
       });
   };
 
