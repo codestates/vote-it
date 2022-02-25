@@ -147,7 +147,7 @@ export const VoteCard = ({
       </TitleBox>
       <StyledBody>
         <HiddenTitle>{subject}</HiddenTitle>
-        {/* <StyledNum>참여인원 45명</StyledNum> */}
+        <StyledNum>참여인원 45명</StyledNum>
         <StyledDate>시작일 {createdAt.split('T')[0]}</StyledDate>
         <StyledDate>
           {!expirationDate

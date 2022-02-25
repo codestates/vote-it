@@ -181,9 +181,9 @@ let originDate = new Date(),
   thisDay: number = kstDate.getDate(),
   thisMonth: number = kstDate.getMonth() + 1,
   thisYear: number = kstDate.getFullYear(),
-  thisHour: number,
-  thisMinute: number,
-  thisSecond: number,
+  // thisHour: number,
+  // thisMinute: number,
+  // thisSecond: number,
   dateStr: string = `${thisYear}${
     thisMonth.toString().length === 1 ? `0${thisMonth}` : thisMonth
   }${thisDay.toString().length === 1 ? `0${thisDay}` : thisDay}`;
@@ -196,12 +196,9 @@ function time() {
   thisDay = kstDate.getDate();
   thisMonth = kstDate.getMonth() + 1;
   thisYear = kstDate.getFullYear();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  thisHour = kstDate.getHours();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  thisMinute = kstDate.getMinutes();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  thisSecond = kstDate.getSeconds();
+  // thisHour = kstDate.getHours();
+  // thisMinute = kstDate.getMinutes();
+  // thisSecond = kstDate.getSeconds();
   dateStr = `${thisYear}${
     thisMonth.toString().length === 1 ? `0${thisMonth}` : thisMonth
   }${thisDay.toString().length === 1 ? `0${thisDay}` : thisDay}`;

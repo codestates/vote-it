@@ -150,7 +150,6 @@ const SignupModal: React.FunctionComponent<IProps> = ({
   const dispatch = useDispatch();
 
   const handleModalOff = () => {
-    console.log('Modal Off');
     setModalOn({ isOn: false, isShow: false });
   };
 
@@ -218,7 +217,7 @@ const SignupModal: React.FunctionComponent<IProps> = ({
         setModalOn({ isOn: false, isShow: false });
       })
       .catch((err) => {
-        dispatch(notify('올바른 양식으로 입력해주세요.'));
+        dispatch(notify(err.response.data.message));
       });
   };
 

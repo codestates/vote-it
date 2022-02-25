@@ -145,7 +145,9 @@ const Security: React.FunctionComponent<IProps> = () => {
         setCurrentPassword('');
       })
       .catch((err) => {
-        dispatch(notify('err'));
+        if (err.response.status === 403) {
+          dispatch(notify('이전 비밀번호가 잘못되었습니다.'));
+        }
         console.log(err);
       });
   };
