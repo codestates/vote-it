@@ -58,7 +58,7 @@ const UserNameBox = styled.div`
   font-family: 'SUIT-Medium';
   font-size: larger;
   color: gray;
-  grid-column: span 12;
+  grid-column: span 11;
   display: flex;
   justify-content: right;
   align-items: center;
@@ -71,7 +71,7 @@ const EditDelBtn = styled.div`
   font-family: 'SUIT-Medium';
   font-size: larger;
   color: var(--font-lighter);
-  grid-column: span 12;
+  grid-column: span 11;
   display: flex;
   justify-content: right;
   align-items: center;
@@ -85,7 +85,7 @@ const ShareButton = styled.div`
   &:hover {
     color: var(--main-color);
   }
-  grid-column: span 12;
+  grid-column: 2 / span 11;
   padding: 4px;
   white-space: pre;
   width: fit-content;
@@ -99,7 +99,7 @@ const ShareButton = styled.div`
 
 const OptionsBox = styled.div`
   font-family: 'SUIT-Medium';
-  grid-column: span 12;
+  grid-column: 2 / span 10;
 
   @media only screen and (max-width: 768px) {
     grid-column: span 6;
