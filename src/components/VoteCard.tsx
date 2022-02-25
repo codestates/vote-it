@@ -20,6 +20,7 @@ const VoteCardContainer = styled.div`
   cursor: pointer;
   &:hover {
     background: var(--box-bg-lighter);
+    margin-top: 10px;
   }
   @media only screen and (max-width: 1200px) {
     grid-column: span 4;
@@ -65,6 +66,9 @@ const TitleCover = styled.div`
   align-items: center;
   font-size: large;
   width: 100%;
+  /* height: 100%; */
+  white-space: normal;
+  word-break: break-all;
   @media only screen and (max-width: 501px) {
     /* display: none; */
     opacity: 0;
@@ -87,6 +91,8 @@ export const StyledBody = styled.div`
 const HiddenTitle = styled.div`
   font-family: 'SBAggroM';
   font-size: large;
+  white-space: normal;
+  word-break: break-all;
   @media only screen and (min-width: 501px) {
     display: none;
   }

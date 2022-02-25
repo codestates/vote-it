@@ -247,12 +247,6 @@ const Scheduler: React.FunctionComponent<IProps> = ({
   // 형식: {date: "20220222", time: "14:53"} => 22년 2월 22일 오후 2시 53분
   // DB 저장형식(datetime?): "20220222T14:53"
 
-  //! 날짜 데이터 뽑아올 방식 논의 필요
-  //? 예시:
-  // useEffect(() => {
-  //   // props로 받은 변수 변경 코드
-  // },[inputValue])
-
   const [inputFocus, setInputFocus] = useState(false);
   const [inputValidCheck, setInputValidCheck] = useState(true);
 
