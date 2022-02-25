@@ -79,12 +79,24 @@ const EditDelBtn = styled.div`
   @media only screen and (max-width: 768px) {
     grid-column: span 6;
   }
+  > div {
+    display: flex;
+    cursor: pointer;
+    &:hover {
+      color: var(--main-color);
+    }
+  }
+  > div > div {
+    font-size: small;
+    margin: 0 10px 0 0;
+  }
 `;
 
 const ShareButton = styled.div`
   &:hover {
     color: var(--main-color);
   }
+  display: flex;
   grid-column: 2 / span 11;
   padding: 4px;
   white-space: pre;
@@ -92,7 +104,7 @@ const ShareButton = styled.div`
   /* svg {
     transform: translate(0, 2px);
   } */
-  @media only screen and (max-width: 500px) {
+  @media only screen and (max-width: 768px) {
     grid-column: span 6;
   }
 `;
@@ -194,12 +206,19 @@ export const Vote = () => {
       <VoteContainer>
         <SubBox>{voteSub}</SubBox>
         <EditDelBtn>
-          <AiOutlineEdit style={{ marginRight: '10px' }} />
-          <AiOutlineDelete onClick={handelDelBtn} />
+          <div>
+            <AiOutlineEdit />
+            <div>수정하기</div>
+          </div>
+          <div onClick={handelDelBtn}>
+            <AiOutlineDelete />
+            <div>삭제하기</div>
+          </div>
         </EditDelBtn>
         <UserNameBox>{username}</UserNameBox>
         <ShareButton onClick={handleShareModal}>
           <BiShareAlt style={{ width: '20px', height: 'auto' }} />
+          <div>공유하기</div>
         </ShareButton>
         <OptionsBox style={voted === -1 ? {} : { gridColumn: 'span 6' }}>
           {options.map((obj) => {
