@@ -179,6 +179,23 @@ const LoginWrapper = styled.div`
   }
 `;
 
+const SearchBox = styled.div`
+  margin-left: 10px;
+  padding: 5px 10px;
+  border-radius: 10px;
+  /* border: 1px solid #dbdbdb; */
+  /* box-shadow: inset 2px 2px 3px 2px var(--box-shadow-darker); */
+  background-color: var(--main-color);
+  cursor: pointer;
+  &:hover {
+    background-color: var(--main-color-tint);
+  }
+
+  @media only screen and (max-width: 500px) {
+    display: none;
+  }
+`;
+
 const MiniSearchContainer = styled.div`
   width: 100%;
   height: 48px;
@@ -202,12 +219,25 @@ const CloseMiniSearch = styled.div`
 `;
 
 const MiniSearch = styled.input`
-  width: 75%;
+  width: 60%;
   height: 35px;
   border: none;
   padding-left: 10px;
   border-radius: 10px;
   box-shadow: inset 2px 2px 3px 2px var(--box-shadow-darker);
+`;
+
+const MiniSearchIcon = styled.div`
+  margin-left: 10px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #dbdbdb;
+  /* box-shadow: inset 2px 2px 3px 2px var(--box-shadow-darker); */
+  background-color: var(--main-color);
+  cursor: pointer;
+  &:hover {
+    background-color: var(--main-color-tint);
+  }
 `;
 
 type Modal = {
@@ -268,7 +298,7 @@ const Header: React.FunctionComponent = () => {
     } else {
       dispatch(darkHandler(false));
     }
-  }, []);
+  }, [dispatch]);
   return (
     <Container>
       {isMiniOpen ? (
@@ -281,6 +311,9 @@ const Header: React.FunctionComponent = () => {
             <FiX />
           </CloseMiniSearch>
           <MiniSearch type={'text'} />
+          <MiniSearchIcon>
+            <FaSearch />
+          </MiniSearchIcon>
         </MiniSearchContainer>
       ) : (
         ''
@@ -297,7 +330,10 @@ const Header: React.FunctionComponent = () => {
           />
         </Link>
         <SearchWrapper>
-          <Search></Search>
+          <Search type={'text'}></Search>
+          <SearchBox>
+            <FaSearch />
+          </SearchBox>
         </SearchWrapper>
         {isLogin ? (
           <SettingWrapper>

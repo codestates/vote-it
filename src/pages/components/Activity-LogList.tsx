@@ -6,7 +6,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-
+  /* height: 80vh; */
   margin: 8px;
 `;
 
