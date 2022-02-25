@@ -16,6 +16,7 @@ import { notify } from './modules/notification';
 function App() {
   const dispatch = useDispatch();
   const [headerVisibility, setHeaderVisibility] = useState(true);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoading, setIsLoading] = useState(false);
   //! axios 세팅 이후 로딩 컴포넌트 세팅해야함
 

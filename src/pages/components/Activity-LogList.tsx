@@ -232,6 +232,10 @@ const VoteList: React.FunctionComponent<IProps> = () => {
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    setDummy(dummy);
+  }, [dummy]);
+
   const handleScroll = useCallback((): void => {
     const innerHeight = scrollRef.current?.clientHeight; // 브라우저 창 내용 크기 (스크롤 포함 x)
     const scrollHeight = scrollRef.current?.scrollHeight; // 브라우저 총 내용 크기 (스크롤 포함)
@@ -249,8 +253,13 @@ const VoteList: React.FunctionComponent<IProps> = () => {
         //     setIsLoading(true);
         //   })
         //   .then(() => {
-        setList([...list, ...dummy.slice(page, page + 5)]);
-        setPage(page + 5);
+        setIsLoading(true);
+        setTimeout(() => {
+          setList([...list, ...dummy.slice(page, page + 5)]);
+          setPage(page + 5);
+          setIsLoading(false);
+        }, 2000);
+
         // })
         // .then(() => {
         //   setIsLoading(false);

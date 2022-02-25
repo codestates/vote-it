@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import '../fonts/font.css';
@@ -96,6 +96,9 @@ const Feed: React.FunctionComponent<IProps> = ({ setNoticeOn }) => {
     { id: 11, msg: '테스트 알림입니다.' },
     { id: 12, msg: '테스트 알림입니다.' },
   ]);
+  useEffect(() => {
+    setFeeds(feeds);
+  }, [feeds]);
   const handleFeedOff = () => {
     setNoticeOn(false);
   };
