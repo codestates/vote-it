@@ -45,11 +45,11 @@ const MenuWrapper = styled.div`
 const ContentWrapper = styled.div`
   display: flex;
   /* flex: 5 0 512px; */
-  height: 80vh;
+  height: 65vh;
   border-top: 1px solid #808080;
   border-bottom: 1px solid #808080;
   margin-right: 24px;
-  /* overflow-y: auto; */
+  /* overflow-y: scroll; */
 `;
 
 interface IProps {}

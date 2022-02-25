@@ -13,7 +13,7 @@ const Notification = styled.div`
   font-weight: 600;
 
   height: 30px;
-  width: 360px;
+  width: 300px;
   color: #fff;
   padding: 15px;
   margin: 10px;
