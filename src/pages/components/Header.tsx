@@ -181,7 +181,7 @@ const LoginWrapper = styled.div`
 
 const SearchBox = styled.div`
   margin-left: 10px;
-  padding: 5px 10px;
+  padding: 7px 10px 5px 10px;
   border-radius: 10px;
   /* border: 1px solid #dbdbdb; */
   /* box-shadow: inset 2px 2px 3px 2px var(--box-shadow-darker); */
@@ -332,7 +332,7 @@ const Header: React.FunctionComponent = () => {
         <SearchWrapper>
           <Search type={'text'}></Search>
           <SearchBox>
-            <FaSearch />
+            <FaSearch style={{ color: 'white' }} />
           </SearchBox>
         </SearchWrapper>
         {isLogin ? (
