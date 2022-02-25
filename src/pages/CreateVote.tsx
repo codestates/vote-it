@@ -303,8 +303,15 @@ function CreateVote() {
                 onChange={() => {
                   setIsPlural(!isPlural);
                 }}
+                checked={isPlural}
               />
-              <CheckboxTitle>중복 체크 여부</CheckboxTitle>
+              <CheckboxTitle
+                onClick={() => {
+                  setIsPlural(!isPlural);
+                }}
+              >
+                중복 체크 여부
+              </CheckboxTitle>
             </CheckboxAndTitle>
             <CheckboxAndTitle>
               <Checkbox
@@ -312,8 +319,15 @@ function CreateVote() {
                 onChange={() => {
                   setIsPrivate(!isPrivate);
                 }}
+                checked={isPrivate}
               />
-              <CheckboxTitle>비공개</CheckboxTitle>
+              <CheckboxTitle
+                onClick={() => {
+                  setIsPrivate(!isPrivate);
+                }}
+              >
+                비공개
+              </CheckboxTitle>
             </CheckboxAndTitle>
             <CheckboxAndTitle>
               <Scheduler
