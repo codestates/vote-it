@@ -1,7 +1,7 @@
 import { Routes, BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
 import { Header } from './pages/components';
-import { Main, Setting, Vote, Loading, OAuth } from './pages';
+import { Main, Setting, Vote, OAuth } from './pages';
 import CreateVote from './pages/CreateVote';
 import Footer from './pages/components/Footer';
 import { useEffect, useState } from 'react';
