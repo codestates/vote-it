@@ -62,9 +62,11 @@ export const Main = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    setIsLoading(true);
     apiAxios.get(`/polls?offset=${offset}&limit=${12}`).then((res) => {
       setPosts(res.data.polls);
       setOffset(offset + 12);
+      setIsLoading(false);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
