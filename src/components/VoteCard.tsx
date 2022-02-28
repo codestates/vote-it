@@ -157,7 +157,7 @@ export const VoteCard = ({
         <StyledDate>
           {!expirationDate
             ? expirationDate
-            : expirationDate.split('T')[1].split('.')[0] + ' 까지'}
+            : expirationDate.split('T')[1].split('.')[0].slice(0, 5) + ' 까지'}
         </StyledDate>
         <StyledName>{author}</StyledName>
       </StyledBody>
