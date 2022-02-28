@@ -89,7 +89,7 @@ const SettingWrapper = styled.div`
   display: flex;
   /* flex: 1 0 auto; */
   grid-column: 11 / span 2;
-  justify-content: space-between;
+  justify-content: space-around;
   svg {
     transform: translate(0, 6px);
     :hover {
@@ -164,7 +164,7 @@ const LoginWrapper = styled.div`
   display: flex;
   /* flex: 1 0 auto; */
   grid-column: 11 / span 2;
-  justify-content: space-between;
+  justify-content: space-around;
   div {
     height: 32px;
     line-height: 32px;
@@ -181,7 +181,7 @@ const LoginWrapper = styled.div`
 
 const SearchBox = styled.div`
   margin-left: 10px;
-  padding: 5px 10px;
+  padding: 7px 10px 5px 10px;
   border-radius: 10px;
   /* border: 1px solid #dbdbdb; */
   /* box-shadow: inset 2px 2px 3px 2px var(--box-shadow-darker); */
@@ -332,7 +332,7 @@ const Header: React.FunctionComponent = () => {
         <SearchWrapper>
           <Search type={'text'}></Search>
           <SearchBox>
-            <FaSearch />
+            <FaSearch style={{ color: 'white' }} />
           </SearchBox>
         </SearchWrapper>
         {isLogin ? (
@@ -364,8 +364,9 @@ const Header: React.FunctionComponent = () => {
               onClick={() => {
                 setIsMiniOpen(true);
               }}
+              style={{ marginTop: '5px' }}
             >
-              <FaSearch style={{ fontSize: '18px' }} />
+              <FaSearch />
             </SearchIcon>
             <TextButton onClick={handleModal('login')}>LOGIN</TextButton>
             <TextButton onClick={handleModal('signup')}>SIGNUP</TextButton>

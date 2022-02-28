@@ -283,6 +283,10 @@ const VoteList: React.FunctionComponent<IProps> = () => {
     },
   ]);
 
+  useEffect(() => {
+    setDummy(dummy);
+  }, [dummy]);
+
   const [list, setList] = useState([...dummy.slice(0, 15)]);
   const [page, setPage] = useState(15);
   const [isLoading, setIsLoading] = useState(false);
@@ -305,8 +309,12 @@ const VoteList: React.FunctionComponent<IProps> = () => {
         //     setIsLoading(true);
         //   })
         //   .then(() => {
-        setList([...list, ...dummy.slice(page, page + 5)]);
-        setPage(page + 5);
+        setIsLoading(true);
+        setTimeout(() => {
+          setList([...list, ...dummy.slice(page, page + 5)]);
+          setPage(page + 5);
+          setIsLoading(false);
+        }, 2000);
         // })
         // .then(() => {
         //   setIsLoading(false);

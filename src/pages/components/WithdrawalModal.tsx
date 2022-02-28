@@ -5,6 +5,7 @@ import apiAxios from '../../utils/apiAxios';
 import { loginHandler } from '../../modules/login';
 import { useDispatch } from 'react-redux';
 import { notify } from '../../modules/notification';
+import { useNavigate } from 'react-router-dom';
 
 const ModalBackdrop = styled.div`
   font-family: 'SUIT-Light';
@@ -90,6 +91,8 @@ export const WithdrawalModal = ({ WithdrawalModalHandler }: Iprop) => {
     setPassword(e.target.value);
   };
 
+  const navigate = useNavigate();
+
   const WithdrawalReq = () => {
     if (password !== '회원탈퇴') {
       dispatch(notify('정확히 입력해주세요.'));
@@ -107,7 +110,7 @@ export const WithdrawalModal = ({ WithdrawalModalHandler }: Iprop) => {
         localStorage.setItem('isLogin', 'false');
         localStorage.setItem('accessToken', '');
         dispatch(notify('회원탈퇴가 완료되었습니다.'));
-        window.location.href = '/';
+        navigate('/');
       })
       .catch((err) => alert(err));
   };

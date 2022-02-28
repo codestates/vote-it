@@ -129,11 +129,6 @@ const Checkbox = styled.input`
   margin-right: 10px;
 `;
 const CheckboxTitle = styled.div``;
-const CalendarBtn = styled.input`
-  border: none;
-  height: 38px;
-  margin: 10px;
-`;
 
 const CreateBtn = styled.button`
   font-family: 'KOHIBaeumOTF';
@@ -189,6 +184,19 @@ function CreateVote() {
   const CalenderValueHandler = ({ date, time }: CalenderValue) => {
     if (time === '') {
       time = '23:59:59';
+    }
+    if (date === '') {
+      if (time === '') {
+        setCalendarValue('');
+        return;
+      }
+      const today = new Date();
+      const todayArr = today.toLocaleDateString().split('. ');
+      if (todayArr[1].length === 1) {
+        todayArr[1] = '0' + todayArr[1];
+      }
+      todayArr[2] = todayArr[2].slice(0, todayArr[2].length - 1);
+      date = todayArr.join('');
     }
     setCalendarValue(
       date.slice(0, 4) +
@@ -258,8 +266,24 @@ function CreateVote() {
         navigate('/');
       })
       .catch((err) => {
-        console.log(err.response.data);
+        console.log(err.response);
       });
+  };
+
+  const [isUnique, setIsUnique] = useState(-1);
+
+  const handleOption = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number,
+  ) => {
+    const one = e.target.value;
+    if (optionList.includes(one)) {
+      setIsUnique(index);
+    }
+    if (one === '') {
+      setIsUnique(-1);
+    }
+    onChangeOption(e, index);
   };
 
   return (
@@ -281,7 +305,10 @@ function CreateVote() {
                   <OptionInput
                     placeholder="선택지 입력"
                     value={optionList[index]}
-                    onChange={(e) => onChangeOption(e, index)}
+                    onChange={(e) => {
+                      handleOption(e, index);
+                    }}
+                    style={isUnique === index ? { color: 'red' } : {}}
                   />
                   <DelOptionBtn onClick={() => DelBtn(index)}>
                     <FaMinus style={{ height: '100%', color: 'red' }} />
@@ -303,8 +330,15 @@ function CreateVote() {
                 onChange={() => {
                   setIsPlural(!isPlural);
                 }}
+                checked={isPlural}
               />
-              <CheckboxTitle>중복 체크 여부</CheckboxTitle>
+              <CheckboxTitle
+                onClick={() => {
+                  setIsPlural(!isPlural);
+                }}
+              >
+                중복 체크 여부
+              </CheckboxTitle>
             </CheckboxAndTitle>
             <CheckboxAndTitle>
               <Checkbox
@@ -312,8 +346,15 @@ function CreateVote() {
                 onChange={() => {
                   setIsPrivate(!isPrivate);
                 }}
+                checked={isPrivate}
               />
-              <CheckboxTitle>비공개</CheckboxTitle>
+              <CheckboxTitle
+                onClick={() => {
+                  setIsPrivate(!isPrivate);
+                }}
+              >
+                비공개
+              </CheckboxTitle>
             </CheckboxAndTitle>
             <CheckboxAndTitle>
               <Scheduler

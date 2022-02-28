@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import '../fonts/font.css';
@@ -20,6 +19,7 @@ const VoteCardContainer = styled.div`
   cursor: pointer;
   &:hover {
     background: var(--box-bg-lighter);
+    margin-top: 10px;
   }
   @media only screen and (max-width: 1200px) {
     grid-column: span 4;
@@ -65,6 +65,9 @@ const TitleCover = styled.div`
   align-items: center;
   font-size: large;
   width: 100%;
+  /* height: 100%; */
+  white-space: normal;
+  word-break: break-all;
   @media only screen and (max-width: 501px) {
     /* display: none; */
     opacity: 0;
@@ -87,6 +90,8 @@ export const StyledBody = styled.div`
 const HiddenTitle = styled.div`
   font-family: 'SBAggroM';
   font-size: large;
+  white-space: normal;
+  word-break: break-all;
   @media only screen and (min-width: 501px) {
     display: none;
   }
@@ -142,7 +147,7 @@ export const VoteCard = ({
       </TitleBox>
       <StyledBody>
         <HiddenTitle>{subject}</HiddenTitle>
-        {/* <StyledNum>참여인원 45명</StyledNum> */}
+        <StyledNum>참여인원 45명</StyledNum>
         <StyledDate>시작일 {createdAt.split('T')[0]}</StyledDate>
         <StyledDate>
           {!expirationDate
@@ -152,7 +157,7 @@ export const VoteCard = ({
         <StyledDate>
           {!expirationDate
             ? expirationDate
-            : expirationDate.split('T')[1].split('.')[0] + ' 까지'}
+            : expirationDate.split('T')[1].split('.')[0].slice(0, 5) + ' 까지'}
         </StyledDate>
         <StyledName>{author}</StyledName>
       </StyledBody>
