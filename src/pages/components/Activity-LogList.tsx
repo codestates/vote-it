@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { RootState } from '../../modules';
 
 const Container = styled.div`
   display: flex;
@@ -54,177 +56,182 @@ interface IProps {}
 
 //subject, isPrivate, expirationDate
 const VoteList: React.FunctionComponent<IProps> = () => {
-  const [dummy, setDummy] = useState([
-    {
-      id: 0,
-      message: 'message1',
-      createdAt: '2022-02-24T16:31:00',
-    },
-    {
-      id: 1,
-      message: 'message1',
-      createdAt: '2022-02-22T13:31:00',
-    },
-    {
-      id: 2,
-      message: 'message1',
-      createdAt: '2022-02-22T13:13:00',
-    },
-    {
-      id: 3,
-      message: 'message1',
-      createdAt: '2022-02-22T13:07:00',
-    },
-    {
-      id: 4,
-      message: 'message1',
-      createdAt: '2022-02-21T09:21:00',
-    },
-    {
-      id: 5,
-      message: 'message1',
-      createdAt: '2022-02-21T09:21:00',
-    },
-    {
-      id: 6,
-      message: 'message1',
-      createdAt: '2022-02-21T09:21:00',
-    },
-    {
-      id: 7,
-      message: 'message1',
-      createdAt: '2022-02-20T09:21:00',
-    },
-    {
-      id: 8,
-      message: 'message1',
-      createdAt: '2022-02-20T09:21:00',
-    },
-    {
-      id: 9,
-      message: 'message1',
-      createdAt: '2022-02-20T09:21:00',
-    },
-    {
-      id: 10,
-      message: 'message1',
-      createdAt: '2022-02-19T09:21:00',
-    },
-    {
-      id: 11,
-      message: 'message1',
-      createdAt: '2022-02-19T09:21:00',
-    },
-    {
-      id: 12,
-      message: 'message1',
-      createdAt: '2022-02-19T09:21:00',
-    },
-    {
-      id: 13,
-      message: 'message1',
-      createdAt: '2022-02-19T09:21:00',
-    },
-    {
-      id: 14,
-      message: 'message1',
-      createdAt: '2022-02-19T09:21:00',
-    },
-    {
-      id: 15,
-      message: 'message1',
-      createdAt: '2022-02-18T09:21:00',
-    },
-    {
-      id: 16,
-      message: 'message1',
-      createdAt: '2022-02-18T09:21:00',
-    },
-    {
-      id: 17,
-      message: 'message1',
-      createdAt: '2022-02-22T13:32:00',
-    },
-    {
-      id: 18,
-      message: 'message1',
-      createdAt: '2022-02-22T13:31:00',
-    },
-    {
-      id: 19,
-      message: 'message1',
-      createdAt: '2022-02-22T13:13:00',
-    },
-    {
-      id: 20,
-      message: 'message1',
-      createdAt: '2022-02-22T13:07:00',
-    },
-    {
-      id: 21,
-      message: 'message1',
-      createdAt: '2022-02-21T09:21:00',
-    },
-    {
-      id: 22,
-      message: 'message1',
-      createdAt: '2022-02-21T09:21:00',
-    },
-    {
-      id: 23,
-      message: 'message1',
-      createdAt: '2022-02-21T09:21:00',
-    },
-    {
-      id: 24,
-      message: 'message1',
-      createdAt: '2022-02-20T09:21:00',
-    },
-    {
-      id: 25,
-      message: 'message1',
-      createdAt: '2022-02-20T09:21:00',
-    },
-    {
-      id: 26,
-      message: 'message1',
-      createdAt: '2022-02-20T09:21:00',
-    },
-    {
-      id: 27,
-      message: 'message1',
-      createdAt: '2022-02-19T09:21:00',
-    },
-    {
-      id: 28,
-      message: 'message1',
-      createdAt: '2022-02-19T09:21:00',
-    },
-    {
-      id: 29,
-      message: 'message1',
-      createdAt: '2022-02-19T09:21:00',
-    },
-    {
-      id: 30,
-      message: 'message1',
-      createdAt: '2022-02-19T09:21:00',
-    },
-    {
-      id: 31,
-      message: 'message1',
-      createdAt: '2022-02-19T09:21:00',
-    },
-    {
-      id: 32,
-      message: 'message1',
-      createdAt: '2022-02-18T09:21:00',
-    },
-    {
-      id: 33,
-      message: 'message1',
-      createdAt: '2022-02-18T09:21:00',
-    },
+  interface Idummy {
+    id: number;
+    message: string;
+    createdAt: string;
+  }
+  const [dummy, setDummy] = useState<Idummy[]>([
+    // {
+    //   id: 0,
+    //   message: 'message1',
+    //   createdAt: '2022-02-24T16:31:00',
+    // },
+    // {
+    //   id: 1,
+    //   message: 'message1',
+    //   createdAt: '2022-02-22T13:31:00',
+    // },
+    // {
+    //   id: 2,
+    //   message: 'message1',
+    //   createdAt: '2022-02-22T13:13:00',
+    // },
+    // {
+    //   id: 3,
+    //   message: 'message1',
+    //   createdAt: '2022-02-22T13:07:00',
+    // },
+    // {
+    //   id: 4,
+    //   message: 'message1',
+    //   createdAt: '2022-02-21T09:21:00',
+    // },
+    // {
+    //   id: 5,
+    //   message: 'message1',
+    //   createdAt: '2022-02-21T09:21:00',
+    // },
+    // {
+    //   id: 6,
+    //   message: 'message1',
+    //   createdAt: '2022-02-21T09:21:00',
+    // },
+    // {
+    //   id: 7,
+    //   message: 'message1',
+    //   createdAt: '2022-02-20T09:21:00',
+    // },
+    // {
+    //   id: 8,
+    //   message: 'message1',
+    //   createdAt: '2022-02-20T09:21:00',
+    // },
+    // {
+    //   id: 9,
+    //   message: 'message1',
+    //   createdAt: '2022-02-20T09:21:00',
+    // },
+    // {
+    //   id: 10,
+    //   message: 'message1',
+    //   createdAt: '2022-02-19T09:21:00',
+    // },
+    // {
+    //   id: 11,
+    //   message: 'message1',
+    //   createdAt: '2022-02-19T09:21:00',
+    // },
+    // {
+    //   id: 12,
+    //   message: 'message1',
+    //   createdAt: '2022-02-19T09:21:00',
+    // },
+    // {
+    //   id: 13,
+    //   message: 'message1',
+    //   createdAt: '2022-02-19T09:21:00',
+    // },
+    // {
+    //   id: 14,
+    //   message: 'message1',
+    //   createdAt: '2022-02-19T09:21:00',
+    // },
+    // {
+    //   id: 15,
+    //   message: 'message1',
+    //   createdAt: '2022-02-18T09:21:00',
+    // },
+    // {
+    //   id: 16,
+    //   message: 'message1',
+    //   createdAt: '2022-02-18T09:21:00',
+    // },
+    // {
+    //   id: 17,
+    //   message: 'message1',
+    //   createdAt: '2022-02-22T13:32:00',
+    // },
+    // {
+    //   id: 18,
+    //   message: 'message1',
+    //   createdAt: '2022-02-22T13:31:00',
+    // },
+    // {
+    //   id: 19,
+    //   message: 'message1',
+    //   createdAt: '2022-02-22T13:13:00',
+    // },
+    // {
+    //   id: 20,
+    //   message: 'message1',
+    //   createdAt: '2022-02-22T13:07:00',
+    // },
+    // {
+    //   id: 21,
+    //   message: 'message1',
+    //   createdAt: '2022-02-21T09:21:00',
+    // },
+    // {
+    //   id: 22,
+    //   message: 'message1',
+    //   createdAt: '2022-02-21T09:21:00',
+    // },
+    // {
+    //   id: 23,
+    //   message: 'message1',
+    //   createdAt: '2022-02-21T09:21:00',
+    // },
+    // {
+    //   id: 24,
+    //   message: 'message1',
+    //   createdAt: '2022-02-20T09:21:00',
+    // },
+    // {
+    //   id: 25,
+    //   message: 'message1',
+    //   createdAt: '2022-02-20T09:21:00',
+    // },
+    // {
+    //   id: 26,
+    //   message: 'message1',
+    //   createdAt: '2022-02-20T09:21:00',
+    // },
+    // {
+    //   id: 27,
+    //   message: 'message1',
+    //   createdAt: '2022-02-19T09:21:00',
+    // },
+    // {
+    //   id: 28,
+    //   message: 'message1',
+    //   createdAt: '2022-02-19T09:21:00',
+    // },
+    // {
+    //   id: 29,
+    //   message: 'message1',
+    //   createdAt: '2022-02-19T09:21:00',
+    // },
+    // {
+    //   id: 30,
+    //   message: 'message1',
+    //   createdAt: '2022-02-19T09:21:00',
+    // },
+    // {
+    //   id: 31,
+    //   message: 'message1',
+    //   createdAt: '2022-02-19T09:21:00',
+    // },
+    // {
+    //   id: 32,
+    //   message: 'message1',
+    //   createdAt: '2022-02-18T09:21:00',
+    // },
+    // {
+    //   id: 33,
+    //   message: 'message1',
+    //   createdAt: '2022-02-18T09:21:00',
+    // },
   ]);
 
   const [list, setList] = useState([...dummy.slice(0, 15)]);
@@ -305,6 +312,7 @@ const VoteList: React.FunctionComponent<IProps> = () => {
 
     return `${Math.floor(betweenTimeDay / 365)}년전`;
   }
+  const isDark = useSelector((state: RootState) => state.login.isDark);
 
   return (
     <Container>
@@ -314,19 +322,43 @@ const VoteList: React.FunctionComponent<IProps> = () => {
       </ChildWrapper>
       <Divider />
       <ScrollWrapper ref={scrollRef}>
-        {list.map((v) => {
-          return (
-            <ChildWrapper key={v.id} sub>
-              <div className="votelist-child">
-                <Link to="#">{v.message}</Link>
-              </div>
-              <div className="votelist-expiration">
-                {timeForToday(v.createdAt)}
-              </div>
-            </ChildWrapper>
-          );
-        })}
-        <Divider />
+        {list.length === 0 ? (
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <img
+              src={
+                isDark
+                  ? `${process.env.PUBLIC_URL}/activity-dark.png`
+                  : `${process.env.PUBLIC_URL}/activity-light.png`
+              }
+              style={{
+                minWidth: '250px',
+                width: '50%',
+                height: 'auto',
+              }}
+              alt="달그림"
+            />
+          </div>
+        ) : (
+          list.map((v) => {
+            return (
+              <ChildWrapper key={v.id} sub>
+                <div className="votelist-child">
+                  <Link to="#">{v.message}</Link>
+                </div>
+                <div className="votelist-expiration">
+                  {timeForToday(v.createdAt)}
+                </div>
+              </ChildWrapper>
+            );
+          })
+        )}
+        {/* <Divider /> */}
         {isLoading ? '무한스크롤' : null}
         {/* <Divider /> */}
       </ScrollWrapper>

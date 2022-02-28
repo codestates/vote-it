@@ -49,6 +49,7 @@ const Button = styled.button`
   border: none;
   border-radius: 12px;
   cursor: pointer;
+  transition: 0.5s;
   :hover {
     /* background-color: var(--main-color-tint); */
     color: var(--main-color);

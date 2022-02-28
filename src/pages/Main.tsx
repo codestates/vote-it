@@ -6,6 +6,7 @@ import { VoteCard } from '../components/VoteCard';
 import apiAxios from '../utils/apiAxios';
 import { useDispatch } from 'react-redux';
 import { notify } from '../modules/notification';
+import { useNavigate } from 'react-router-dom';
 
 const MainOuter = styled.div`
   padding-top: 48px;
@@ -60,14 +61,20 @@ export const Main = () => {
   const [isEnd, setIsEnd] = useState(false);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsLoading(true);
-    apiAxios.get(`/polls?offset=${offset}&limit=${12}`).then((res) => {
-      setPosts(res.data.polls);
-      setOffset(offset + 12);
-      setIsLoading(false);
-    });
+    apiAxios
+      .get(`/polls?offset=${offset}&limit=${12}`)
+      .then((res) => {
+        setPosts(res.data.polls);
+        setOffset(offset + 12);
+        setIsLoading(false);
+      })
+      .catch(() => {
+        navigate('/emptymain');
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
