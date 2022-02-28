@@ -47,6 +47,14 @@ export class UsersService {
     userId: number,
     updateUserProfileDto: UpdateUserProfileDto,
   ) {
+    if (
+      updateUserProfileDto.nickname !== undefined &&
+      (await this.userRepository.exists({
+        nickname: updateUserProfileDto.nickname,
+      }))
+    ) {
+      throw new ConflictException('이미 존재하는 닉네임입니다.');
+    }
     const updateResult = await this.userRepository
       .createQueryBuilder('user')
       .update(updateUserProfileDto)
