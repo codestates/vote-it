@@ -10,6 +10,7 @@ import { darkHandler, loginHandler } from './modules/login';
 import NofiticationCenter from './components/NotificationCenter';
 import { kakaoInit } from './lib/initialize';
 import { notify } from './modules/notification';
+import { MainEmpty } from './pages/MainEmpty';
 // import { RootState } from './modules';
 // export type LoginProps = boolean;
 
@@ -70,6 +71,8 @@ function App() {
             <Route path="/vote/:id" element={<Vote></Vote>} />
 
             <Route path="/setting" element={<Setting />}></Route>
+
+            <Route path="/emptymain" element={<MainEmpty />} />
           </Routes>
           <NofiticationCenter />
           {headerVisibility ? <Footer /> : null}
