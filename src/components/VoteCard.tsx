@@ -15,6 +15,7 @@ const VoteCardContainer = styled.div`
   background-color: var(--box-bg);
   box-shadow: -2px -2px 4px var(--box-shadow),
     3px 3px 8px var(--box-shadow-darker);
+  transition: all 0.5s;
 
   cursor: pointer;
   &:hover {
