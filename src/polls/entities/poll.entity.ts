@@ -41,6 +41,9 @@ export class Poll extends CommonEntity {
   })
   author: User;
 
+  @Column()
+  authorId: number;
+
   @OneToMany(() => PollOption, (pollOption) => pollOption.poll)
   @IsArray()
   @ArrayMinSize(2)

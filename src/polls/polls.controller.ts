@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { PollsService } from './polls.service';
 
@@ -9,5 +9,10 @@ export class PollsController {
   @Get()
   getSpecificRangePolls(@Query() paginationQueryDto: PaginationQueryDto) {
     return this.pollsService.getSpecificRangePolls(paginationQueryDto);
+  }
+
+  @Get(':pollId')
+  getSpecificPoll(@Param('pollId', ParseIntPipe) pollId: number) {
+    return this.pollsService.getSpecificPoll(pollId);
   }
 }
