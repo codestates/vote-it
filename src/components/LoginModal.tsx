@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Dispatch, SetStateAction, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import { loginHandler } from '../modules/login';
+import { loginHandler, userHandler } from '../modules/login';
 import apiAxios from '../utils/apiAxios';
 import { notify } from '../modules/notification';
 import { RiGoogleFill, RiKakaoTalkFill } from 'react-icons/ri';
@@ -190,7 +190,9 @@ const LoginModal: React.FunctionComponent<IProps> = ({
           setModalOn({ isOn: false, isShow: false });
           localStorage.setItem('isLogin', 'true');
           localStorage.setItem('accessToken', res.data.accessToken);
+          localStorage.setItem('userId', res.data.user.id);
           dispatch(notify('로그인이 완료되었습니다.'));
+          dispatch(userHandler(res.data.user.id));
         })
         .catch((err) => {
           dispatch(notify('잘못된 아이디 혹은 비밀번호입니다.'));
@@ -200,7 +202,7 @@ const LoginModal: React.FunctionComponent<IProps> = ({
 
   const handleKakaoOAuth = () => {
     const redirectURI = 'https://localhost:3000/oauth';
-    const link = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_REST_KEY}&redirect_uri=${redirectURI}&response_type=code`;
+    const link = `https://kauth.kakao.com/oauth/authorize?client_id=32ebca83d9953f1198b5dc3fd8415d1b&redirect_uri=${redirectURI}&response_type=code`;
     window.location.href = link;
   };
 
