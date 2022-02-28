@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { PollsModule } from './polls/polls.module';
+import { PollsOptionsModule } from './polls-options/polls-options.module';
 import typeOrmConfig from './common/config/typeorm.config';
 
 @Module({
@@ -13,6 +14,7 @@ import typeOrmConfig from './common/config/typeorm.config';
     UsersModule,
     AuthModule,
     PollsModule,
+    PollsOptionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

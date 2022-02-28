@@ -1,6 +1,7 @@
 import { User } from '../../users/entities/user.entity';
 import { Poll } from '../../polls/entities/poll.entity';
-import { PollOption } from '../../polls/entities/poll-option.entity';
+import { PollOption } from '../../polls-options/entities/poll-option.entity';
+import { VoteHistory } from '../../vote-histories/entities/vote-history.entity';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import env from './env.config';
 
@@ -11,7 +12,7 @@ const typeOrmConfig: TypeOrmModuleOptions = {
   username: env.DB_USERNAME,
   password: env.DB_PASSWORD,
   database: env.DB_NAME,
-  entities: [User, Poll, PollOption],
+  entities: [User, Poll, PollOption, VoteHistory],
 };
 
 if (env.NODE_ENV === 'development') {

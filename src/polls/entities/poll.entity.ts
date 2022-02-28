@@ -13,8 +13,8 @@ import {
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { CommonEntity } from '../../common/entities/common.entity';
 import { User } from '../../users/entities/user.entity';
-import { CreatePollOptionDto } from '../dto/create-poll-option.dto';
-import { PollOption } from './poll-option.entity';
+import { CreatePollOptionDto } from '../../polls-options/dto/create-poll-option.dto';
+import { PollOption } from '../../polls-options/entities/poll-option.entity';
 
 @Entity()
 export class Poll extends CommonEntity {

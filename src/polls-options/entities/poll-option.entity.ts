@@ -1,7 +1,8 @@
 import { IsNotEmpty, IsString } from 'class-validator';
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { CommonEntity } from '../../common/entities/common.entity';
-import { Poll } from './poll.entity';
+import { Poll } from '../../polls/entities/poll.entity';
+import { VoteHistory } from '../../vote-histories/entities/vote-history.entity';
 
 @Entity()
 export class PollOption extends CommonEntity {
@@ -15,4 +16,7 @@ export class PollOption extends CommonEntity {
     nullable: false,
   })
   poll: Poll;
+
+  @OneToMany(() => VoteHistory, (voteHistory) => voteHistory.pollOption)
+  voteHistories: VoteHistory[];
 }

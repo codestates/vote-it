@@ -14,12 +14,13 @@ export class EntityNotFoundErrorFilter
   private static readonly koreanEntitiesName: Record<string, string> = {
     User: '유저',
     Poll: '투표',
+    PollOption: '투표 옵션',
   };
 
   catch(exception: EntityNotFoundError, host: ArgumentsHost) {
-    const errorEntity = exception.message.split('"')[1];
+    const entityName = exception.message.split('"')[1];
     const koreanEntityName =
-      EntityNotFoundErrorFilter.koreanEntitiesName[errorEntity];
+      EntityNotFoundErrorFilter.koreanEntitiesName[entityName];
 
     host
       .switchToHttp()
