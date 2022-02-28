@@ -4,7 +4,7 @@ import { CreatePollDto } from './dto/create-poll.dto';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Poll } from './entities/poll.entity';
-import { PollOption } from './entities/poll-option.entity';
+import { PollOption } from '../polls-options/entities/poll-option.entity';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 
 @Injectable()
