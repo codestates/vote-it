@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Dispatch, SetStateAction, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import { loginHandler } from '../modules/login';
+import { loginHandler, userHandler } from '../modules/login';
 import apiAxios from '../utils/apiAxios';
 import { notify } from '../modules/notification';
 import { RiGoogleFill, RiKakaoTalkFill } from 'react-icons/ri';
@@ -190,7 +190,9 @@ const LoginModal: React.FunctionComponent<IProps> = ({
           setModalOn({ isOn: false, isShow: false });
           localStorage.setItem('isLogin', 'true');
           localStorage.setItem('accessToken', res.data.accessToken);
+          localStorage.setItem('userId', res.data.user.id);
           dispatch(notify('로그인이 완료되었습니다.'));
+          dispatch(userHandler(res.data.user.id));
         })
         .catch((err) => {
           dispatch(notify('잘못된 아이디 혹은 비밀번호입니다.'));

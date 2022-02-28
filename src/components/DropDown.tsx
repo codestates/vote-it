@@ -2,8 +2,10 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import { darkHandler, loginHandler } from '../modules/login';
+import { darkHandler, loginHandler, userHandler } from '../modules/login';
 import { Toggle } from './ToggleButton';
+import { useNavigate } from 'react-router-dom';
+import { notify } from '../modules/notification';
 // import { notify } from '../modules/notification';
 
 const Canvas = styled.div`
@@ -66,6 +68,7 @@ interface IProps {
 const DropDown: React.FunctionComponent<IProps> = ({ dropOn, setDropOn }) => {
   // const navigate = useNavigate();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const userColorTheme = localStorage.getItem('color-theme');
   const [darkMode, setDarkMode] = useState<boolean>(userColorTheme === 'dark');
@@ -77,10 +80,12 @@ const DropDown: React.FunctionComponent<IProps> = ({ dropOn, setDropOn }) => {
         localStorage.setItem('isLogin', 'false');
         localStorage.setItem('accessToken', '');
         localStorage.setItem('color-theme', 'light');
+        localStorage.setItem('userId', '-1');
         setDropOn(false);
         dispatch(darkHandler(false));
-        // dispatch(notify('로그아웃이 완료되었습니다.'));
-        window.location.href = '/';
+        dispatch(userHandler(-1));
+        dispatch(notify('로그아웃이 완료되었습니다.'));
+        navigate('/');
       } else {
         setDropOn(false);
         localStorage.setItem('setting', key);
