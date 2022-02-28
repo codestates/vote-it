@@ -17,15 +17,22 @@ const Base = styled.div`
 
 const Circle = styled.button<{ isOn: boolean }>`
   position: relative;
+  margin: 1px;
   left: ${(props) => (props.isOn ? '13px' : '-13px')};
   height: 24px;
   width: 24px;
-  margin: 1px;
+
   border-radius: 100px;
   background-color: white;
   transition: all 0.5s;
   :hover {
     background-color: white;
+  }
+
+  img {
+    --dm-icon-size: 18px;
+    width: var(--dm-icon-size);
+    height: var(--dm-icon-size);
   }
 `;
 
@@ -59,7 +66,9 @@ export class Toggle extends Component<Props, State> {
           <Circle
             onClick={this.props.handleDarkMode}
             isOn={this.props.darkMode}
-          />
+          >
+            {/* <img src={`${process.env.PUBLIC_URL}/images/sun.png`} alt="sun" /> */}
+          </Circle>
         </Base>
       </Container>
     );
