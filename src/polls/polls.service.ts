@@ -45,8 +45,11 @@ export class PollsService {
         'author.id',
         'author.nickname',
         'author.picture',
+        'options.id',
+        'options.content',
       ])
       .leftJoin('poll.author', 'author')
+      .leftJoin('poll.options', 'options')
       .where('poll.id = :pollId', { pollId })
       .getOneOrFail();
     return poll;
