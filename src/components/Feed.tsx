@@ -2,6 +2,9 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import '../fonts/font.css';
+import { useSelector } from 'react-redux';
+import { RootState } from '../modules';
+
 const Canvas = styled.div`
   position: fixed;
   top: 0;
@@ -82,19 +85,23 @@ interface IProps {
 
 const Feed: React.FunctionComponent<IProps> = ({ setNoticeOn }) => {
   const navigate = useNavigate();
-  const [feeds, setFeeds] = useState([
-    { id: 1, msg: '테스트 메시지입니다.' },
-    { id: 2, msg: '테스트 메시지입니다.' },
-    { id: 3, msg: '테스트 메시지입니다.' },
-    { id: 4, msg: '길이가 비교적 긴 테스트 메시지입니다.' },
-    { id: 5, msg: '테스트 메시지입니다.' },
-    { id: 6, msg: '테스트 알림입니다.' },
-    { id: 7, msg: '테스트 알림입니다.' },
-    { id: 8, msg: '테스트 알림입니다.' },
-    { id: 9, msg: '테스트 알림입니다.' },
-    { id: 10, msg: '테스트 알림입니다.' },
-    { id: 11, msg: '테스트 알림입니다.' },
-    { id: 12, msg: '테스트 알림입니다.' },
+  interface Ifeed {
+    id: number;
+    msg: string;
+  }
+  const [feeds, setFeeds] = useState<Ifeed[]>([
+    // { id: 1, msg: '테스트 메시지입니다.' },
+    // { id: 2, msg: '테스트 메시지입니다.' },
+    // { id: 3, msg: '테스트 메시지입니다.' },
+    // { id: 4, msg: '길이가 비교적 긴 테스트 메시지입니다.' },
+    // { id: 5, msg: '테스트 메시지입니다.' },
+    // { id: 6, msg: '테스트 알림입니다.' },
+    // { id: 7, msg: '테스트 알림입니다.' },
+    // { id: 8, msg: '테스트 알림입니다.' },
+    // { id: 9, msg: '테스트 알림입니다.' },
+    // { id: 10, msg: '테스트 알림입니다.' },
+    // { id: 11, msg: '테스트 알림입니다.' },
+    // { id: 12, msg: '테스트 알림입니다.' },
   ]);
   useEffect(() => {
     setFeeds(feeds);
@@ -108,25 +115,49 @@ const Feed: React.FunctionComponent<IProps> = ({ setNoticeOn }) => {
   const handleDelete = (key: number) => () => {
     // 해당 알림 삭제하는 코드
   };
+  const isDark = useSelector((state: RootState) => state.login.isDark);
   return (
     <>
       <Canvas onClick={handleFeedOff} />
       <Container>
         <View>
-          {feeds.map((v) => {
-            return (
-              <FeedWrapper key={v.id} onClick={handleFeedClick(1)}>
-                <div className="feed-text">{v.msg}</div>
-                <div
-                  className="feed-icon-check"
-                  style={{ fontSize: '15px' }}
-                  onClick={handleDelete(v.id)}
-                >
-                  &times;
-                </div>
-              </FeedWrapper>
-            );
-          })}
+          {feeds.length === 0 ? (
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
+              <img
+                src={
+                  isDark
+                    ? `${process.env.PUBLIC_URL}/feed-dark.png`
+                    : `${process.env.PUBLIC_URL}/feed-light.png`
+                }
+                style={{
+                  minWidth: '250px',
+                  width: '50%',
+                  height: 'auto',
+                }}
+              />
+            </div>
+          ) : (
+            feeds.map((v) => {
+              return (
+                <FeedWrapper key={v.id} onClick={handleFeedClick(1)}>
+                  <div className="feed-text">{v.msg}</div>
+                  <div
+                    className="feed-icon-check"
+                    style={{ fontSize: '15px' }}
+                    onClick={handleDelete(v.id)}
+                  >
+                    &times;
+                  </div>
+                </FeedWrapper>
+              );
+            })
+          )}
         </View>
       </Container>
     </>
