@@ -4,6 +4,7 @@ import axios from 'axios';
 import apiAxios from '../utils/apiAxios';
 import { useDispatch } from 'react-redux';
 import { notify } from '../modules/notification';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   setHeaderVisibility: Dispatch<SetStateAction<boolean>>;
@@ -11,6 +12,7 @@ interface Props {
 
 export const OAuth = ({ setHeaderVisibility }: Props) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const query = queryString.parse(window.location.search);
 
   const sendKakaoTokenToServer = (token: string) => {
@@ -25,12 +27,14 @@ export const OAuth = ({ setHeaderVisibility }: Props) => {
               access_token: res.data.jwt,
             }),
           );
+          navigate('/');
+          console.log('login success');
         } else {
           window.alert('로그인에 실패하였습니다.');
         }
       })
       .catch((err) => {
-        window.location.href = '/';
+        navigate('/');
         dispatch(notify('뭔가 잘못됐어요!'));
       });
   };
