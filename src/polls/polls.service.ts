@@ -34,6 +34,24 @@ export class PollsService {
     return { polls, count };
   }
 
+  async getSpecificPoll(pollId: number) {
+    const poll = await this.pollRepository
+      .createQueryBuilder('poll')
+      .select([
+        'poll.id',
+        'poll.createdAt',
+        'poll.expirationDate',
+        'poll.subject',
+        'author.id',
+        'author.nickname',
+        'author.picture',
+      ])
+      .leftJoin('poll.author', 'author')
+      .where('poll.id = :pollId', { pollId })
+      .getOneOrFail();
+    return poll;
+  }
+
   async createPoll({ authorId, options, ...createPollDto }: CreatePollDto) {
     const author = await this.userRepository.findOneOrFail(authorId);
     return this.connection.transaction(async (manager) => {
