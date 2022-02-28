@@ -196,17 +196,16 @@ export const Share = ({ shareModal, setShareModal }: Props) => {
       () => {
         // 성공했을 경우 Toast 메시지 팝업
         dispatch(notify('클립보드에 주소가 복사되었습니다.'));
-        console.log('링크 복사됨');
       },
       () => {
         // 실패했을 경우 Toast 메시지 팝업
         dispatch(notify('복사 실패, 다시 시도해주세요.'));
-        console.log('복사 실패, 다시 시도해주새오');
       },
     );
   };
 
   const setModalOff = () => {
+    document.body.classList.remove('stop-scroll');
     setShareModal({ isOn: false, isShow: false });
   };
 
@@ -231,6 +230,8 @@ export const Share = ({ shareModal, setShareModal }: Props) => {
           });
         },
         () => {
+          // 페이스북 공유하기
+          //! 링크오류가 발생함. 점검필요
           window.open(
             `https://www.facebook.com/sharer/sharer.php?u=${urlValue}`,
           );
@@ -274,9 +275,18 @@ export const Share = ({ shareModal, setShareModal }: Props) => {
     const scrollLeft = scrollRef.current?.scrollLeft || 0;
     scrollRef.current?.scrollTo({
       top: 0,
-      left: scrollLeft + 300 * key,
+      left: scrollLeft + 168 * key,
       behavior: 'smooth',
     });
+  };
+
+  const handleRowWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    // e.preventDefault();
+    // e.stopPropagation();
+    if (e.deltaY > 0)
+      scrollRef.current?.scrollBy({ top: 0, left: 168, behavior: 'smooth' });
+    else if (e.deltaY < 0)
+      scrollRef.current?.scrollBy({ top: 0, left: -168, behavior: 'smooth' });
   };
   // const handleScrollBtn = () => {
   //   const scrollLeft = scrollRef.current?.scrollLeft || 0;
@@ -307,7 +317,7 @@ export const Share = ({ shareModal, setShareModal }: Props) => {
             &times;
           </div>
         </div>
-        <div className="wrapper first">
+        <div onWheel={handleRowWheel} className="wrapper first">
           <div className="arrows">
             <SlideButton onClick={handleScroll(-1)} right={false}>
               <FaAngleLeft />

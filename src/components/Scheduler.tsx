@@ -312,7 +312,6 @@ const Scheduler: React.FunctionComponent<IProps> = ({
   };
 
   const handleKeyUp = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    console.log(e.key);
     if (e.key === 'Escape') setView(false);
   };
 

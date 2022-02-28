@@ -28,6 +28,7 @@ export const checkValidDate = (
     var dateRegex =
       /^(?=\d)(?:(?:31(?!.(?:0?[2469]|11))|(?:30|29)(?!.0?2)|29(?=.0?2.(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00)))(?:\x20|$))|(?:2[0-8]|1\d|0?[1-9]))([-./])(?:1[012]|0?[1-9])\1(?:1[6-9]|[2-9]\d)?\d\d(?:(?=\x20\d)\x20|$))?(((0?[1-9]|1[012])(:[0-5]\d){0,2}(\x20[AP]M))|([01]\d|2[0-3])(:[0-5]\d){1,2})?$/;
     // /^(?=\d)(?:(?:31(?!.(?:0?[2469]|11))|(?:30|29)(?!.0?2)|29(?=.0?2.(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00)))(?:\x20|$))|(?:2[0-8]|1\d|0?[1-9]))([-.\/])(?:1[012]|0?[1-9])\1(?:1[6-9]|[2-9]\d)?\d\d(?:(?=\x20\d)\x20|$))?(((0?[1-9]|1[012])(:[0-5]\d){0,2}(\x20[AP]M))|([01]\d|2[0-3])(:[0-5]\d){1,2})?$/;
+    //! 현재 달력에 필요한 validation 조건으로 변경할 필요성
     result = dateRegex.test(dNum + '-' + mNum + '-' + yNum);
   } catch (err) {
     result = false;
@@ -37,7 +38,6 @@ export const checkValidDate = (
 
 export const dateInfoMod = (value: string, mod: number) => {
   // date를 받아서 mod만큼 날짜 계산
-  console.log('mod 함수 실행');
   const yNum = parseInt(value.slice(0, 4), 10),
     mNum = parseInt(value.slice(4, 6), 10) - 1,
     dNum = parseInt(value.slice(6, 8), 10);
@@ -58,13 +58,22 @@ export const dateInfoMod = (value: string, mod: number) => {
 export const setDateAlias = (y: number, m: number, d: number) => {
   let today = new Date();
   const thisWeek = [today.toLocaleDateString()];
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < 7; i++) {
     today.setDate(today.getDate() + 1);
     thisWeek.push(today.toLocaleDateString());
   }
   const date = new Date(y, m - 1, d);
   const dateStr = date.toLocaleDateString();
   const idx = thisWeek.indexOf(dateStr);
-  const alias = ['오늘', '내일', '모래', '', '', '', ''];
+  const alias = [
+    '오늘',
+    '내일',
+    '모레',
+    '3일후',
+    '4일후',
+    '5일후',
+    '6일후',
+    '다음주',
+  ]; //
   return alias[idx] || 'none';
 };

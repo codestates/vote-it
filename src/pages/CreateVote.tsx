@@ -90,6 +90,7 @@ const Option = styled.div`
 `;
 const OptionInput = styled.input`
   font-family: 'SUIT-Light';
+  font-size: 16px;
   &:focus {
     outline: none;
   }
@@ -100,17 +101,23 @@ const OptionInput = styled.input`
 `;
 
 const DelOptionBtn = styled.div`
+  width: 40px;
+  border-radius: 5px;
+  cursor: pointer;
   &:hover {
+    background-color: var(--button-bg-lighter);
   }
-  all: unset;
+  /* all: unset; */
   /* margin-right: 10px; */
 `;
 const PlusOptionBtn = styled.button`
+  padding: 2px;
   border: none;
   margin: 0 auto;
   margin-top: 10px;
   width: 50px;
-  min-height: 40px;
+  height: 40px;
+  line-height: 40px;
   border-radius: 20px;
   background-color: var(--main-color);
 `;
@@ -127,11 +134,18 @@ const CheckboxAndTitle = styled.div`
 `;
 const Checkbox = styled.input`
   margin-right: 10px;
+  cursor: pointer;
 `;
-const CheckboxTitle = styled.div``;
+const CheckboxTitle = styled.div`
+  cursor: pointer;
+  :hover {
+    color: var(--font-lighter);
+  }
+`;
 
 const CreateBtn = styled.button`
   font-family: 'KOHIBaeumOTF';
+  padding-top: 4px;
   margin: 0 auto;
   font-size: 20px;
   border: none;

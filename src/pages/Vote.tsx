@@ -101,6 +101,7 @@ const ShareButton = styled.div`
   padding: 4px;
   white-space: pre;
   width: fit-content;
+  cursor: pointer;
   /* svg {
     transform: translate(0, 2px);
   } */
@@ -190,6 +191,7 @@ export const Vote = () => {
   };
 
   const handleShareModal = () => {
+    document.body.classList.add('stop-scroll');
     setShareModal({ isOn: true, isShow: false });
     setTimeout(() => {
       setShareModal((prev) => {
