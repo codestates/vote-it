@@ -41,6 +41,7 @@ export class PollsService {
       .select([
         'poll.id',
         'poll.createdAt',
+        'poll.isPlural',
         'poll.expirationDate',
         'poll.subject',
         'author.id',
