@@ -95,6 +95,7 @@ export class PollsService {
         .getRawMany();
       poll.options = poll.options.map((option, i) => ({
         ...option,
+        isVoted: rawPolls[i].isVoted === 1,
         votedCount: parseInt(optionsVotedCount[i].votedCount, 10),
       }));
     }
