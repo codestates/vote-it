@@ -48,8 +48,7 @@ const renderActiveShape = (props: any) => {
 
 interface Ioptions {
   id: number;
-  name: string;
-  value: number;
+  content: string;
 }
 
 interface IProps {
