@@ -132,6 +132,7 @@ const ResultContainer = styled.div`
 interface Ioptions {
   id: number;
   content: string;
+  value?: number;
 }
 
 interface Icomments {
@@ -154,12 +155,13 @@ export const Vote = () => {
   const [voteSub, setVoteSub] = useState('');
   const [username, setUsername] = useState('');
   const [options, setOptions] = useState<Ioptions[]>([]);
-  const [voted, setVoted] = useState(-1);
+  const [voted, setVoted] = useState<number[]>([]);
   const [commentsList, setCommentsList] = useState<Icomments[]>([]);
   const [shareModal, setShareModal] = useState({ isOn: false, isShow: false });
   // const [post, setPost] = useState<Post>(getPostById(id));
   const [del, setDel] = useState(false);
   const [isDone, setIsDone] = useState(false);
+  const [isPlural, setIsPlural] = useState(false);
   const userId = useSelector((state: RootState) => state.login.userId);
 
   const dispatch = useDispatch();
@@ -175,6 +177,7 @@ export const Vote = () => {
     apiAxios
       .get(`polls/${id}`)
       .then((res) => {
+        setIsPlural(res.data.isPlural);
         setPollId(res.data.author.id);
         setVoteSub(res.data.subject);
         setUsername(res.data.author.nickname);
@@ -183,12 +186,11 @@ export const Vote = () => {
       })
       .then((res) => {
         if (timeHandler(res.data.expirationDate) < 0) {
-          setVoted(options.length);
+          // setVoted();
           setIsDone(true);
           dispatch(notify('마감된 투표입니다.'));
         }
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, id]);
 
   const VoteHandler = (optionId: number) => {
@@ -196,10 +198,30 @@ export const Vote = () => {
       dispatch(notify('마감된 투표입니다.'));
       return;
     }
-    if (optionId === voted) {
-      setVoted(-1);
+    const isLogin = localStorage.getItem('isLogin');
+    if (isLogin === 'false') {
+      dispatch(notify('로그인 후 투표하실 수 있습니다.'));
+      return;
+    }
+    if (voted.includes(optionId)) {
+      // setVoted(voted.filter((el) => el !== optionId));
+      return;
     } else {
-      setVoted(optionId);
+      const accessToken = localStorage.getItem('accessToken');
+      apiAxios
+        .post(`polls/${id}/options/${optionId}/vote`, null, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((res) => {
+          if (isPlural) {
+            setVoted([...voted, optionId]);
+          } else {
+            setVoted([optionId]);
+          }
+        })
+        .catch((err) => dispatch(notify(err.response.data.message)));
     }
   };
 
@@ -235,7 +257,9 @@ export const Vote = () => {
           <BiShareAlt style={{ width: '20px', height: 'auto' }} />
           <div>공유하기</div>
         </ShareButton>
-        <OptionsBox style={voted === -1 ? {} : { gridColumn: 'span 6' }}>
+        <OptionsBox
+          style={voted.length === 0 && !isDone ? {} : { gridColumn: 'span 6' }}
+        >
           {options.map((obj) => {
             return (
               <Option
@@ -248,7 +272,9 @@ export const Vote = () => {
             );
           })}
         </OptionsBox>
-        <ResultContainer style={voted === -1 ? { display: 'none' } : {}}>
+        <ResultContainer
+          style={isDone || voted.length === 0 ? { display: 'none' } : {}}
+        >
           <div style={{ fontFamily: 'OTWelcomeRA' }}>
             <Chart options={options} />
           </div>
@@ -258,7 +284,7 @@ export const Vote = () => {
         username={username}
         commentList={commentsList}
         setCommentsList={setCommentsList}
-        isVoted={voted !== -1}
+        isVoted={voted.length !== 0 || isDone}
       ></Comments>
       {shareModal.isOn ? (
         <Share shareModal={shareModal} setShareModal={setShareModal} />

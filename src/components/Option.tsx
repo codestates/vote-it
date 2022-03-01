@@ -20,7 +20,7 @@ const OptionContainer = styled.div`
 interface Iprops {
   id: number;
   content: string;
-  voted: number;
+  voted: number[];
   VoteHandler: (optionId: number) => void;
 }
 
@@ -31,7 +31,7 @@ export const Option = ({ id, content, voted, VoteHandler }: Iprops) => {
         VoteHandler(id);
       }}
       style={
-        voted === id
+        voted.includes(id)
           ? {
               border: '5px solid #5D6DBE',
               color: '#5d6dbe',
