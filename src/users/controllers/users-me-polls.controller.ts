@@ -12,8 +12,10 @@ import {
   Delete,
   Param,
   ParseIntPipe,
+  Patch,
 } from '@nestjs/common';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
+import { UpdateUserPollDto } from '../dto/update-user-poll.dto';
 
 @Controller('users/me/polls')
 @UseGuards(JwtAuthGuard)
@@ -30,6 +32,20 @@ export class UsersMePollsController {
       authorId: userId,
       ...createUserPollDto,
     });
+  }
+
+  @Patch(':pollId')
+  @UseGuards(JwtAuthGuard)
+  updateMyPoll(
+    @CurrentUser() { userId }: JwtValidatePayload,
+    @Param('pollId', ParseIntPipe) pollId: number,
+    @Body() updateUserPollDto: UpdateUserPollDto,
+  ) {
+    return this.pollsService.updatePollOfAuthor(
+      pollId,
+      updateUserPollDto,
+      userId,
+    );
   }
 
   @Delete(':pollId')

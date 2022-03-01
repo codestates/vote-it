@@ -57,7 +57,8 @@ export class UsersService {
     }
     const updateResult = await this.userRepository
       .createQueryBuilder('user')
-      .update(updateUserProfileDto)
+      .update()
+      .set(updateUserProfileDto)
       .where('user.id = :userId', { userId })
       .execute();
     if (updateResult.affected === 0) {
@@ -80,7 +81,8 @@ export class UsersService {
     }
     this.userRepository
       .createQueryBuilder('user')
-      .update({ password: newPassword })
+      .update()
+      .set({ password: newPassword })
       .where('user.id = :userId', { userId })
       .execute();
   }

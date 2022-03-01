@@ -13,13 +13,15 @@ export class AppService {
     if (env.NODE_ENV !== 'development') {
       return 'Hello, Todo It!';
     }
+
     if (this.dbVersion === null) {
       const [{ dbVersion }] = await this.connection
         .createQueryRunner('master')
         .query('SELECT VERSION() as dbVersion');
       this.dbVersion = dbVersion;
     }
-    const ret = `
+
+    const debugInformation = /* HTML */ `
       <!DOCTYPE html>
       <h1>Debug Information</h1>
       <div>
@@ -27,6 +29,6 @@ export class AppService {
         <p>DB Version: <code>${this.dbVersion}</code></p>
       </div>
     `;
-    return ret;
+    return debugInformation;
   }
 }

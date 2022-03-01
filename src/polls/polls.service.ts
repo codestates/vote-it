@@ -1,11 +1,12 @@
 import { UserRepository } from '../users/repositories/user.repository';
-import { Connection, Repository } from 'typeorm';
+import { Connection, EntityNotFoundError, Repository } from 'typeorm';
 import { CreatePollDto } from './dto/create-poll.dto';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Poll } from './entities/poll.entity';
 import { PollOption } from '../polls-options/entities/poll-option.entity';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
+import { UpdateUserPollDto } from '../users/dto/update-user-poll.dto';
 
 @Injectable()
 export class PollsService {
@@ -86,6 +87,24 @@ export class PollsService {
         optionIds,
       };
     });
+  }
+
+  async updatePollOfAuthor(
+    pollId: number,
+    updateUserPollDto: UpdateUserPollDto,
+    authorId: number,
+  ) {
+    const updateResult = await this.pollRepository
+      .createQueryBuilder('poll')
+      .update()
+      .set(updateUserPollDto)
+      .where('poll.id = :pollId', { pollId })
+      .andWhere('poll.authorId = :authorId', { authorId })
+      .execute();
+    if (updateResult.affected === 0) {
+      throw new EntityNotFoundError(Poll, pollId);
+    }
+    return updateUserPollDto;
   }
 
   async deletePollOfAuthor(pollId: number, authorId: number): Promise<void> {
