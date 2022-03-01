@@ -1,4 +1,14 @@
-import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
+import { OptionalJwtAuthGuard } from '../auth/guards/optional-jwt-auth.guard';
+import { JwtValidatePayload } from '../auth/payloads/jwt-validate.payload';
+import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { PollsService } from './polls.service';
 
@@ -12,7 +22,11 @@ export class PollsController {
   }
 
   @Get(':pollId')
-  getSpecificPoll(@Param('pollId', ParseIntPipe) pollId: number) {
-    return this.pollsService.getSpecificPoll(pollId);
+  @UseGuards(OptionalJwtAuthGuard)
+  getSpecificPoll(
+    @Param('pollId', ParseIntPipe) pollId: number,
+    @CurrentUser() user?: JwtValidatePayload,
+  ) {
+    return this.pollsService.getSpecificPoll(pollId, user?.userId);
   }
 }
