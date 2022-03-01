@@ -66,7 +66,6 @@ export class PollsService {
     if (rawPolls.length === 0) {
       throw new EntityNotFoundError(Poll, pollId);
     }
-    console.log(rawPolls);
     const poll = {
       id: rawPolls[0].poll_id,
       createdAt: rawPolls[0].poll_createdAt,
