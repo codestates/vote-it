@@ -7,13 +7,13 @@ export class VoteHistory {
   @PrimaryColumn()
   userId: number;
 
-  @PrimaryColumn()
-  pollOptionId: number;
-
   @ManyToOne(() => User, (user) => user.voteHistories, {
     onDelete: 'CASCADE',
   })
   user: User;
+
+  @PrimaryColumn()
+  pollOptionId: number;
 
   @ManyToOne(() => PollOption, (pollOption) => pollOption.voteHistories, {
     onDelete: 'CASCADE',

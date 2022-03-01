@@ -35,8 +35,9 @@ export class PollsService {
     return { polls, count };
   }
 
-  async getSpecificPoll(pollId: number) {
-    const poll = await this.pollRepository
+  // TODO 정리 필요...
+  async getSpecificPoll(pollId: number, userId?: number) {
+    const rawPolls = await this.pollRepository
       .createQueryBuilder('poll')
       .select([
         'poll.id',
@@ -49,11 +50,54 @@ export class PollsService {
         'author.picture',
         'options.id',
         'options.content',
+        'voteHistories.userId',
       ])
+      .addSelect('IF(voteHistories.userId IS NULL, false, true)', 'isVoted')
       .leftJoin('poll.author', 'author')
       .leftJoin('poll.options', 'options')
+      .leftJoin(
+        'options.voteHistories',
+        'voteHistories',
+        'voteHistories.userId = :userId',
+        { userId },
+      )
       .where('poll.id = :pollId', { pollId })
-      .getOneOrFail();
+      .getRawMany();
+    if (rawPolls.length === 0) {
+      throw new EntityNotFoundError(Poll, pollId);
+    }
+    const poll = {
+      id: rawPolls[0].poll_id,
+      createdAt: rawPolls[0].poll_createdAt,
+      subject: rawPolls[0].poll_subject,
+      isPlural: rawPolls[0].poll_isPlural,
+      expirationDate: rawPolls[0].poll_expirationDate,
+      author: {
+        id: rawPolls[0].author_id,
+        nickname: rawPolls[0].author_nickname,
+        picture: rawPolls[0].author_picture,
+      },
+      options: rawPolls.map((rawPoll) => ({
+        id: rawPoll.options_id,
+        content: rawPoll.options_content,
+      })),
+      isVoted: rawPolls.some((rawPoll) => rawPoll.isVoted),
+    };
+    if (poll.isVoted) {
+      const optionsVotedCount = await this.pollRepository
+        .createQueryBuilder('poll')
+        .select('options.id', 'optionId')
+        .addSelect('COUNT(voteHistories.userId)', 'votedCount')
+        .leftJoin('poll.options', 'options')
+        .leftJoin('options.voteHistories', 'voteHistories')
+        .where('poll.id = :pollId', { pollId })
+        .groupBy('options.id')
+        .getRawMany();
+      poll.options = poll.options.map((option, i) => ({
+        ...option,
+        votedCount: parseInt(optionsVotedCount[i].votedCount, 10),
+      }));
+    }
     return poll;
   }
 
