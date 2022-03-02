@@ -4,6 +4,8 @@ import { WithdrawalModal } from './WithdrawalModal';
 import apiAxios from '../../utils/apiAxios';
 import { useDispatch } from 'react-redux';
 import { notify } from '../../modules/notification';
+import { setServers } from 'dns';
+import ServerErr from '../ServerErr';
 
 const Container = styled.div`
   margin-top: 25vh;
@@ -99,7 +101,7 @@ const Security: React.FunctionComponent<IProps> = () => {
   const [newPassword, setNewPassword] = useState('');
   const [checkNew, setCheckNew] = useState('');
   const [isCheck, setIsCheck] = useState(true);
-
+  const [err, setErr] = useState('');
   const dispatch = useDispatch();
 
   const WithdrawalModalHandler = () => {
@@ -148,59 +150,72 @@ const Security: React.FunctionComponent<IProps> = () => {
         if (err.response.status === 403) {
           dispatch(notify('이전 비밀번호가 잘못되었습니다.'));
         }
+        if (err.response.status >= 500) {
+          setErr(err.response.data.message);
+        }
         console.log(err);
       });
   };
 
   return (
-    <Container>
-      {isWithdrawal ? (
-        <WithdrawalModal WithdrawalModalHandler={WithdrawalModalHandler} />
+    <>
+      {err === '' ? (
+        <Container>
+          {isWithdrawal ? (
+            <WithdrawalModal WithdrawalModalHandler={WithdrawalModalHandler} />
+          ) : (
+            ''
+          )}
+          <PassWrapper>
+            <InputWrapper>
+              <div>이전 비밀번호</div>
+              <input
+                type={'password'}
+                value={currentPassword}
+                onChange={(e) => {
+                  setCurrentPassword(e.target.value);
+                }}
+              />
+            </InputWrapper>
+            <InputWrapper>
+              <div>새 비밀번호</div>
+              <input
+                type={'password'}
+                value={newPassword}
+                onChange={(e) => {
+                  setNewPassword(e.target.value);
+                }}
+              />
+            </InputWrapper>
+            <InputWrapper>
+              <div>새 비밀번호 확인</div>
+              <input
+                type="password"
+                value={checkNew}
+                onChange={checkNewHandler}
+              />
+            </InputWrapper>
+            <Warning style={isCheck ? { display: 'none' } : {}}>
+              비밀번호가 일치하지 않습니다.
+            </Warning>
+          </PassWrapper>
+
+          <ButtonWrapper style={{ marginTop: '15px' }}>
+            <button onClick={changePassword}>비밀번호 변경</button>
+
+            <div
+              onClick={() => {
+                setIsWithdrawal(true);
+              }}
+            >
+              회원 탈퇴
+            </div>
+          </ButtonWrapper>
+        </Container>
       ) : (
-        ''
+        <ServerErr err={err} />
       )}
-      <PassWrapper>
-        <InputWrapper>
-          <div>이전 비밀번호</div>
-          <input
-            type={'password'}
-            value={currentPassword}
-            onChange={(e) => {
-              setCurrentPassword(e.target.value);
-            }}
-          />
-        </InputWrapper>
-        <InputWrapper>
-          <div>새 비밀번호</div>
-          <input
-            type={'password'}
-            value={newPassword}
-            onChange={(e) => {
-              setNewPassword(e.target.value);
-            }}
-          />
-        </InputWrapper>
-        <InputWrapper>
-          <div>새 비밀번호 확인</div>
-          <input type="password" value={checkNew} onChange={checkNewHandler} />
-        </InputWrapper>
-        <Warning style={isCheck ? { display: 'none' } : {}}>
-          비밀번호가 일치하지 않습니다.
-        </Warning>
-      </PassWrapper>
-
-      <ButtonWrapper style={{ marginTop: '15px' }}>
-        <button onClick={changePassword}>비밀번호 변경</button>
-
-        <div
-          onClick={() => {
-            setIsWithdrawal(true);
-          }}
-        >
-          회원 탈퇴
-        </div>
-      </ButtonWrapper>
-    </Container>
+    </>
   );
 };
 

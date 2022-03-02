@@ -373,6 +373,7 @@ const VoteList: React.FunctionComponent<IProps> = () => {
                 width: '50%',
                 height: 'auto',
               }}
+              alt="voteList"
             />
           </div>
         ) : (

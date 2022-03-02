@@ -2,8 +2,6 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import '../fonts/font.css';
-import { useSelector } from 'react-redux';
-import { RootState } from '../modules';
 
 const Canvas = styled.div`
   position: fixed;
@@ -115,7 +113,6 @@ const Feed: React.FunctionComponent<IProps> = ({ setNoticeOn }) => {
   const handleDelete = (key: number) => () => {
     // 해당 알림 삭제하는 코드
   };
-  const isDark = useSelector((state: RootState) => state.login.isDark);
   return (
     <>
       <Canvas onClick={handleFeedOff} />
@@ -126,21 +123,21 @@ const Feed: React.FunctionComponent<IProps> = ({ setNoticeOn }) => {
               style={{
                 display: 'flex',
                 flexDirection: 'column',
+                justifyContent: 'center',
                 alignItems: 'center',
+                height: '100%',
               }}
             >
               <img
-                src={
-                  isDark
-                    ? `${process.env.PUBLIC_URL}/feed-dark.png`
-                    : `${process.env.PUBLIC_URL}/feed-light.png`
-                }
+                src={`${process.env.PUBLIC_URL}/vote-it_LOGO1.ico`}
                 style={{
-                  minWidth: '250px',
-                  width: '50%',
+                  width: '30%',
                   height: 'auto',
+                  opacity: '0.7',
                 }}
+                alt="feed"
               />
+              <div>피드가 비었습니다</div>
             </div>
           ) : (
             feeds.map((v) => {
