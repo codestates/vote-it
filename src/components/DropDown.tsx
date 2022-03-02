@@ -1,36 +1,39 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 // import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { darkHandler, loginHandler, userHandler } from '../modules/login';
-import { Toggle } from './ToggleButton';
 import { useNavigate } from 'react-router-dom';
 import { notify } from '../modules/notification';
 // import { notify } from '../modules/notification';
 
-const Canvas = styled.div`
+const Canvas = styled.div<{ dropOn: boolean }>`
   position: fixed;
   left: 0;
   top: 0;
   min-height: 100vh;
   width: 100vw;
-  /* background-color: #ccc; */
+  z-index: -5;
   opacity: 0;
+  visibility: ${(props) => (props.dropOn ? 'visible' : 'hidden')};
 `;
 
-const Container = styled.div`
+const Container = styled.div<{ dropOn: boolean }>`
   font-family: 'SUIT-Light';
   position: fixed;
   top: 48px;
-  min-height: 184px;
+  min-height: 144px;
   width: 160px;
-
   background-color: var(--menu-bg);
   box-shadow: -1px -1px 2px var(--box-shadow),
     3px 3px 8px var(--box-shadow-darker);
   border-radius: 10px;
-
   z-index: 999;
+
+  visibility: ${(props) => (props.dropOn ? 'visible' : 'hidden')};
+  transform: ${(props) => (props.dropOn ? 'scaleY(1)' : 'scaleY(0)')};
+  transform-origin: 0 0 0;
+  transition: all 0.3s;
 `;
 
 const Divider = styled.div`
@@ -51,10 +54,6 @@ const Button = styled.div`
   }
 `;
 
-const InputWrapper = styled.div`
-  /* cursor: pointer; */
-`;
-
 // interface IDropOn {
 //   isOn: boolean;
 //   isShow: boolean;
@@ -70,8 +69,8 @@ const DropDown: React.FunctionComponent<IProps> = ({ dropOn, setDropOn }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const userColorTheme = localStorage.getItem('color-theme');
-  const [darkMode, setDarkMode] = useState<boolean>(userColorTheme === 'dark');
+  // const userColorTheme = localStorage.getItem('color-theme');
+  // const [darkMode, setDarkMode] = useState<boolean>(userColorTheme === 'dark');
 
   const handleButtonClick =
     (key: string) => (e: React.MouseEvent<HTMLDivElement>) => {
@@ -79,10 +78,10 @@ const DropDown: React.FunctionComponent<IProps> = ({ dropOn, setDropOn }) => {
         dispatch(loginHandler(false));
         localStorage.setItem('isLogin', 'false');
         localStorage.setItem('accessToken', '');
-        localStorage.setItem('color-theme', 'light');
+        // localStorage.setItem('color-theme', 'light');
         localStorage.setItem('userId', '-1');
         setDropOn(false);
-        dispatch(darkHandler(false));
+        // dispatch(darkHandler(false));
         dispatch(userHandler(-1));
         dispatch(notify('로그아웃이 완료되었습니다.'));
         navigate('/');
@@ -97,28 +96,26 @@ const DropDown: React.FunctionComponent<IProps> = ({ dropOn, setDropOn }) => {
     setDropOn(false);
   };
 
-  const handleDarkMode = () => {
-    localStorage.setItem('color-theme', darkMode ? 'light' : 'dark');
-    document.documentElement.setAttribute(
-      'color-theme',
-      darkMode ? 'light' : 'dark',
-    );
-    dispatch(darkHandler(!darkMode));
-    setDarkMode(!darkMode);
-  };
+  // const handleDarkMode = () => {
+  //   localStorage.setItem('color-theme', darkMode ? 'light' : 'dark');
+  //   document.documentElement.setAttribute(
+  //     'color-theme',
+  //     darkMode ? 'light' : 'dark',
+  //   );
+  //   dispatch(darkHandler(!darkMode));
+  //   setDarkMode(!darkMode);
+  // };
   return (
     <>
-      <Canvas onClick={handleDropOff} />
-      <Container>
+      <Canvas dropOn={dropOn} onClick={handleDropOff} />
+      <Container dropOn={dropOn}>
         <Button onClick={handleButtonClick('profile')}>프로필 설정</Button>
         <Button onClick={handleButtonClick('activity')}>활동 기록</Button>
         <Button onClick={handleButtonClick('security')}>보안</Button>
-        <Divider />
+        {/* <Divider />
         <InputWrapper>
-          {/* <input type="checkbox" checked={darkMode} /> 다크모드 */}
           <Toggle darkMode={darkMode} handleDarkMode={handleDarkMode} />
-        </InputWrapper>
-        {/* <Toggle /> */}
+        </InputWrapper> */}
         <Divider />
         <Button onClick={handleButtonClick('logout')}>로그아웃</Button>
       </Container>
