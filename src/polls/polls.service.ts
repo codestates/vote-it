@@ -7,6 +7,8 @@ import { Poll } from './entities/poll.entity';
 import { PollOption } from '../polls-options/entities/poll-option.entity';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { UpdateUserPollDto } from '../users/dto/update-user-poll.dto';
+import { POLL_PICTURE_URL } from '../common/config/file-upload.config';
+import * as path from 'path';
 
 @Injectable()
 export class PollsService {
@@ -25,6 +27,7 @@ export class PollsService {
         'poll.createdAt',
         'poll.expirationDate',
         'poll.subject',
+        'poll.picture',
         'author.nickname',
       ])
       .leftJoin('poll.author', 'author')
@@ -32,7 +35,16 @@ export class PollsService {
       .offset(offset)
       .limit(limit)
       .getManyAndCount();
-    return { polls, count };
+    return {
+      polls: polls.map((poll) => ({
+        ...poll,
+        picture:
+          poll.picture === null
+            ? null
+            : path.join(POLL_PICTURE_URL, poll.picture),
+      })),
+      count,
+    };
   }
 
   // TODO 정리 필요...
@@ -45,6 +57,7 @@ export class PollsService {
         'poll.isPlural',
         'poll.expirationDate',
         'poll.subject',
+        'poll.picture',
         'author.id',
         'author.nickname',
         'author.picture',
@@ -71,6 +84,10 @@ export class PollsService {
       subject: rawPolls[0].poll_subject,
       isPlural: rawPolls[0].poll_isPlural,
       expirationDate: rawPolls[0].poll_expirationDate,
+      picture:
+        rawPolls[0].poll_picture === null
+          ? null
+          : path.join(POLL_PICTURE_URL, rawPolls[0].poll_picture),
       author: {
         id: rawPolls[0].author_id,
         nickname: rawPolls[0].author_nickname,

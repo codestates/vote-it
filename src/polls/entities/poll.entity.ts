@@ -35,6 +35,10 @@ export class Poll extends CommonEntity {
   @IsDateString()
   expirationDate: Date | null;
 
+  @Column({ type: 'varchar', nullable: true })
+  @IsString()
+  picture: string | null;
+
   @ManyToOne(() => User, (user) => user.polls, {
     onDelete: 'CASCADE',
     nullable: false,

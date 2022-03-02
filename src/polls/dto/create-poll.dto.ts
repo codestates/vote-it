@@ -4,7 +4,7 @@ import { IsInt, IsPositive } from 'class-validator';
 
 export class CreatePollDto extends IntersectionType(
   PickType(Poll, ['subject', 'isPrivate', 'isPlural', 'options']),
-  PartialType(PickType(Poll, ['expirationDate'])),
+  PartialType(PickType(Poll, ['picture', 'expirationDate'])),
 ) {
   @IsInt()
   @IsPositive()

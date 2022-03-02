@@ -8,6 +8,7 @@ import { readFileSync } from 'fs';
 import { ValidationPipe } from '@nestjs/common';
 import env from './common/config/env.config';
 import corsConfig from './common/config/cors.config';
+import * as path from 'path';
 
 const httpsOptions: HttpsOptions = {
   key: readFileSync(env.SSL_KEY),
@@ -20,6 +21,10 @@ async function bootstrap() {
     cors: corsConfig,
   });
   app.disable('x-powered-by');
+
+  app.useStaticAssets(path.join(__dirname, 'common', 'uploads'), {
+    prefix: '/media',
+  });
 
   app.useGlobalPipes(
     new ValidationPipe({
