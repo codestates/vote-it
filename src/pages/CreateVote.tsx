@@ -4,10 +4,9 @@ import { FaMinus, FaPlus } from 'react-icons/fa';
 import { Scheduler } from '../components';
 import apiAxios from '../utils/apiAxios';
 import '../fonts/font.css';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { notify } from '../modules/notification';
 import { useNavigate } from 'react-router-dom';
-import { RootState } from '../modules';
 import ServerErr from './ServerErr';
 
 const Outer = styled.div`
@@ -213,6 +212,19 @@ function CreateVote({ setModalOn }: Props) {
     if (time === '') {
       time = '23:59:59';
     }
+    if (date === '') {
+      if (time === '') {
+        setCalendarValue('');
+        return;
+      }
+      const today = new Date();
+      const todayArr = today.toLocaleDateString().split('. ');
+      if (todayArr[1].length === 1) {
+        todayArr[1] = '0' + todayArr[1];
+      }
+      todayArr[2] = todayArr[2].slice(0, todayArr[2].length - 1);
+      date = todayArr.join('');
+    }
     setCalendarValue(
       date.slice(0, 4) +
         '-' +
@@ -223,7 +235,6 @@ function CreateVote({ setModalOn }: Props) {
         time +
         '+09:00',
     );
-    // TODO : ISO 8601 Time
   };
 
   const PlusOption = () => {
@@ -283,8 +294,8 @@ function CreateVote({ setModalOn }: Props) {
       .catch((err) => {
         if (err.response.status >= 500) {
           setErr(err.response.data.message);
-        } else {
-          dispatch(notify(err.response.data.message[0]));
+        } else if (err.response.data.message[0].includes('unique')) {
+          dispatch(notify('중복된 선택지가 있습니다.'));
         }
       });
   };
