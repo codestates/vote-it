@@ -1,10 +1,11 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import apiAxios from '../utils/apiAxios';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { EditpostList } from '../lib/postList';
 import { notify } from '../modules/notification';
+import ServerErr from '../pages/ServerErr';
 const Canvas = styled.div`
   position: fixed;
   left: 0;
@@ -60,7 +61,7 @@ const VoteModal: React.FunctionComponent<IProps> = ({ setDel, id }) => {
   const handleDropOff = () => {
     setDel(false);
   };
-
+  const [err, setErr] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleDelBtn = () => {
@@ -78,19 +79,32 @@ const VoteModal: React.FunctionComponent<IProps> = ({ setDel, id }) => {
         navigate(`/`);
         dispatch(notify('투표가 삭제 되었습니다.'));
       })
-      .catch((err) => alert(err));
+      .catch((err) => {
+        if (err.response.status >= 500) {
+          setErr(err.response.data.message);
+        } else {
+          alert(err);
+          console.log(err.response.data.message);
+        }
+      });
   };
 
   return (
     <>
-      <Canvas onClick={handleDropOff} />
-      <Container>
-        <div style={{ marginBottom: '50px' }}>정말 삭제하시겠습니까?</div>
-        <div style={{ display: 'flex', flexDirection: 'row' }}>
-          <Button onClick={handleDropOff}>뒤로</Button>
-          <Button onClick={handleDelBtn}>삭제</Button>
-        </div>
-      </Container>
+      {err === '' ? (
+        <>
+          <Canvas onClick={handleDropOff} />
+          <Container>
+            <div style={{ marginBottom: '50px' }}>정말 삭제하시겠습니까?</div>
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+              <Button onClick={handleDropOff}>뒤로</Button>
+              <Button onClick={handleDelBtn}>삭제</Button>
+            </div>
+          </Container>
+        </>
+      ) : (
+        <ServerErr err={err} />
+      )}
     </>
   );
 };
