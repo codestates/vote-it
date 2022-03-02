@@ -173,8 +173,10 @@ export const Vote = () => {
   const timeHandler = (value: string) => {
     const today = new Date();
     const timeValue = new Date(value);
+    console.log(`today: ${today}`);
+    console.log(`time: ${timeValue}`);
 
-    return Math.floor((timeValue.getTime() - today.getTime()) / 1000 / 60);
+    return timeValue.getTime() - today.getTime();
   };
 
   useEffect(() => {
