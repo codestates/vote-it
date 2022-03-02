@@ -245,7 +245,7 @@ export const Vote = () => {
             options.map((el: any) => {
               // console.log(el)
               if (el.id === optionId) {
-                return { ...el, isVoted: false, voteCount: el.voteCount - 1 };
+                return { ...el, isVoted: false, votedCount: el.votedCount - 1 };
               }
               return el;
             }),
@@ -253,8 +253,9 @@ export const Vote = () => {
           if (voted.filter((el) => el !== optionId).length === 0) {
             setIsVoted(false);
           }
-        });
-      // .catch((err) => console.log(err.response))
+          // window.location.href = `/vote/${id}`
+        })
+        .catch((err) => console.log(err.response));
       return;
     } else {
       const accessToken = localStorage.getItem('accessToken');
@@ -275,12 +276,12 @@ export const Vote = () => {
             options.map((el: any) => {
               // console.log(el)
               if (el.id === optionId) {
-                return { ...el, isVoted: true, voteCount: el.voteCount + 1 };
+                return { ...el, isVoted: true, votedCount: el.votedCount + 1 };
               }
               return el;
             }),
           );
-          window.location.href = `/vote/${id}`;
+          // window.location.href = `/vote/${id}`;
         })
         .catch((err) => dispatch(notify(err.response.data.message)));
     }
