@@ -151,7 +151,7 @@ export const Main = () => {
   //   createdAt: "",
   //   expirationDate: ""
   return (
-    <div>
+    <>
       {err === '' ? (
         <MainOuter>
           <MainContainer>
@@ -180,6 +180,6 @@ export const Main = () => {
       ) : (
         <ServerErr err={err} />
       )}
-    </div>
+    </>
   );
 };
