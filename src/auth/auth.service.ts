@@ -5,6 +5,8 @@ import { CreateUserDto } from '../users/dto/create-user.dto';
 import { UsersService } from '../users/users.service';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { USER_PICTURE_URL } from '../common/config/file-upload.config';
+import * as path from 'path';
 
 @Injectable()
 export class AuthService {
@@ -31,6 +33,15 @@ export class AuthService {
 
     const payload: JwtPayload = { sub: user.id, email };
     const accessToken = this.jwtService.sign(payload);
-    return { accessToken, user };
+    return {
+      accessToken,
+      user: {
+        ...user,
+        picture:
+          user.picture === null
+            ? null
+            : path.join(USER_PICTURE_URL, user.picture),
+      },
+    };
   }
 }

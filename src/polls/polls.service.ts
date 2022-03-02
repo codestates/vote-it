@@ -7,7 +7,10 @@ import { Poll } from './entities/poll.entity';
 import { PollOption } from '../polls-options/entities/poll-option.entity';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { UpdateUserPollDto } from '../users/dto/update-user-poll.dto';
-import { POLL_PICTURE_URL } from '../common/config/file-upload.config';
+import {
+  POLL_PICTURE_URL,
+  USER_PICTURE_URL,
+} from '../common/config/file-upload.config';
 import * as path from 'path';
 
 @Injectable()
@@ -29,12 +32,14 @@ export class PollsService {
         'poll.subject',
         'poll.picture',
         'author.nickname',
+        'author.picture',
       ])
       .leftJoin('poll.author', 'author')
       .where('poll.isPrivate = false')
       .offset(offset)
       .limit(limit)
       .getManyAndCount();
+    console.log(polls);
     return {
       polls: polls.map((poll) => ({
         ...poll,
@@ -42,6 +47,13 @@ export class PollsService {
           poll.picture === null
             ? null
             : path.join(POLL_PICTURE_URL, poll.picture),
+        author: {
+          ...poll.author,
+          picture:
+            poll.author.picture === null
+              ? null
+              : path.join(USER_PICTURE_URL, poll.author.picture),
+        },
       })),
       count,
     };
@@ -91,7 +103,10 @@ export class PollsService {
       author: {
         id: rawPolls[0].author_id,
         nickname: rawPolls[0].author_nickname,
-        picture: rawPolls[0].author_picture,
+        picture:
+          rawPolls[0].author_picture === null
+            ? null
+            : path.join(USER_PICTURE_URL, rawPolls[0].author_picture),
       },
       options: rawPolls.map((rawPoll) => ({
         id: rawPoll.options_id,
