@@ -13,6 +13,7 @@ import VoteDelModal from '../components/VoteDelModal';
 import apiAxios from '../utils/apiAxios';
 import { notify } from '../modules/notification';
 import { RootState } from '../modules';
+import { EmptyChart } from '../components/EmptyChart';
 
 const VoteOuter = styled.div`
   padding-top: 48px;
@@ -132,7 +133,8 @@ const ResultContainer = styled.div`
 interface Ioptions {
   id: number;
   content: string;
-  value?: number;
+  votedCount: number;
+  isVoted?: boolean;
 }
 
 interface Icomments {
@@ -161,9 +163,11 @@ export const Vote = () => {
   // const [post, setPost] = useState<Post>(getPostById(id));
   const [del, setDel] = useState(false);
   const [isDone, setIsDone] = useState(false);
+  const [isVoted, setIsVoted] = useState(false);
   const [isPlural, setIsPlural] = useState(false);
   const userId = useSelector((state: RootState) => state.login.userId);
 
+  const isLogin = useSelector((state: RootState) => state.login.isLogin);
   const dispatch = useDispatch();
 
   const timeHandler = (value: string) => {
@@ -174,14 +178,29 @@ export const Vote = () => {
   };
 
   useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
     apiAxios
-      .get(`polls/${id}`)
+      .get(
+        `polls/${id}`,
+        isLogin
+          ? { headers: { Authorization: `Bearer ${accessToken}` } }
+          : undefined,
+      )
       .then((res) => {
         setIsPlural(res.data.isPlural);
         setPollId(res.data.author.id);
         setVoteSub(res.data.subject);
         setUsername(res.data.author.nickname);
-        setOptions(res.data.options);
+        // setOptions(res.data.options);
+        setIsVoted(res.data.isVoted);
+        setOptions(
+          res.data.options.map((el: any, idx: number) => {
+            if (!el.votedCount) {
+              el.votedCount = 0;
+            }
+            return el;
+          }),
+        );
         return res;
       })
       .then((res) => {
@@ -191,7 +210,7 @@ export const Vote = () => {
           dispatch(notify('마감된 투표입니다.'));
         }
       });
-  }, [dispatch, id]);
+  }, [dispatch, id, isLogin]);
 
   const VoteHandler = (optionId: number) => {
     if (isDone) {
@@ -220,6 +239,7 @@ export const Vote = () => {
           } else {
             setVoted([optionId]);
           }
+          setIsVoted(true);
         })
         .catch((err) => dispatch(notify(err.response.data.message)));
     }
@@ -236,6 +256,16 @@ export const Vote = () => {
   };
   const handelDelBtn = () => {
     setDel(true);
+  };
+  const handleVotedCount = (id: number) => {
+    setOptions(
+      options.map((el) => {
+        if (el.id === id) {
+          return { ...el, votedCount: el.votedCount + 1 };
+        }
+        return el;
+      }),
+    );
   };
 
   return (
@@ -257,26 +287,25 @@ export const Vote = () => {
           <BiShareAlt style={{ width: '20px', height: 'auto' }} />
           <div>공유하기</div>
         </ShareButton>
-        <OptionsBox
-          style={voted.length === 0 && !isDone ? {} : { gridColumn: 'span 6' }}
-        >
+        <OptionsBox style={!isVoted && !isDone ? {} : { gridColumn: 'span 6' }}>
           {options.map((obj) => {
             return (
               <Option
                 key={obj.id}
                 id={obj.id}
+                pollId={id}
                 content={obj.content}
+                isVoted={obj.isVoted || false}
                 voted={voted}
                 VoteHandler={VoteHandler}
+                handleVotedCount={handleVotedCount}
               ></Option>
             );
           })}
         </OptionsBox>
-        <ResultContainer
-          style={isDone || voted.length === 0 ? { display: 'none' } : {}}
-        >
+        <ResultContainer style={!isDone && !isVoted ? { display: 'none' } : {}}>
           <div style={{ fontFamily: 'OTWelcomeRA' }}>
-            <Chart options={options} />
+            {isVoted ? <Chart options={options} /> : <EmptyChart />}
           </div>
         </ResultContainer>
       </VoteContainer>
@@ -284,7 +313,7 @@ export const Vote = () => {
         username={username}
         commentList={commentsList}
         setCommentsList={setCommentsList}
-        isVoted={voted.length !== 0 || isDone}
+        isVoted={isVoted || isDone}
       ></Comments>
       {shareModal.isOn ? (
         <Share shareModal={shareModal} setShareModal={setShareModal} />
