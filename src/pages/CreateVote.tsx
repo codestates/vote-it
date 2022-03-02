@@ -9,6 +9,7 @@ import { notify } from '../modules/notification';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../modules';
 import ServerErr from './ServerErr';
+import { useBeforeLeave } from '../functions';
 
 const Outer = styled.div`
   font-family: 'EliceDigitalBaeum_Regular';
@@ -302,6 +303,10 @@ function CreateVote() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useBeforeLeave(() => {
+    console.log('가지마!');
+  });
 
   return (
     <>

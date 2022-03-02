@@ -13,15 +13,16 @@ export const share2info: {
     name: '카카오톡',
   },
   {
+    src: `${process.env.PUBLIC_URL}/images/sns/kastory.png`,
+    alt: 'kakaostory',
+    name: '카카오\n스토리',
+  },
+  {
     src: `${process.env.PUBLIC_URL}/images/sns/facebook.png`,
     alt: 'facebook',
     name: '페이스북',
   },
-  {
-    src: `${process.env.PUBLIC_URL}/images/sns/instagram.png`,
-    alt: 'instagram',
-    name: '인스타그램',
-  },
+
   {
     src: `${process.env.PUBLIC_URL}/images/sns/naver-blog.png`,
     alt: 'naver blog',
@@ -31,6 +32,11 @@ export const share2info: {
     src: `${process.env.PUBLIC_URL}/images/sns/naver-band.png`,
     alt: 'naver band',
     name: '네이버밴드',
+  },
+  {
+    src: `${process.env.PUBLIC_URL}/images/sns/twitter.png`,
+    alt: 'twitter',
+    name: '트위터',
   },
   {
     src: `${process.env.PUBLIC_URL}/images/sns/pinterest.png`,
