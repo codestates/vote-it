@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { notify } from '../modules/notification';
 import { useNavigate } from 'react-router-dom';
 import ServerErr from './ServerErr';
+import { useBeforeLeave } from '../functions';
 import { PollImage } from '../components/PollImage';
 
 const Outer = styled.div`
@@ -345,6 +346,10 @@ function CreateVote({ setModalOn }: Props) {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useBeforeLeave(() => {
+    console.log('가지마!');
+  });
 
   return (
     <>

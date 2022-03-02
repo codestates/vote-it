@@ -178,6 +178,13 @@ textarea:focus {
   overflow: hidden;
 }
 
+/* 애니메이션 효과 */
+.btn-touch {
+  animation: touch 0.2s;
+  animation-iteration-count: 2;
+  animation-direction: alternate;
+}
+
 /* CSS of pace.js */
 .pace {
   -webkit-pointer-events: none;

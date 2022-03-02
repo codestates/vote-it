@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 export const copyClipboard = async (
   text: string,
   successAction?: () => void,
@@ -77,3 +79,16 @@ export const setDateAlias = (y: number, m: number, d: number) => {
   ]; //
   return alias[idx] || 'none';
 };
+
+// 페이지를 떠날 때 팝업을 띄우는 훅
+export function useBeforeLeave(onBefore: () => void) {
+  const handle = (e: any) => {
+    e.preventDefault();
+    e.returnValue = 'ㅎㅇㅎㅇ';
+    // onBefore();
+  };
+  useEffect(() => {
+    document.addEventListener('beforeunload', handle);
+    return () => document.removeEventListener('beforeunload', handle);
+  });
+}

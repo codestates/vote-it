@@ -379,7 +379,11 @@ export const Vote = () => {
         isVoted={isVoted || isDone}
       ></Comments>
       {shareModal.isOn ? (
-        <Share shareModal={shareModal} setShareModal={setShareModal} />
+        <Share
+          voteSub={voteSub}
+          shareModal={shareModal}
+          setShareModal={setShareModal}
+        />
       ) : null}
       {del ? <VoteDelModal setDel={setDel} id={id} /> : null}
     </VoteOuter>
