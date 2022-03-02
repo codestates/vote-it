@@ -38,8 +38,8 @@ export class PollsService {
       .where('poll.isPrivate = false')
       .offset(offset)
       .limit(limit)
+      .orderBy('poll.createdAt', 'DESC')
       .getManyAndCount();
-    console.log(polls);
     return {
       polls: polls.map((poll) => ({
         ...poll,
