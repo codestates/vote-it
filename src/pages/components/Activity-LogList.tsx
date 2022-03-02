@@ -341,6 +341,7 @@ const VoteList: React.FunctionComponent<IProps> = () => {
                 width: '50%',
                 height: 'auto',
               }}
+              alt="달그림"
             />
           </div>
         ) : (

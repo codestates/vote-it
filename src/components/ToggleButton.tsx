@@ -1,32 +1,39 @@
-import React from 'react';
 import { Component } from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
+  position: relative;
   display: inline-block;
 `;
 
-const Base = styled.div`
-  max-height: 26px;
-  width: 52px;
-  padding: 1px;
+const Button = styled.button<{ isOn: boolean }>`
+  --dm-button-size: 32px;
+  padding-top: 1px;
   border-radius: 100px;
-  background-color: grey;
-  cursor: pointer;
+  width: var(--dm-button-size);
+  height: var(--dm-button-size);
+  background-color: transparent;
 `;
-
-const Circle = styled.button<{ isOn: boolean }>`
-  position: relative;
-  left: ${(props) => (props.isOn ? '13px' : '-13px')};
-  height: 24px;
-  width: 24px;
-  margin: 1px;
-  border-radius: 100px;
-  background-color: white;
+const Sun = styled.img<{ isOn: boolean }>`
+  --dm-icon-size: 18px;
+  position: absolute;
+  width: var(--dm-icon-size);
+  height: var(--dm-icon-size);
   transition: all 0.5s;
-  :hover {
-    background-color: white;
-  }
+  transform: ${(props) =>
+    props.isOn ? 'rotateZ(270deg) scale(0.2)' : 'rotateZ(0)'};
+  visibility: ${(props) => (props.isOn ? 'hidden' : 'visible')};
+  opacity: ${(props) => (props.isOn ? '0' : '1')};
+`;
+const Moon = styled.img<{ isOn: boolean }>`
+  --dm-icon-size: 18px;
+  width: var(--dm-icon-size);
+  height: var(--dm-icon-size);
+  transition: all 0.5s;
+  transform: ${(props) =>
+    props.isOn ? 'rotateZ(0)' : 'rotateZ(270deg) scale(0.2)'};
+  visibility: ${(props) => (props.isOn ? 'visible' : 'hidden')};
+  opacity: ${(props) => (props.isOn ? '1' : '0')};
 `;
 
 interface Props {
@@ -52,15 +59,18 @@ export class Toggle extends Component<Props, State> {
   render() {
     return (
       <Container>
-        <Base
-          onClick={this.props.handleDarkMode}
-          style={this.props.darkMode ? { background: 'blue' } : {}}
-        >
-          <Circle
-            onClick={this.props.handleDarkMode}
+        <Button onClick={this.props.handleDarkMode} isOn={this.props.darkMode}>
+          <Sun
+            src={`${process.env.PUBLIC_URL}/images/sun.png`}
             isOn={this.props.darkMode}
+            alt="sun"
           />
-        </Base>
+          <Moon
+            src={`${process.env.PUBLIC_URL}/images/moon.png`}
+            isOn={this.props.darkMode}
+            alt="moon"
+          />
+        </Button>
       </Container>
     );
   }

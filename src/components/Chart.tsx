@@ -18,7 +18,7 @@ const renderActiveShape = (props: any) => {
   return (
     <g>
       <text x={cx} y={cy - 10} dy={8} textAnchor="middle" fill="var(--font)">
-        {payload.name}
+        {payload.content}
       </text>
       <Sector
         cx={cx}
@@ -48,8 +48,8 @@ const renderActiveShape = (props: any) => {
 
 interface Ioptions {
   id: number;
-  name: string;
-  value: number;
+  content: string;
+  votedCount?: number;
 }
 
 interface IProps {
@@ -96,7 +96,7 @@ function Chart({ options }: IProps) {
           data={options}
           innerRadius="55%"
           outerRadius="95%"
-          dataKey="value"
+          dataKey="votedCount"
           onMouseEnter={onPieEnter}
         >
           {options.map((entry, index) => (

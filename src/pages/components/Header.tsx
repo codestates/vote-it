@@ -8,7 +8,7 @@ import {
   SignupModal,
   DropDown,
   Feed,
-  // Scheduler,
+  Toggle,
 } from '../../components';
 import { FaPlus, FaUserCircle, FaBell, FaSearch } from 'react-icons/fa';
 import { FiX } from 'react-icons/fi';
@@ -25,7 +25,7 @@ const Container = styled.div`
   box-shadow: -2px -2px 4px var(--box-shadow),
     3px 3px 8px var(--box-shadow-darker);
   height: 48px;
-  z-index: 1;
+  z-index: 1500;
   background-color: var(--menu-bg-tp);
   backdrop-filter: blur(5px);
 `;
@@ -37,7 +37,7 @@ const Wrapper = styled.div`
   grid-gap: 24px;
   padding: 8px;
   align-items: center;
-  img {
+  #logo {
     /* color: var(--font); */
 
     grid-column: 1 / span 1;
@@ -260,11 +260,29 @@ const Header: React.FunctionComponent = () => {
   const [modalClass, setModalClass] = useState<number>(0);
   const [isMiniOpen, setIsMiniOpen] = useState(false);
 
+  const disableModal = () => {
+    setDropOn(false);
+    setNoticeOn(false);
+  };
+
   const isLogin = useSelector((state: RootState) => state.login.isLogin);
 
   const dispatch = useDispatch();
 
   const isDark = useSelector((state: RootState) => state.login.isDark);
+
+  const userColorTheme = localStorage.getItem('color-theme');
+  const [darkMode, setDarkMode] = useState<boolean>(userColorTheme === 'dark');
+
+  const handleDarkMode = () => {
+    localStorage.setItem('color-theme', darkMode ? 'light' : 'dark');
+    document.documentElement.setAttribute(
+      'color-theme',
+      darkMode ? 'light' : 'dark',
+    );
+    dispatch(darkHandler(!darkMode));
+    setDarkMode(!darkMode);
+  };
 
   const handleModal =
     (key: string) => (e: React.MouseEvent<HTMLDivElement>) => {
@@ -285,9 +303,11 @@ const Header: React.FunctionComponent = () => {
     };
 
   const handleNoticeClick = () => {
+    disableModal();
     setNoticeOn(!noticeOn);
   };
   const handleSettingClick = () => {
+    disableModal();
     setDropOn(!dropOn);
   };
 
@@ -299,6 +319,7 @@ const Header: React.FunctionComponent = () => {
       dispatch(darkHandler(false));
     }
   }, [dispatch]);
+
   return (
     <Container>
       {isMiniOpen ? (
@@ -319,8 +340,9 @@ const Header: React.FunctionComponent = () => {
         ''
       )}
       <Wrapper>
-        <Link to="/">
+        <Link to="/" onClick={disableModal}>
           <img
+            id="logo"
             src={
               isDark
                 ? `${process.env.PUBLIC_URL}/vote-it_LOGO-dark.png`
@@ -337,6 +359,7 @@ const Header: React.FunctionComponent = () => {
         </SearchWrapper>
         {isLogin ? (
           <SettingWrapper>
+            <Toggle darkMode={darkMode} handleDarkMode={handleDarkMode} />
             <SearchIcon
               onClick={() => {
                 setIsMiniOpen(true);
@@ -344,7 +367,7 @@ const Header: React.FunctionComponent = () => {
             >
               <FaSearch />
             </SearchIcon>
-            <Link to="/createVote">
+            <Link to="/createVote" onClick={disableModal}>
               <CreateVoteBtn>
                 <FaPlus style={{ fontSize: '18px' }} />
               </CreateVoteBtn>
@@ -352,14 +375,15 @@ const Header: React.FunctionComponent = () => {
             <Notice onClick={handleNoticeClick}>
               <FaBell style={{ fontSize: '18px' }} />
             </Notice>
-            {noticeOn ? <Feed setNoticeOn={setNoticeOn} /> : null}
+            <Feed noticeOn={noticeOn} setNoticeOn={setNoticeOn} />
             <Setting onClick={handleSettingClick}>
               <FaUserCircle style={{ fontSize: '18px' }} />
             </Setting>
-            {dropOn ? <DropDown dropOn={dropOn} setDropOn={setDropOn} /> : null}
+            <DropDown dropOn={dropOn} setDropOn={setDropOn} />
           </SettingWrapper>
         ) : (
           <LoginWrapper>
+            <Toggle darkMode={darkMode} handleDarkMode={handleDarkMode} />
             <SearchIcon
               onClick={() => {
                 setIsMiniOpen(true);

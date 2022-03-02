@@ -6,7 +6,7 @@ import CreateVote from './pages/CreateVote';
 import Footer from './pages/components/Footer';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { darkHandler, loginHandler } from './modules/login';
+import { darkHandler, loginHandler, userHandler } from './modules/login';
 import NofiticationCenter from './components/NotificationCenter';
 import { kakaoInit } from './lib/initialize';
 import { notify } from './modules/notification';
@@ -22,12 +22,16 @@ function App() {
   useEffect(() => {
     const localLogin = localStorage.getItem('isLogin');
     const userColorTheme = localStorage.getItem('color-theme');
+    const localUser = localStorage.getItem('userId');
     document.documentElement.setAttribute(
       'color-theme',
       userColorTheme || 'light',
     );
     if (localLogin === 'true') {
       dispatch(loginHandler(true));
+    }
+    if (!!localUser) {
+      dispatch(userHandler(+localUser));
     }
     if (userColorTheme === 'dark') {
       dispatch(darkHandler(true));

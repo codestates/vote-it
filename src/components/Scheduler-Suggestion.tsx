@@ -72,13 +72,14 @@ const Suggestion: React.FunctionComponent<IProps> = ({
   setInputValue,
 }) => {
   const faList = [<FaBan color="gray" />];
-  //! 개선점: dateInfoMod 함수가 4번씩(컴포넌트 갯수만큼) 실행되는 문제
-  //! 코드를 잘못 이해하고있나? 버튼 onclick 이벤트에서 mod 변수 불러올 때도 함수가 4번씩 실행됨
-  const mod =
-    dateInfo.date === '' ? '' : dateInfoMod(dateInfo.date, dateInfo.mod);
+
   return (
     <ButtonContainer
-      onClick={() => setInputValue({ date: mod, time: dateInfo.time })}
+      onClick={() => {
+        const mod =
+          dateInfo.date === '' ? '' : dateInfoMod(dateInfo.date, dateInfo.mod);
+        setInputValue({ date: mod, time: dateInfo.time });
+      }}
     >
       <div className="scheduler-suggestions-icon">
         {isFa ? faList[faSource] : <img src={imageSource} alt="icon" />}

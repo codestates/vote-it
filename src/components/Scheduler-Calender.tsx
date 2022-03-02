@@ -263,10 +263,39 @@ const SchedulerCalender: React.FunctionComponent<IProps> = ({
         })}
         {
           // 지난달
+          //! 이후에 다시 만들때는 좀 더 배열 또는 객체 형태로 최적화해서 한번에 뿌려주는 방식으로 하는 것이 더 나을듯
           dayList[0].map((v, i) => {
             if (thisMonth === dayList[3][0] && thisYear === dayList[4][0])
               return (
                 <div key={i} className="calender-day passed">
+                  {v}
+                </div>
+              );
+            else if (
+              v === inputDay &&
+              dayList[3][0] === inputMonth &&
+              dayList[4][0] === inputYear
+            )
+              return (
+                <div
+                  key={i}
+                  onClick={handleMonth(-1)}
+                  className="calender-day selected disabled"
+                >
+                  {v}
+                </div>
+              );
+            else if (
+              v === thisDay &&
+              dayList[3][0] - 1 === thisMonth &&
+              dayList[4][0] === thisYear
+            )
+              return (
+                <div
+                  key={i}
+                  onClick={handleMonth(-1)}
+                  className="calender-day current-day disabled"
+                >
                   {v}
                 </div>
               );
@@ -322,6 +351,20 @@ const SchedulerCalender: React.FunctionComponent<IProps> = ({
                   {v}
                 </div>
               );
+            else if (
+              v === thisDay &&
+              thisMonth === dayList[3][0] &&
+              thisYear === dayList[4][0]
+            )
+              return (
+                <div
+                  key={i}
+                  onClick={handleDateSelected(v)}
+                  className="calender-day current-day"
+                >
+                  {v}
+                </div>
+              );
             else
               return (
                 <div
@@ -337,6 +380,24 @@ const SchedulerCalender: React.FunctionComponent<IProps> = ({
         {
           // 다음달
           dayList[2].map((v, i) => {
+            if (
+              //! 예외상황이 있긴 하지만 우선은 이대로 적용해도 무방할듯함
+              //! 완전 작동을 위해서는 수정 필요함
+              //? 예를들면 연도가 넘어갈 때에도 일일이 조건을 걸어주어야함
+              // 현재는 연도가 넘어갈 때의 조건은 작성되지 않은 상태임
+              v === inputDay &&
+              dayList[3][0] + 1 === inputMonth - 1 &&
+              dayList[4][0] === inputYear
+            )
+              return (
+                <div
+                  key={i}
+                  onClick={handleMonth(1)}
+                  className="calender-day selected disabled"
+                >
+                  {v}
+                </div>
+              );
             return (
               <div
                 key={i}
