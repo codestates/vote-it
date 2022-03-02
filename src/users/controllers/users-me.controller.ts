@@ -11,10 +11,13 @@ import {
   Patch,
   UseGuards,
   HttpStatus,
-  NotImplementedException,
   Delete,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
+import { FileInterceptor } from '@nestjs/platform-express';
+import multerConfig from '../../common/config/multer.config';
 
 @Controller('users/me')
 @UseGuards(JwtAuthGuard)
@@ -38,8 +41,12 @@ export class UsersMeController {
   }
 
   @Patch('picture')
-  async updateMyPicture(@CurrentUser() {}: JwtValidatePayload) {
-    throw new NotImplementedException();
+  @UseInterceptors(FileInterceptor('picture', multerConfig('user')))
+  async updateMyPicture(
+    @CurrentUser() { userId }: JwtValidatePayload,
+    @UploadedFile() picture: Express.Multer.File,
+  ) {
+    return this.usersService.updateUserPictureById(userId, picture.filename);
   }
 
   @Patch('password')
