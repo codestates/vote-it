@@ -19,19 +19,32 @@ const OptionContainer = styled.div`
 
 interface Iprops {
   id: number;
+  pollId: number;
   content: string;
+  isVoted: boolean;
   voted: number[];
   VoteHandler: (optionId: number) => void;
+  handleVotedCount: (id: number) => void;
 }
 
-export const Option = ({ id, content, voted, VoteHandler }: Iprops) => {
+export const Option = ({
+  id,
+  content,
+  pollId,
+  voted,
+  isVoted,
+  VoteHandler,
+  handleVotedCount,
+}: Iprops) => {
   return (
     <OptionContainer
       onClick={() => {
         VoteHandler(id);
+        handleVotedCount(id);
+        window.location.href = `/vote/${pollId}`;
       }}
       style={
-        voted.includes(id)
+        voted.includes(id) || isVoted
           ? {
               border: '5px solid #5D6DBE',
               color: '#5d6dbe',
