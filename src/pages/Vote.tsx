@@ -14,6 +14,7 @@ import apiAxios from '../utils/apiAxios';
 import { notify } from '../modules/notification';
 import { RootState } from '../modules';
 import { EmptyChart } from '../components/EmptyChart';
+import { EditVote } from './components/EditVote';
 
 const VoteOuter = styled.div`
   padding-top: 48px;
@@ -165,6 +166,7 @@ export const Vote = () => {
   const [isDone, setIsDone] = useState(false);
   const [isVoted, setIsVoted] = useState(false);
   const [isPlural, setIsPlural] = useState(0);
+  const [isEditOn, setIsEditOn] = useState(false);
   const userId = useSelector((state: RootState) => state.login.userId);
 
   const isLogin = useSelector((state: RootState) => state.login.isLogin);
@@ -315,12 +317,21 @@ export const Vote = () => {
     );
   };
 
+  const editModalHandler = () => {
+    setIsEditOn(false);
+  };
+
   return (
     <VoteOuter>
+      {isEditOn ? <EditVote id={id} ModalHandler={editModalHandler} /> : ''}
       <VoteContainer>
         <SubBox>{voteSub}</SubBox>
         <EditDelBtn style={userId !== pollId ? { display: 'none' } : {}}>
-          <div>
+          <div
+            onClick={() => {
+              setIsEditOn(true);
+            }}
+          >
             <AiOutlineEdit />
             <div>수정하기</div>
           </div>
@@ -349,10 +360,15 @@ export const Vote = () => {
               ></Option>
             );
           })}
+          {console.log(options)}
         </OptionsBox>
         <ResultContainer style={!isDone && !isVoted ? { display: 'none' } : {}}>
           <div style={{ fontFamily: 'OTWelcomeRA' }}>
-            {isVoted ? <Chart options={options} /> : <EmptyChart />}
+            {isVoted ? (
+              <Chart options={options} />
+            ) : (
+              <EmptyChart number={options.length} />
+            )}
           </div>
         </ResultContainer>
       </VoteContainer>

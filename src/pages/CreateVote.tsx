@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 import { Scheduler } from '../components';
 import apiAxios from '../utils/apiAxios';
 import '../fonts/font.css';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { notify } from '../modules/notification';
 import { useNavigate } from 'react-router-dom';
-import { RootState } from '../modules';
 import ServerErr from './ServerErr';
 import { useBeforeLeave } from '../functions';
+import { PollImage } from '../components/PollImage';
 
 const Outer = styled.div`
   font-family: 'EliceDigitalBaeum_Regular';
@@ -24,7 +24,6 @@ const Outer = styled.div`
 const Container = styled.div`
   width: 1200px;
   display: grid;
-  height: 100vh;
   grid-template-columns: repeat(12, 1fr);
   column-gap: 24px;
   align-items: center;
@@ -46,7 +45,7 @@ const SubBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
+  /* height: 100vh; */
   @media only screen and (max-width: 500px) {
     grid-column: span 6;
   }
@@ -76,8 +75,9 @@ const OptionContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  max-height: 40%;
+  /* max-height: 40%; */
   padding: 10px;
+  height: 40%;
 `;
 const Option = styled.div`
   box-shadow: -2px -2px 4px var(--box-shadow),
@@ -155,6 +155,7 @@ const CreateBtn = styled.button`
   max-width: 300px;
   width: 50vw;
   height: 40px;
+  margin-bottom: 50px;
   margin-top: 30px;
   border-radius: 15px;
   color: white;
@@ -166,7 +167,34 @@ const CreateBtn = styled.button`
   }
 `;
 
-function CreateVote() {
+const ImgContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: center;
+  width: 100%;
+  height: 200px;
+`;
+
+const ImgBox = styled.div`
+  width: 256px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px dotted black;
+`;
+
+interface IModalOn {
+  isOn: boolean;
+  isShow: boolean;
+}
+
+interface Props {
+  setModalOn: Dispatch<SetStateAction<IModalOn>>;
+}
+
+function CreateVote({ setModalOn }: Props) {
   const [calendarValue, setCalendarValue] = useState('');
   const [title, setTitle] = useState('');
   const [optionList, setOptionList] = useState<string[]>(['', '', '', '']);
@@ -205,6 +233,19 @@ function CreateVote() {
     if (time === '') {
       time = '23:59:59';
     }
+    if (date === '') {
+      if (time === '') {
+        setCalendarValue('');
+        return;
+      }
+      const today = new Date();
+      const todayArr = today.toLocaleDateString().split('. ');
+      if (todayArr[1].length === 1) {
+        todayArr[1] = '0' + todayArr[1];
+      }
+      todayArr[2] = todayArr[2].slice(0, todayArr[2].length - 1);
+      date = todayArr.join('');
+    }
     setCalendarValue(
       date.slice(0, 4) +
         '-' +
@@ -215,7 +256,6 @@ function CreateVote() {
         time +
         '+09:00',
     );
-    // TODO : ISO 8601 Time
   };
 
   const PlusOption = () => {
@@ -275,8 +315,8 @@ function CreateVote() {
       .catch((err) => {
         if (err.response.status >= 500) {
           setErr(err.response.data.message);
-        } else {
-          dispatch(notify(err.response.data.message[0]));
+        } else if (err.response.data.message[0].includes('unique')) {
+          dispatch(notify('중복된 선택지가 있습니다.'));
         }
       });
   };
@@ -297,8 +337,11 @@ function CreateVote() {
 
   useEffect(() => {
     if (isLogin === 'false') {
-      dispatch(notify('ㅎㅇ'));
-      navigate('/');
+      dispatch(notify('로그인 후 이용하실 수 있습니다.'));
+      setModalOn({ isShow: false, isOn: true });
+      setTimeout(() => {
+        setModalOn({ isOn: true, isShow: true });
+      }, 50);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -346,6 +389,14 @@ function CreateVote() {
               {/* checkbox & calendar section */}
 
               <CheckboxContainer>
+                <ImgContainer>
+                  <ImgBox className="img">
+                    <PollImage />
+                  </ImgBox>
+                  <div style={{ textAlign: 'left', marginLeft: '15px' }}>
+                    이미지를 넣거나 드레그 해주세요.
+                  </div>
+                </ImgContainer>
                 <CheckboxAndTitle>
                   <Checkbox
                     type={'checkbox'}
