@@ -164,7 +164,7 @@ export const Vote = () => {
   const [del, setDel] = useState(false);
   const [isDone, setIsDone] = useState(false);
   const [isVoted, setIsVoted] = useState(false);
-  const [isPlural, setIsPlural] = useState(false);
+  const [isPlural, setIsPlural] = useState(0);
   const userId = useSelector((state: RootState) => state.login.userId);
 
   const isLogin = useSelector((state: RootState) => state.login.isLogin);
@@ -193,6 +193,11 @@ export const Vote = () => {
         setUsername(res.data.author.nickname);
         // setOptions(res.data.options);
         setIsVoted(res.data.isVoted);
+        setVoted(
+          res.data.options
+            .filter((el: any) => el.isVoted)
+            .map((obj: any) => obj.id),
+        );
         setOptions(
           res.data.options.map((el: any, idx: number) => {
             if (!el.votedCount) {
@@ -212,7 +217,7 @@ export const Vote = () => {
       });
   }, [dispatch, id, isLogin]);
 
-  const VoteHandler = (optionId: number) => {
+  const VoteHandler = (optionId: number, isVote: boolean) => {
     if (isDone) {
       dispatch(notify('마감된 투표입니다.'));
       return;
@@ -222,8 +227,34 @@ export const Vote = () => {
       dispatch(notify('로그인 후 투표하실 수 있습니다.'));
       return;
     }
-    if (voted.includes(optionId)) {
-      // setVoted(voted.filter((el) => el !== optionId));
+    if (isPlural === 0 && isVoted && optionId !== voted[0]) {
+      dispatch(notify('중복 투표가 불가능한 투표입니다!'));
+      return;
+    }
+    if (isVote) {
+      const accessToken = localStorage.getItem('accessToken');
+      apiAxios
+        .delete(`polls/${id}/options/${optionId}/vote`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((res) => {
+          setVoted(voted.filter((el) => el !== optionId));
+          setOptions(
+            options.map((el: any) => {
+              // console.log(el)
+              if (el.id === optionId) {
+                return { ...el, isVoted: false, voteCount: el.voteCount - 1 };
+              }
+              return el;
+            }),
+          );
+          if (voted.filter((el) => el !== optionId).length === 0) {
+            setIsVoted(false);
+          }
+        });
+      // .catch((err) => console.log(err.response))
       return;
     } else {
       const accessToken = localStorage.getItem('accessToken');
@@ -240,6 +271,16 @@ export const Vote = () => {
             setVoted([optionId]);
           }
           setIsVoted(true);
+          setOptions(
+            options.map((el: any) => {
+              // console.log(el)
+              if (el.id === optionId) {
+                return { ...el, isVoted: true, voteCount: el.voteCount + 1 };
+              }
+              return el;
+            }),
+          );
+          window.location.href = `/vote/${id}`;
         })
         .catch((err) => dispatch(notify(err.response.data.message)));
     }
@@ -258,6 +299,9 @@ export const Vote = () => {
     setDel(true);
   };
   const handleVotedCount = (id: number) => {
+    if (isPlural === 0 && isVoted) {
+      return;
+    }
     setOptions(
       options.map((el) => {
         if (el.id === id) {
