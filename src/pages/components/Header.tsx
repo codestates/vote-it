@@ -86,6 +86,7 @@ const Search = styled.input`
 `;
 
 const SettingWrapper = styled.div`
+  user-select: none;
   display: flex;
   /* flex: 1 0 auto; */
   grid-column: 11 / span 2;
@@ -110,6 +111,7 @@ const SearchIcon = styled.div`
   &:hover {
     color: var(--main-color);
   }
+
   display: none;
   cursor: pointer;
   /* margin-top: 10px; */
@@ -123,6 +125,9 @@ const Notice = styled.div`
   &:hover {
     color: var(--main-color);
   }
+  svg:hover {
+    color: var(--main-color);
+  }
   /* flex: 1 0 auto; */
   cursor: pointer;
   /* margin-top: 10px; */
@@ -130,6 +135,9 @@ const Notice = styled.div`
 
 const Setting = styled.div`
   &:hover {
+    color: var(--main-color);
+  }
+  svg:hover {
     color: var(--main-color);
   }
   justify-content: center;
@@ -154,7 +162,9 @@ const CreateVoteBtn = styled.div`
   &:hover {
     color: var(--main-color);
   }
-
+  svg:hover {
+    color: var(--main-color);
+  }
   /* margin-top: 10px; */
 
   color: var(--font);
