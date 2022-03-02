@@ -18,4 +18,8 @@ export const EmptyChart = ({ number }: IProps) => {
         <div style={{ filter: 'blur(15px)' }}>
           <Chart options={example} />
         </div>
+      </div>
+    </>
+  )
 
+}
