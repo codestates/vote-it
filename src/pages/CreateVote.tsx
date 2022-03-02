@@ -207,7 +207,7 @@ function CreateVote() {
         date.slice(6) +
         'T' +
         time +
-        '+00:00',
+        '+09:00',
     );
     // TODO : ISO 8601 Time
   };
