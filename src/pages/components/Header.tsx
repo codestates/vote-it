@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
@@ -255,16 +255,21 @@ type Modal = {
   isShow: boolean;
 };
 
+interface Props {
+  modalOn: Modal;
+  setModalOn: Dispatch<SetStateAction<Modal>>;
+}
+
 // type TDrop = {
 //   isOn: boolean;
 //   isShow: boolean;
 // };
 
-const Header: React.FunctionComponent = () => {
-  const [modalOn, setModalOn] = useState<Modal>({
-    isOn: false,
-    isShow: false,
-  });
+const Header: React.FunctionComponent<Props> = ({ modalOn, setModalOn }) => {
+  // const [modalOn, setModalOn] = useState<Modal>({
+  //   isOn: false,
+  //   isShow: false,
+  // });
   const [dropOn, setDropOn] = useState(false);
   const [noticeOn, setNoticeOn] = useState(false);
   const [modalClass, setModalClass] = useState<number>(0);

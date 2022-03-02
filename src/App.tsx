@@ -15,9 +15,18 @@ import ServerErr from './pages/ServerErr';
 // import { RootState } from './modules';
 // export type LoginProps = boolean;
 
+type Modal = {
+  isOn: boolean;
+  isShow: boolean;
+};
+
 function App() {
   const dispatch = useDispatch();
   const [headerVisibility, setHeaderVisibility] = useState(true);
+  const [modalOn, setModalOn] = useState<Modal>({
+    isOn: false,
+    isShow: false,
+  });
 
   useEffect(() => {
     const localLogin = localStorage.getItem('isLogin');
@@ -63,7 +72,9 @@ function App() {
     <Router>
       <div className="App">
         <>
-          {headerVisibility ? <Header /> : null}
+          {headerVisibility ? (
+            <Header modalOn={modalOn} setModalOn={setModalOn} />
+          ) : null}
           <Routes>
             <Route path="/*" element={<Main />} />
             <Route
@@ -71,7 +82,10 @@ function App() {
               element={<OAuth setHeaderVisibility={setHeaderVisibility} />}
             />
 
-            <Route path="/createVote" element={<CreateVote />}></Route>
+            <Route
+              path="/createVote"
+              element={<CreateVote setModalOn={setModalOn} />}
+            ></Route>
 
             <Route path="/vote/:id" element={<Vote></Vote>} />
 

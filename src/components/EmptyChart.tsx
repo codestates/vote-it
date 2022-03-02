@@ -12,13 +12,10 @@ export const EmptyChart = ({ number }: IProps) => {
 
   return (
     <>
-      {console.log()}
+
       <div style={{ fontSize: '20px' }}>
         마감된 투표 입니다
         <div style={{ filter: 'blur(15px)' }}>
           <Chart options={example} />
         </div>
-      </div>
-    </>
-  );
-};
+

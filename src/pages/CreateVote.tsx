@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 import { Scheduler } from '../components';
 import apiAxios from '../utils/apiAxios';
 import '../fonts/font.css';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { notify } from '../modules/notification';
 import { useNavigate } from 'react-router-dom';
-import { RootState } from '../modules';
 import ServerErr from './ServerErr';
 
 const Outer = styled.div`
@@ -165,7 +164,16 @@ const CreateBtn = styled.button`
   }
 `;
 
-function CreateVote() {
+interface IModalOn {
+  isOn: boolean;
+  isShow: boolean;
+}
+
+interface Props {
+  setModalOn: Dispatch<SetStateAction<IModalOn>>;
+}
+
+function CreateVote({ setModalOn }: Props) {
   const [calendarValue, setCalendarValue] = useState('');
   const [title, setTitle] = useState('');
   const [optionList, setOptionList] = useState<string[]>(['', '', '', '']);
@@ -204,6 +212,19 @@ function CreateVote() {
     if (time === '') {
       time = '23:59:59';
     }
+    if (date === '') {
+      if (time === '') {
+        setCalendarValue('');
+        return;
+      }
+      const today = new Date();
+      const todayArr = today.toLocaleDateString().split('. ');
+      if (todayArr[1].length === 1) {
+        todayArr[1] = '0' + todayArr[1];
+      }
+      todayArr[2] = todayArr[2].slice(0, todayArr[2].length - 1);
+      date = todayArr.join('');
+    }
     setCalendarValue(
       date.slice(0, 4) +
         '-' +
@@ -214,7 +235,6 @@ function CreateVote() {
         time +
         '+09:00',
     );
-    // TODO : ISO 8601 Time
   };
 
   const PlusOption = () => {
@@ -274,8 +294,8 @@ function CreateVote() {
       .catch((err) => {
         if (err.response.status >= 500) {
           setErr(err.response.data.message);
-        } else {
-          dispatch(notify(err.response.data.message[0]));
+        } else if (err.response.data.message[0].includes('unique')) {
+          dispatch(notify('중복된 선택지가 있습니다.'));
         }
       });
   };
@@ -296,8 +316,11 @@ function CreateVote() {
 
   useEffect(() => {
     if (isLogin === 'false') {
-      dispatch(notify('ㅎㅇ'));
-      navigate('/');
+      dispatch(notify('로그인 후 이용하실 수 있습니다.'));
+      setModalOn({ isShow: false, isOn: true });
+      setTimeout(() => {
+        setModalOn({ isOn: true, isShow: true });
+      }, 50);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
