@@ -3,12 +3,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 import { PollsService } from './polls.service';
 import { Poll } from './entities/poll.entity';
-import { PollsController } from './polls.controller';
+import { PollsController } from './controllers/polls.controller';
+import { PollsCommentsController } from './controllers/polls-comments.controllers';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Poll, UserRepository])],
   providers: [PollsService],
-  controllers: [PollsController],
+  controllers: [PollsController, PollsCommentsController],
   exports: [PollsService],
 })
 export class PollsModule {}
