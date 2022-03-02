@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { notify } from '../modules/notification';
 import { useNavigate } from 'react-router-dom';
 import ServerErr from './ServerErr';
+import { PollImage } from '../components/PollImage';
 
 const Outer = styled.div`
   font-family: 'EliceDigitalBaeum_Regular';
@@ -22,7 +23,6 @@ const Outer = styled.div`
 const Container = styled.div`
   width: 1200px;
   display: grid;
-  height: 100vh;
   grid-template-columns: repeat(12, 1fr);
   column-gap: 24px;
   align-items: center;
@@ -44,7 +44,7 @@ const SubBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
+  /* height: 100vh; */
   @media only screen and (max-width: 500px) {
     grid-column: span 6;
   }
@@ -74,8 +74,9 @@ const OptionContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  max-height: 40%;
+  /* max-height: 40%; */
   padding: 10px;
+  height: 40%;
 `;
 const Option = styled.div`
   box-shadow: -2px -2px 4px var(--box-shadow),
@@ -153,6 +154,7 @@ const CreateBtn = styled.button`
   max-width: 300px;
   width: 50vw;
   height: 40px;
+  margin-bottom: 50px;
   margin-top: 30px;
   border-radius: 15px;
   color: white;
@@ -162,6 +164,24 @@ const CreateBtn = styled.button`
   :hover {
     background-color: var(--border-lighter);
   }
+`;
+
+const ImgContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: center;
+  width: 100%;
+  height: 200px;
+`;
+
+const ImgBox = styled.div`
+  width: 256px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px dotted black;
 `;
 
 interface IModalOn {
@@ -364,6 +384,14 @@ function CreateVote({ setModalOn }: Props) {
               {/* checkbox & calendar section */}
 
               <CheckboxContainer>
+                <ImgContainer>
+                  <ImgBox className="img">
+                    <PollImage />
+                  </ImgBox>
+                  <div style={{ textAlign: 'left', marginLeft: '15px' }}>
+                    이미지를 넣거나 드레그 해주세요.
+                  </div>
+                </ImgContainer>
                 <CheckboxAndTitle>
                   <Checkbox
                     type={'checkbox'}
