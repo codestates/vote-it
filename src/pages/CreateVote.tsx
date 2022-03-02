@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 import { Scheduler } from '../components';
 import apiAxios from '../utils/apiAxios';
 import '../fonts/font.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { notify } from '../modules/notification';
 import { useNavigate } from 'react-router-dom';
+import { RootState } from '../modules';
 
 const Outer = styled.div`
   font-family: 'EliceDigitalBaeum_Regular';
@@ -173,6 +174,8 @@ function CreateVote() {
 
   const dispatch = useDispatch();
 
+  const isLogin = useSelector((state: RootState) => state.login.isLogin);
+
   const onChangeTitle = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     setTitle(value);
@@ -299,6 +302,15 @@ function CreateVote() {
     }
     onChangeOption(e, index);
   };
+
+  useEffect(() => {
+    if (!isLogin) {
+      dispatch(notify('ㅎㅇ'));
+      navigate('/');
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLogin]);
 
   return (
     <Outer>
