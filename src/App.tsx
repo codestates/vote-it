@@ -11,6 +11,7 @@ import NofiticationCenter from './components/NotificationCenter';
 import { kakaoInit } from './lib/initialize';
 import { notify } from './modules/notification';
 import { MainEmpty } from './pages/MainEmpty';
+import ServerErr from './pages/ServerErr';
 // import { RootState } from './modules';
 // export type LoginProps = boolean;
 

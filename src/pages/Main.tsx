@@ -7,6 +7,7 @@ import apiAxios from '../utils/apiAxios';
 import { useDispatch } from 'react-redux';
 import { notify } from '../modules/notification';
 import { useNavigate } from 'react-router-dom';
+import ServerErr from './ServerErr';
 
 const MainOuter = styled.div`
   padding-top: 48px;
@@ -59,7 +60,7 @@ export const Main = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [offset, setOffset] = useState(0);
   const [isEnd, setIsEnd] = useState(false);
-
+  const [err, setErr] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -71,11 +72,12 @@ export const Main = () => {
         setPosts(res.data.polls);
         setOffset(offset + 12);
         setIsLoading(false);
-        if (res.data.polls.length === 0) navigate('/emptymain');
+
+        if (res.data.polls.length === 0) {
+          navigate('/emptymain');
+        }
       })
-      .catch(() => {
-        // navigate('/emptymain');
-      });
+      .catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -99,7 +101,14 @@ export const Main = () => {
           setOffset(offset + 12);
           setIsLoading(false);
         })
-        .catch((err) => alert(err));
+        .catch((err) => {
+          if (err.response.status >= 500) {
+            setErr(err.response.data.message);
+          } else {
+            console.log(err.response.data.message);
+          }
+          // alert(err)
+        });
     }
   }, [dispatch, isEnd, offset, posts]);
 
@@ -142,29 +151,35 @@ export const Main = () => {
   //   createdAt: "",
   //   expirationDate: ""
   return (
-    <MainOuter>
-      <MainContainer>
-        {posts.map((el, idx) => {
-          return (
-            <VoteCard
-              key={idx}
-              id={el.id}
-              subject={el.subject}
-              author={el.author.nickname}
-              createdAt={el.createdAt}
-              expirationDate={el.expirationDate}
-            />
-          );
-        })}
-        {isLoading
-          ? [1, 2, 3, 4].map((el) => <LoadingVoteCard key={el} />)
-          : ''}
-      </MainContainer>
-      {btnStatus ? (
-        <div onClick={handleTop}>
-          <FloatBtn />
-        </div>
-      ) : null}
-    </MainOuter>
+    <div>
+      {err === '' ? (
+        <MainOuter>
+          <MainContainer>
+            {posts.map((el, idx) => {
+              return (
+                <VoteCard
+                  key={idx}
+                  id={el.id}
+                  subject={el.subject}
+                  author={el.author.nickname}
+                  createdAt={el.createdAt}
+                  expirationDate={el.expirationDate}
+                />
+              );
+            })}
+            {isLoading
+              ? [1, 2, 3, 4].map((el) => <LoadingVoteCard key={el} />)
+              : ''}
+          </MainContainer>
+          {btnStatus ? (
+            <div onClick={handleTop}>
+              <FloatBtn />
+            </div>
+          ) : null}{' '}
+        </MainOuter>
+      ) : (
+        <ServerErr err={err} />
+      )}
+    </div>
   );
 };

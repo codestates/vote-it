@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { notify } from '../modules/notification';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../modules';
+import ServerErr from './ServerErr';
 
 const Outer = styled.div`
   font-family: 'EliceDigitalBaeum_Regular';
@@ -171,7 +172,7 @@ function CreateVote() {
   const [isPrivate, setIsPrivate] = useState(false);
   const [isPlural, setIsPlural] = useState(false);
   const navigate = useNavigate();
-
+  const [err, setErr] = useState('');
   const dispatch = useDispatch();
 
   const isLogin = useSelector((state: RootState) => state.login.isLogin);
@@ -202,19 +203,6 @@ function CreateVote() {
     if (time === '') {
       time = '23:59:59';
     }
-    if (date === '') {
-      if (time === '') {
-        setCalendarValue('');
-        return;
-      }
-      const today = new Date();
-      const todayArr = today.toLocaleDateString().split('. ');
-      if (todayArr[1].length === 1) {
-        todayArr[1] = '0' + todayArr[1];
-      }
-      todayArr[2] = todayArr[2].slice(0, todayArr[2].length - 1);
-      date = todayArr.join('');
-    }
     setCalendarValue(
       date.slice(0, 4) +
         '-' +
@@ -223,7 +211,7 @@ function CreateVote() {
         date.slice(6) +
         'T' +
         time +
-        '+00:00',
+        '+09:00',
     );
     // TODO : ISO 8601 Time
   };
@@ -283,27 +271,15 @@ function CreateVote() {
         navigate('/');
       })
       .catch((err) => {
-        console.log(err.response);
+        if (err.response.status >= 500) {
+          setErr(err.response.data.message);
+        } else {
+          console.log(err.response.data.message);
+        }
       });
   };
-
-  const [isUnique, setIsUnique] = useState(-1);
-
-  const handleOption = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number,
-  ) => {
-    const one = e.target.value;
-    if (optionList.includes(one)) {
-      setIsUnique(index);
-    }
-    if (one === '') {
-      setIsUnique(-1);
-    }
-    onChangeOption(e, index);
-  };
-
-  useEffect(() => {
+  
+    useEffect(() => {
     if (!isLogin) {
       dispatch(notify('ㅎㅇ'));
       navigate('/');
@@ -313,86 +289,76 @@ function CreateVote() {
   }, [isLogin]);
 
   return (
-    <Outer>
-      <Container>
-        <SubBox>
-          <Title
-            placeholder="질문 내용"
-            value={title}
-            onChange={onChangeTitle}
-          />
+    <>
+      {err === '' ? (
+        <Outer>
+          <Container>
+            <SubBox>
+              <Title
+                placeholder="질문 내용"
+                value={title}
+                onChange={onChangeTitle}
+              />
 
-          {/* option section */}
+              {/* option section */}
 
-          <OptionContainer>
-            {optionList.map((el, index) => {
-              return (
-                <Option key={index}>
-                  <OptionInput
-                    placeholder="선택지 입력"
-                    value={optionList[index]}
-                    onChange={(e) => {
-                      handleOption(e, index);
+
+              <OptionContainer>
+                {optionList.map((el, index) => {
+                  return (
+                    <Option key={index}>
+                      <OptionInput
+                        placeholder="선택지 입력"
+                        value={optionList[index]}
+                        onChange={(e) => onChangeOption(e, index)}
+                      />
+                      <DelOptionBtn onClick={() => DelBtn(index)}>
+                        <FaMinus style={{ height: '100%', color: 'red' }} />
+                      </DelOptionBtn>
+                    </Option>
+                  );
+                })}
+                <PlusOptionBtn onClick={PlusOption}>
+                  <FaPlus style={{ color: 'white' }} />
+                </PlusOptionBtn>
+              </OptionContainer>
+
+              {/* checkbox & calendar section */}
+
+              <CheckboxContainer>
+                <CheckboxAndTitle>
+                  <Checkbox
+                    type={'checkbox'}
+                    onChange={() => {
+                      setIsPlural(!isPlural);
                     }}
-                    style={isUnique === index ? { color: 'red' } : {}}
                   />
-                  <DelOptionBtn onClick={() => DelBtn(index)}>
-                    <FaMinus style={{ height: '100%', color: 'red' }} />
-                  </DelOptionBtn>
-                </Option>
-              );
-            })}
-            <PlusOptionBtn onClick={PlusOption}>
-              <FaPlus style={{ color: 'white' }} />
-            </PlusOptionBtn>
-          </OptionContainer>
-
-          {/* checkbox & calendar section */}
-
-          <CheckboxContainer>
-            <CheckboxAndTitle>
-              <Checkbox
-                type={'checkbox'}
-                onChange={() => {
-                  setIsPlural(!isPlural);
-                }}
-                checked={isPlural}
-              />
-              <CheckboxTitle
-                onClick={() => {
-                  setIsPlural(!isPlural);
-                }}
-              >
-                중복 체크 여부
-              </CheckboxTitle>
-            </CheckboxAndTitle>
-            <CheckboxAndTitle>
-              <Checkbox
-                type={'checkbox'}
-                onChange={() => {
-                  setIsPrivate(!isPrivate);
-                }}
-                checked={isPrivate}
-              />
-              <CheckboxTitle
-                onClick={() => {
-                  setIsPrivate(!isPrivate);
-                }}
-              >
-                비공개
-              </CheckboxTitle>
-            </CheckboxAndTitle>
-            <CheckboxAndTitle>
-              <Scheduler
-                translate={'0px, -550px'}
-                CalenderValueHandler={CalenderValueHandler}
-              />
-            </CheckboxAndTitle>
-          </CheckboxContainer>
-          <CreateBtn onClick={CreateBtnHandler}>투표만들기</CreateBtn>
-        </SubBox>
-      </Container>
-    </Outer>
+                  <CheckboxTitle>중복 체크 여부</CheckboxTitle>
+                </CheckboxAndTitle>
+                <CheckboxAndTitle>
+                  <Checkbox
+                    type={'checkbox'}
+                    onChange={() => {
+                      setIsPrivate(!isPrivate);
+                    }}
+                  />
+                  <CheckboxTitle>비공개</CheckboxTitle>
+                </CheckboxAndTitle>
+                <CheckboxAndTitle>
+                  <Scheduler
+                    translate={'0px, -550px'}
+                    CalenderValueHandler={CalenderValueHandler}
+                  />
+                </CheckboxAndTitle>
+              </CheckboxContainer>
+              <CreateBtn onClick={CreateBtnHandler}>투표만들기</CreateBtn>
+            </SubBox>
+          </Container>
+        </Outer>
+      ) : (
+        <ServerErr err={err} />
+      )}
+    </>
   );
 }
 
