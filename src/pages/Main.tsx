@@ -72,10 +72,11 @@ export const Main = () => {
         setPosts(res.data.polls);
         setOffset(offset + 12);
         setIsLoading(false);
+        if (res.data.polls.length === 0) {
+          navigate('/emptymain');
+        }
       })
-      .catch(() => {
-        navigate('/emptymain');
-      });
+      .catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

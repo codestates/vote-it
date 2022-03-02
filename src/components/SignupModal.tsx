@@ -93,6 +93,7 @@ const Button = styled.button`
   border-radius: 10px;
   display: flex;
   justify-content: center;
+  color: black;
   align-items: center;
   background-color: ${(props) => props.color};
   cursor: pointer;

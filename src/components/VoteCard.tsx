@@ -141,6 +141,20 @@ export const VoteCard = ({
     navigate(`/vote/${id}`, { state: id });
   };
 
+  const timeMaker = (value: string) => {
+    let date = new Date(value);
+    let dateArr = date.toLocaleString().split(' ');
+    return `${dateArr[3]} ${
+      dateArr[4].split(':')[0] + ':' + dateArr[4].split(':')[1]
+    } 까지`;
+  };
+
+  const dateMaker = (value: string) => {
+    let date = new Date(value);
+    let dateArr = date.toLocaleString().split('. ');
+    return `${dateArr[0]}년 ${dateArr[1]}월 ${dateArr[2]}일`;
+  };
+
   return (
     <VoteCardContainer onClick={OpenVoteHandler}>
       <TitleBox>
@@ -149,16 +163,14 @@ export const VoteCard = ({
       <StyledBody>
         <HiddenTitle>{subject}</HiddenTitle>
         <StyledNum>참여인원 45명</StyledNum>
-        <StyledDate>시작일 {createdAt.split('T')[0]}</StyledDate>
+        <StyledDate>시작일 {dateMaker(createdAt)}</StyledDate>
         <StyledDate>
           {!expirationDate
             ? expirationDate
-            : '마감일 ' + expirationDate.split('T')[0]}
+            : '마감일 ' + dateMaker(expirationDate)}
         </StyledDate>
         <StyledDate>
-          {!expirationDate
-            ? expirationDate
-            : expirationDate.split('T')[1].split('.')[0].slice(0, 5) + ' 까지'}
+          {!expirationDate ? expirationDate : timeMaker(expirationDate)}
         </StyledDate>
         <StyledName>{author}</StyledName>
       </StyledBody>
