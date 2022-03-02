@@ -349,10 +349,15 @@ export const Vote = () => {
               ></Option>
             );
           })}
+          {console.log(options)}
         </OptionsBox>
         <ResultContainer style={!isDone && !isVoted ? { display: 'none' } : {}}>
           <div style={{ fontFamily: 'OTWelcomeRA' }}>
-            {isVoted ? <Chart options={options} /> : <EmptyChart />}
+            {isVoted ? (
+              <Chart options={options} />
+            ) : (
+              <EmptyChart number={options.length} />
+            )}
           </div>
         </ResultContainer>
       </VoteContainer>
