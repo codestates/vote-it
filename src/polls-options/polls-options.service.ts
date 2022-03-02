@@ -38,4 +38,20 @@ export class PollsOptionsService {
       .values({ userId, pollOptionId })
       .execute();
   }
+
+  async cancelVote(userId: number, pollId: number, pollOptionId: number) {
+    const _isOptionOfPoll = await this.pollOptionRespotiroy
+      .createQueryBuilder('pollOption')
+      .select(['pollOption.id'])
+      .where('pollOption.id = :pollOptionId', { pollOptionId })
+      .andWhere('pollOption.pollId = :pollId', { pollId })
+      .getOneOrFail();
+
+    this.voteHistoryRepository
+      .createQueryBuilder()
+      .delete()
+      .where('userId = :userId', { userId })
+      .andWhere('pollOptionId = :pollOptionId', { pollOptionId })
+      .execute();
+  }
 }

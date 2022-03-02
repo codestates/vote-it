@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PollOption } from './entities/poll-option.entity';
 import { VoteHistory } from '../vote-histories/entities/vote-history.entity';
-import { PollsOptionsController } from './polls-options.controller';
+import { PollsOptionsController } from './polls-options-vote.controller';
 import { PollsOptionsService } from './polls-options.service';
 
 @Module({
