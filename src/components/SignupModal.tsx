@@ -4,6 +4,7 @@ import apiAxios from '../utils/apiAxios';
 import { useDispatch } from 'react-redux';
 import { notify } from '../modules/notification';
 import { RiGoogleFill, RiKakaoTalkFill } from 'react-icons/ri';
+import ServerErr from '../pages/ServerErr';
 const Canvas = styled.div`
   position: fixed;
   left: 0;
@@ -146,7 +147,7 @@ const SignupModal: React.FunctionComponent<IProps> = ({
   const [isPass, setIsPass] = useState(true);
   const [checkPass, setCheckPass] = useState('');
   const [isCheck, setIsCheck] = useState(true);
-
+  const [err, setErr] = useState('');
   const dispatch = useDispatch();
 
   const handleModalOff = () => {
@@ -217,115 +218,132 @@ const SignupModal: React.FunctionComponent<IProps> = ({
         setModalOn({ isOn: false, isShow: false });
       })
       .catch((err) => {
-        dispatch(notify(err.response.data.message));
+        if (err.response.status >= 500) {
+          setErr(err.response.data.message);
+        } else {
+          dispatch(notify(err.response.data.message));
+          console.log(err.response.data.message);
+        }
       });
   };
 
   return (
     <>
-      <Canvas
-        className={modalOn.isShow ? 'canvas show' : 'canvas'}
-        onClick={handleModalOff}
-      />
-      <View
-        className={modalOn.isShow ? 'modal-view show' : 'modal-view'}
-        onClick={(e) => e.preventDefault()}
-      >
-        <Wrapper>
-          <div
-            className="exit-wrapper"
-            style={{ fontSize: '15px' }}
+      {err === '' ? (
+        <>
+          <Canvas
+            className={modalOn.isShow ? 'canvas show' : 'canvas'}
             onClick={handleModalOff}
+          />
+          <View
+            className={modalOn.isShow ? 'modal-view show' : 'modal-view'}
+            onClick={(e) => e.preventDefault()}
           >
-            &times;
-          </div>
-          <InputWrapper>
-            {/* <div>이메일</div> */}
-            <input
-              type="email"
-              placeholder="E-mail"
-              value={email}
-              onChange={EmailHandler}
-              // onChange={handleInputValue('email')}
-            />
-            <Warning style={isEmail ? { display: 'none' } : {}}>
-              이메일 형식으로 입력해주세요.
-            </Warning>
-            <input
-              type="text"
-              placeholder="nickname"
-              value={name}
-              onChange={NameHandler}
-              // onChange={handleInputValue('nickname')}
-            />
-            <Warning style={isName ? { display: 'none' } : {}}>
-              닉네임은 4~14글자 입니다.
-            </Warning>
-            {/* <div>비밀번호</div> */}
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={PasswordHandler}
-              // onChange={handleInputValue('password')}
-            />
-            <Warning style={isPass ? { display: 'none' } : {}}>
-              8 ~ 128자의 영문 대소문자, 숫자, 특수문자만 사용 가능합니다.
-            </Warning>
-            <input
-              type="password"
-              placeholder="Password"
-              value={checkPass}
-              onChange={CheckPassHandler}
-              // onChange={handleInputValue('password')}
-            />
-            <Warning style={isCheck ? { display: 'none' } : {}}>
-              비밀번호가 일치하지 않습니다.
-            </Warning>
-          </InputWrapper>
-          <ButtonWrapper>
-            <Button
-              style={{ color: 'white' }}
-              color="var(--main-color)"
-              onClick={SignupHandler}
-            >
-              이메일로 계정 만들기
-            </Button>
-            <Button color="white">
-              <RiGoogleFill
-                style={{ marginRight: '10px', fontSize: '17px', color: 'red' }}
-              />
-              구글 로그인
-            </Button>
-            <Button color="white">
-              <span
-                style={{
-                  marginRight: '5px',
-                  color: '#19CE60',
-                  fontSize: '15px',
-                  fontFamily: 'KOHIBaeumOTF',
-                }}
+            <Wrapper>
+              <div
+                className="exit-wrapper"
+                style={{ fontSize: '15px' }}
+                onClick={handleModalOff}
               >
-                N
-              </span>
-              네이버 로그인
-            </Button>
-            <Button color="white">
-              <RiKakaoTalkFill
-                style={{
-                  marginRight: '5px',
-                  fontSize: '17px',
-                  color: '#4e4600',
-                }}
-              />
-              카카오 로그인
-            </Button>
-          </ButtonWrapper>
-          <SubWrapper>
-            <div onClick={handleClick('login')}>이미 계정이 있나요? 로그인</div>
-          </SubWrapper>
-        </Wrapper>
-      </View>
+                &times;
+              </div>
+              <InputWrapper>
+                {/* <div>이메일</div> */}
+                <input
+                  type="email"
+                  placeholder="E-mail"
+                  value={email}
+                  onChange={EmailHandler}
+                  // onChange={handleInputValue('email')}
+                />
+                <Warning style={isEmail ? { display: 'none' } : {}}>
+                  이메일 형식으로 입력해주세요.
+                </Warning>
+                <input
+                  type="text"
+                  placeholder="nickname"
+                  value={name}
+                  onChange={NameHandler}
+                  // onChange={handleInputValue('nickname')}
+                />
+                <Warning style={isName ? { display: 'none' } : {}}>
+                  닉네임은 4~14글자 입니다.
+                </Warning>
+                {/* <div>비밀번호</div> */}
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={PasswordHandler}
+                  // onChange={handleInputValue('password')}
+                />
+                <Warning style={isPass ? { display: 'none' } : {}}>
+                  8 ~ 128자의 영문 대소문자, 숫자, 특수문자만 사용 가능합니다.
+                </Warning>
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={checkPass}
+                  onChange={CheckPassHandler}
+                  // onChange={handleInputValue('password')}
+                />
+                <Warning style={isCheck ? { display: 'none' } : {}}>
+                  비밀번호가 일치하지 않습니다.
+                </Warning>
+              </InputWrapper>
+              <ButtonWrapper>
+                <Button
+                  style={{ color: 'white' }}
+                  color="var(--main-color)"
+                  onClick={SignupHandler}
+                >
+                  이메일로 계정 만들기
+                </Button>
+                <Button color="white">
+                  <RiGoogleFill
+                    style={{
+                      marginRight: '10px',
+                      fontSize: '17px',
+                      color: 'red',
+                    }}
+                  />
+                  구글 로그인
+                </Button>
+                <Button color="white">
+                  <span
+                    style={{
+                      marginRight: '5px',
+                      color: '#19CE60',
+                      fontSize: '15px',
+                      fontFamily: 'KOHIBaeumOTF',
+                    }}
+                  >
+                    N
+                  </span>
+                  네이버 로그인
+                </Button>
+                <Button color="white">
+                  <RiKakaoTalkFill
+                    style={{
+                      marginRight: '5px',
+                      fontSize: '17px',
+                      color: '#4e4600',
+                    }}
+                  />
+                  카카오 로그인
+                </Button>
+              </ButtonWrapper>
+              <SubWrapper>
+                <div onClick={handleClick('login')}>
+                  이미 계정이 있나요? 로그인
+                </div>
+              </SubWrapper>
+            </Wrapper>
+          </View>
+        </>
+      ) : (
+        <ServerErr err={err} />
+      )}
     </>
   );
 };
