@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 import { Scheduler } from '../components';
@@ -165,7 +165,16 @@ const CreateBtn = styled.button`
   }
 `;
 
-function CreateVote() {
+interface IModalOn {
+  isOn: boolean;
+  isShow: boolean;
+}
+
+interface Props {
+  setModalOn: Dispatch<SetStateAction<IModalOn>>;
+}
+
+function CreateVote({ setModalOn }: Props) {
   const [calendarValue, setCalendarValue] = useState('');
   const [title, setTitle] = useState('');
   const [optionList, setOptionList] = useState<string[]>(['', '', '', '']);
@@ -296,8 +305,11 @@ function CreateVote() {
 
   useEffect(() => {
     if (isLogin === 'false') {
-      dispatch(notify('ㅎㅇ'));
-      navigate('/');
+      dispatch(notify('로그인 후 이용하실 수 있습니다.'));
+      setModalOn({ isShow: false, isOn: true });
+      setTimeout(() => {
+        setModalOn({ isOn: true, isShow: true });
+      }, 50);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
