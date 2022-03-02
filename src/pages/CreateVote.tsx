@@ -171,11 +171,13 @@ function CreateVote() {
   const [optionList, setOptionList] = useState<string[]>(['', '', '', '']);
   const [isPrivate, setIsPrivate] = useState(false);
   const [isPlural, setIsPlural] = useState(false);
+  const [isUnique, setIsUnique] = useState(-1);
   const navigate = useNavigate();
   const [err, setErr] = useState('');
   const dispatch = useDispatch();
 
-  const isLogin = useSelector((state: RootState) => state.login.isLogin);
+  // const isLogin = useSelector((state: RootState) => state.login.isLogin);
+  const isLogin = localStorage.getItem('isLogin');
 
   const onChangeTitle = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
@@ -186,7 +188,6 @@ function CreateVote() {
     index: number,
   ) => {
     const value = e.target.value;
-
     setOptionList([
       ...optionList.slice(undefined, index),
       value,
@@ -274,19 +275,33 @@ function CreateVote() {
         if (err.response.status >= 500) {
           setErr(err.response.data.message);
         } else {
-          console.log(err.response.data.message);
+          dispatch(notify(err.response.data.message[0]));
         }
       });
   };
-  
-    useEffect(() => {
-    if (!isLogin) {
+
+  const handleOption = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number,
+  ) => {
+    const one = e.target.value;
+    if (optionList.includes(one)) {
+      setIsUnique(index);
+    } else setIsUnique(-1);
+    // if (one === '') {
+    //   setIsUnique(-1);
+    // }
+    onChangeOption(e, index);
+  };
+
+  useEffect(() => {
+    if (isLogin === 'false') {
       dispatch(notify('ㅎㅇ'));
       navigate('/');
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLogin]);
+  }, []);
 
   return (
     <>
@@ -302,7 +317,6 @@ function CreateVote() {
 
               {/* option section */}
 
-
               <OptionContainer>
                 {optionList.map((el, index) => {
                   return (
@@ -310,7 +324,8 @@ function CreateVote() {
                       <OptionInput
                         placeholder="선택지 입력"
                         value={optionList[index]}
-                        onChange={(e) => onChangeOption(e, index)}
+                        onChange={(e) => handleOption(e, index)}
+                        style={isUnique === index ? { color: 'red' } : {}}
                       />
                       <DelOptionBtn onClick={() => DelBtn(index)}>
                         <FaMinus style={{ height: '100%', color: 'red' }} />
@@ -332,8 +347,15 @@ function CreateVote() {
                     onChange={() => {
                       setIsPlural(!isPlural);
                     }}
+                    checked={isPlural}
                   />
-                  <CheckboxTitle>중복 체크 여부</CheckboxTitle>
+                  <CheckboxTitle
+                    onClick={() => {
+                      setIsPlural(!isPlural);
+                    }}
+                  >
+                    중복 체크 여부
+                  </CheckboxTitle>
                 </CheckboxAndTitle>
                 <CheckboxAndTitle>
                   <Checkbox
@@ -341,8 +363,15 @@ function CreateVote() {
                     onChange={() => {
                       setIsPrivate(!isPrivate);
                     }}
+                    checked={isPrivate}
                   />
-                  <CheckboxTitle>비공개</CheckboxTitle>
+                  <CheckboxTitle
+                    onClick={() => {
+                      setIsPrivate(!isPrivate);
+                    }}
+                  >
+                    비공개
+                  </CheckboxTitle>
                 </CheckboxAndTitle>
                 <CheckboxAndTitle>
                   <Scheduler
