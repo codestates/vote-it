@@ -100,6 +100,7 @@ const Button = styled.button`
   align-items: center;
   background-color: ${(props) => props.color};
   cursor: pointer;
+  color: black;
   box-shadow: -1px -1px 1px var(--box-shadow),
     1px 1px 3px var(--box-shadow-darker);
   :hover {
