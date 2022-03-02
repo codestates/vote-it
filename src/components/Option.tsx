@@ -23,7 +23,7 @@ interface Iprops {
   content: string;
   isVoted: boolean;
   voted: number[];
-  VoteHandler: (optionId: number) => void;
+  VoteHandler: (optionId: number, isVote: boolean) => void;
   handleVotedCount: (id: number) => void;
 }
 
@@ -39,9 +39,12 @@ export const Option = ({
   return (
     <OptionContainer
       onClick={() => {
-        VoteHandler(id);
+        VoteHandler(id, isVoted);
         handleVotedCount(id);
-        window.location.href = `/vote/${pollId}`;
+        // setTimeout(() => {
+        //   window.location.href = `/vote/${pollId}`;
+        // }, 1000)
+        // window.location.href = `/vote/${pollId}`;
       }}
       style={
         voted.includes(id) || isVoted
