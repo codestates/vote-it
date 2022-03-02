@@ -15,7 +15,7 @@ import { CommonEntity } from '../../common/entities/common.entity';
 import { User } from '../../users/entities/user.entity';
 import { CreatePollOptionDto } from '../../polls-options/dto/create-poll-option.dto';
 import { PollOption } from '../../polls-options/entities/poll-option.entity';
-
+import { PollComment } from '../../polls-comments/entities/poll-comment.entity';
 @Entity()
 export class Poll extends CommonEntity {
   @Column({ type: 'varchar', nullable: false })
@@ -56,4 +56,7 @@ export class Poll extends CommonEntity {
   @ValidateNested()
   @ArrayUnique((option: CreatePollOptionDto) => option.content)
   options: PollOption[];
+
+  @OneToMany(() => PollComment, (comment) => comment.poll)
+  comments: PollComment[];
 }

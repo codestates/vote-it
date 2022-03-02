@@ -3,6 +3,7 @@ import { CommonEntity } from '../../common/entities/common.entity';
 import { Column, Entity, OneToMany } from 'typeorm';
 import { Poll } from '../../polls/entities/poll.entity';
 import { VoteHistory } from '../../vote-histories/entities/vote-history.entity';
+import { PollComment } from '../../polls-comments/entities/poll-comment.entity';
 
 @Entity()
 export class User extends CommonEntity {
@@ -26,4 +27,7 @@ export class User extends CommonEntity {
 
   @OneToMany(() => VoteHistory, (voteHistory) => voteHistory.user)
   voteHistories: VoteHistory[];
+
+  @OneToMany(() => PollComment, (comment) => comment.author)
+  comments: PollComment[];
 }
