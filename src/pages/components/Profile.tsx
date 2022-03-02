@@ -137,6 +137,7 @@ interface IuserInfo {
 const Profile: React.FunctionComponent<IProps> = () => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [username, setUsername] = useState('');
+  const [err, setErr] = useState('');
   const [userInfo, setUserInfo] = useState<IuserInfo>({
     id: 1,
     email: 'useremail01@gmail.com',
@@ -163,7 +164,9 @@ const Profile: React.FunctionComponent<IProps> = () => {
         }
         setUserInfo(res.data);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        console.log(e);
+      });
   }, []);
 
   const UserInfoHandler = () => {
