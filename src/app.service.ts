@@ -24,10 +24,26 @@ export class AppService {
     const debugInformation = /* HTML */ `
       <!DOCTYPE html>
       <h1>Debug Information</h1>
-      <div>
-        <p>Node.js Version: <code>${nodeVersion}</code></p>
-        <p>DB Version: <code>${this.dbVersion}</code></p>
-      </div>
+      <textarea
+        id="debug-info"
+        readonly
+        rows="5"
+        cols="30"
+        style="resize: none;"
+      >
+Node.js Version: ${nodeVersion}
+DB Version: ${this.dbVersion}</textarea
+      >
+      <button id="copy-button">Copy to clipboard</button>
+      <script>
+        const copyButton = document.getElementById('copy-button');
+        const textArea = document.getElementById('debug-info');
+        copyButton.addEventListener('click', () => {
+          navigator.clipboard.writeText(textArea.textContent).catch((err) => {
+            alert(err);
+          });
+        });
+      </script>
     `;
     return debugInformation;
   }

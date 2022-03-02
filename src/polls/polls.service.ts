@@ -50,7 +50,6 @@ export class PollsService {
         'author.picture',
         'options.id',
         'options.content',
-        'voteHistories.userId',
       ])
       .addSelect('IF(voteHistories.userId IS NULL, false, true)', 'isVoted')
       .leftJoin('poll.author', 'author')

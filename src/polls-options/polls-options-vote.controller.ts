@@ -1,5 +1,6 @@
 import {
   Controller,
+  Delete,
   HttpCode,
   HttpStatus,
   Param,
@@ -12,12 +13,12 @@ import { JwtValidatePayload } from '../auth/payloads/jwt-validate.payload';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { PollsOptionsService } from './polls-options.service';
 
-@Controller('polls/:pollId/options/:pollOptionId')
+@Controller('polls/:pollId/options/:pollOptionId/vote')
 @UseGuards(JwtAuthGuard)
 export class PollsOptionsController {
   constructor(private readonly pollsOptionsService: PollsOptionsService) {}
 
-  @Post('vote')
+  @Post()
   @HttpCode(HttpStatus.CREATED)
   async vote(
     @CurrentUser() { userId }: JwtValidatePayload,
@@ -25,5 +26,15 @@ export class PollsOptionsController {
     @Param('pollOptionId', ParseIntPipe) pollOptionId: number,
   ) {
     return this.pollsOptionsService.vote(userId, pollId, pollOptionId);
+  }
+
+  @Delete()
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async cancelVote(
+    @CurrentUser() { userId }: JwtValidatePayload,
+    @Param('pollId', ParseIntPipe) pollId: number,
+    @Param('pollOptionId', ParseIntPipe) pollOptionId: number,
+  ): Promise<void> {
+    await this.pollsOptionsService.cancelVote(userId, pollId, pollOptionId);
   }
 }
