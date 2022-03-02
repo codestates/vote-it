@@ -5,23 +5,27 @@ import '../fonts/font.css';
 import { useSelector } from 'react-redux';
 import { RootState } from '../modules';
 
-const Canvas = styled.div`
+const Canvas = styled.div<{ noticeOn: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
   min-height: 100vh;
   width: 100vw;
-  z-index: 998;
-  /* background-color: aliceblue; */
+  z-index: -4;
   opacity: 0;
+  visibility: ${(props) => (props.noticeOn ? 'visible' : 'hidden')};
 `;
 
-const Container = styled.div`
+const Container = styled.div<{ noticeOn: boolean }>`
   position: fixed;
   top: 48px;
   /* transform: translate(-50%, 32px); */
   /* padding: 8px; */
   z-index: 999;
+  visibility: ${(props) => (props.noticeOn ? 'visible' : 'hidden')};
+  transform: ${(props) => (props.noticeOn ? 'scaleY(1)' : 'scaleY(0)')};
+  transform-origin: 0 0 0;
+  transition: all 0.3s;
 `;
 
 const View = styled.div`
@@ -80,10 +84,11 @@ const FeedWrapper = styled.div`
 `;
 
 interface IProps {
+  noticeOn: boolean;
   setNoticeOn: Dispatch<SetStateAction<boolean>>;
 }
 
-const Feed: React.FunctionComponent<IProps> = ({ setNoticeOn }) => {
+const Feed: React.FunctionComponent<IProps> = ({ noticeOn, setNoticeOn }) => {
   const navigate = useNavigate();
   interface Ifeed {
     id: number;
@@ -118,8 +123,8 @@ const Feed: React.FunctionComponent<IProps> = ({ setNoticeOn }) => {
   const isDark = useSelector((state: RootState) => state.login.isDark);
   return (
     <>
-      <Canvas onClick={handleFeedOff} />
-      <Container>
+      <Canvas noticeOn={noticeOn} onClick={handleFeedOff} />
+      <Container noticeOn={noticeOn}>
         <View>
           {feeds.length === 0 ? (
             <div
@@ -140,6 +145,7 @@ const Feed: React.FunctionComponent<IProps> = ({ setNoticeOn }) => {
                   width: '50%',
                   height: 'auto',
                 }}
+                alt="feed"
               />
             </div>
           ) : (
