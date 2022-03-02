@@ -38,7 +38,7 @@ function App() {
     } else if (userColorTheme === 'light') {
       dispatch(darkHandler(false));
     }
-  });
+  }, []);
 
   useEffect(() => {
     kakaoInit();
