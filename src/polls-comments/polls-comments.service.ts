@@ -4,6 +4,7 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { Poll } from '../polls/entities/poll.entity';
 import { CreatePollCommentDto } from './dto/create-poll-comment.dto';
+import { UpdatePollCommentDto } from './dto/update-poll-comment.dto';
 import { PollComment } from './entities/poll-comment.entity';
 
 @Injectable()
@@ -53,6 +54,26 @@ export class PollsCommentsService {
       }),
     );
     return { comments, count };
+  }
+
+  async updateCommentOfPoll(
+    authorId: number,
+    pollId: number,
+    commentId: number,
+    updatePollCommentDto: UpdatePollCommentDto,
+  ) {
+    const updateResult = await this.pollCommentRepository
+      .createQueryBuilder()
+      .update()
+      .set(updatePollCommentDto)
+      .where('authorId = :authorId', { authorId })
+      .andWhere('pollId = :pollId', { pollId })
+      .andWhere('id = :commentId', { commentId })
+      .execute();
+    if (updateResult.affected === 0) {
+      throw new EntityNotFoundError(PollComment, commentId);
+    }
+    return updatePollCommentDto;
   }
 
   async createCommentOfPoll(

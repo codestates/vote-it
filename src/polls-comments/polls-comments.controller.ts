@@ -7,6 +7,7 @@ import {
   HttpStatus,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   Query,
   UseGuards,
@@ -16,6 +17,7 @@ import { JwtValidatePayload } from '../auth/payloads/jwt-validate.payload';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { CreatePollCommentDto } from './dto/create-poll-comment.dto';
+import { UpdatePollCommentDto } from './dto/update-poll-comment.dto';
 import { PollsCommentsService } from './polls-comments.service';
 
 @Controller('polls/:pollId/comments')
@@ -45,6 +47,22 @@ export class PollsCommentsController {
       userId,
       pollId,
       createPollCommentDto,
+    );
+  }
+
+  @Patch(':commentId')
+  @UseGuards(JwtAuthGuard)
+  updateCommentOfPoll(
+    @CurrentUser() { userId }: JwtValidatePayload,
+    @Param('pollId', ParseIntPipe) pollId: number,
+    @Param('commentId', ParseIntPipe) commentId: number,
+    @Body() updatePollCommentDto: UpdatePollCommentDto,
+  ) {
+    return this.pollsCommentsService.updateCommentOfPoll(
+      userId,
+      pollId,
+      commentId,
+      updatePollCommentDto,
     );
   }
 
