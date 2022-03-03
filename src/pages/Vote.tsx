@@ -301,6 +301,7 @@ export const Vote = () => {
     }, 16);
   };
   const handelDelBtn = () => {
+    document.body.classList.add('stop-scroll');
     setDel(true);
   };
   const handleVotedCount = (id: number) => {
@@ -318,17 +319,19 @@ export const Vote = () => {
   };
 
   const editModalHandler = () => {
+    document.body.classList.remove('stop-scroll');
     setIsEditOn(false);
   };
 
   return (
     <VoteOuter>
-      {isEditOn ? <EditVote id={id} ModalHandler={editModalHandler} /> : ''}
+      <EditVote id={id} ModalHandler={editModalHandler} isEditOn={isEditOn} />
       <VoteContainer>
         <SubBox>{voteSub}</SubBox>
         <EditDelBtn style={userId !== pollId ? { display: 'none' } : {}}>
           <div
             onClick={() => {
+              document.body.classList.add('stop-scroll');
               setIsEditOn(true);
             }}
           >
@@ -385,7 +388,7 @@ export const Vote = () => {
           setShareModal={setShareModal}
         />
       ) : null}
-      {del ? <VoteDelModal setDel={setDel} id={id} /> : null}
+      <VoteDelModal del={del} setDel={setDel} id={id} />
     </VoteOuter>
   );
 };

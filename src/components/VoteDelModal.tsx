@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { EditpostList } from '../lib/postList';
 import { notify } from '../modules/notification';
 import ServerErr from '../pages/ServerErr';
-const Canvas = styled.div`
+const Canvas = styled.div<{ del: boolean }>`
   position: fixed;
   left: 0;
   top: 0;
@@ -16,9 +16,12 @@ const Canvas = styled.div`
   /* opacity: 0; */
   background-color: rgba(0, 0, 0, 0.3);
   z-index: 999;
+  visibility: ${(props) => (props.del ? 'visible' : 'hidden')};
+  opacity: ${(props) => (props.del ? '1' : '0')};
+  transition: all 0.3s;
 `;
 
-const Container = styled.div`
+const Container = styled.div<{ del: boolean }>`
   font-family: 'IBMPlexSansKR-Light';
   position: fixed;
   top: 200px;
@@ -34,6 +37,9 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  visibility: ${(props) => (props.del ? 'visible' : 'hidden')};
+  opacity: ${(props) => (props.del ? '1' : '0')};
+  transition: all 0.3s;
 `;
 
 const Button = styled.div`
@@ -54,11 +60,13 @@ const Button = styled.div`
 
 interface IProps {
   setDel: Dispatch<SetStateAction<boolean>>;
+  del: boolean;
   id: number;
 }
 
-const VoteModal: React.FunctionComponent<IProps> = ({ setDel, id }) => {
+const VoteModal: React.FunctionComponent<IProps> = ({ del, setDel, id }) => {
   const handleDropOff = () => {
+    document.body.classList.remove('stop-scroll');
     setDel(false);
   };
   const [err, setErr] = useState('');
@@ -93,8 +101,8 @@ const VoteModal: React.FunctionComponent<IProps> = ({ setDel, id }) => {
     <>
       {err === '' ? (
         <>
-          <Canvas onClick={handleDropOff} />
-          <Container>
+          <Canvas del={del} onClick={handleDropOff} />
+          <Container del={del}>
             <div style={{ marginBottom: '50px' }}>정말 삭제하시겠습니까?</div>
             <div style={{ display: 'flex', flexDirection: 'row' }}>
               <Button onClick={handleDropOff}>뒤로</Button>

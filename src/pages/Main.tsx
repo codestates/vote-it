@@ -77,7 +77,9 @@ export const Main = () => {
           navigate('/emptymain');
         }
       })
-      .catch(() => {});
+      .catch((err) => {
+        setErr(err.message);
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
