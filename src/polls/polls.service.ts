@@ -7,7 +7,7 @@ import { Poll } from './entities/poll.entity';
 import { PollOption } from '../polls-options/entities/poll-option.entity';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { UpdateUserPollDto } from '../users/dto/update-user-poll.dto';
-import { joinPollPictureUrl } from '../common/config/join-picture-url.config';
+import { joinPollPictureUrl } from '../common/utils/join-picture-url.util';
 
 @Injectable()
 export class PollsService {
