@@ -18,7 +18,7 @@ services:
     image: 'vote-it/server'
     container_name: 'vote-it-server'
     ports:
-      - '${PORT:-3000}:3000'
+      - '${PORT:-3000}:${PORT:-3000}'
     volumes:
       - './secrets:/usr/src/app/secrets'
     depends_on:
@@ -31,7 +31,7 @@ services:
       DB_PASSWORD: 'devuser'
       DB_NAME: 'vote_it'
       DB_HOST: 'mariadb'
-      PORT: '3000'
+      PORT: '${PORT:-3000}'
       NODE_ENV: 'development'
     networks:
       - vote_it
