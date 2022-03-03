@@ -93,10 +93,8 @@ export function useBeforeLeave(onBefore: () => void) {
   });
 }
 
-export const keyupHandler =
-  (ref: MutableRefObject<HTMLInputElement | null>) => (e: KeyboardEvent) => {
-    if (e.key === '/') {
-      console.log(e);
-      if (ref.current) ref.current.focus();
-    }
-  };
+export const focusHandler = (
+  ref: MutableRefObject<HTMLInputElement | null>,
+) => {
+  if (ref.current) ref.current.focus();
+};

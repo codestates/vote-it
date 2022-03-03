@@ -145,13 +145,16 @@ interface Icomments {
   parrentId?: number;
 }
 
+interface Props {
+  keyupHandler: (e: KeyboardEvent) => void;
+}
 // interface Post {
 //   id: number;
 //   subject: string;
 //   author: string;
 // }
 
-export const Vote = () => {
+export const Vote = ({ keyupHandler }: Props) => {
   const location = useLocation().state as number;
   const id = location;
   const [pollId, setPollId] = useState(-1);
@@ -325,7 +328,12 @@ export const Vote = () => {
 
   return (
     <VoteOuter>
-      <EditVote id={id} ModalHandler={editModalHandler} isEditOn={isEditOn} />
+      <EditVote
+        keyupHandler={keyupHandler}
+        id={id}
+        ModalHandler={editModalHandler}
+        isEditOn={isEditOn}
+      />
       <VoteContainer>
         <SubBox>{voteSub}</SubBox>
         <EditDelBtn style={userId !== pollId ? { display: 'none' } : {}}>
@@ -376,6 +384,7 @@ export const Vote = () => {
         </ResultContainer>
       </VoteContainer>
       <Comments
+        keyupHandler={keyupHandler}
         username={username}
         commentList={commentsList}
         setCommentsList={setCommentsList}

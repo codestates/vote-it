@@ -14,7 +14,7 @@ import { useDispatch } from 'react-redux';
 import { notify } from '../modules/notification';
 import { useNavigate } from 'react-router-dom';
 import ServerErr from './ServerErr';
-import { keyupHandler, useBeforeLeave } from '../functions';
+import { focusHandler, useBeforeLeave } from '../functions';
 import { PollImage } from '../components/PollImage';
 
 const Outer = styled.div`
@@ -199,11 +199,12 @@ interface IModalOn {
 }
 
 interface Props {
+  keyupHandler: (e: KeyboardEvent) => void;
   finderRef: MutableRefObject<HTMLInputElement | null>;
   setModalOn: Dispatch<SetStateAction<IModalOn>>;
 }
 
-function CreateVote({ finderRef, setModalOn }: Props) {
+function CreateVote({ finderRef, keyupHandler, setModalOn }: Props) {
   const [calendarValue, setCalendarValue] = useState('');
   const [title, setTitle] = useState('');
   const [optionList, setOptionList] = useState<string[]>(['', '', '', '']);
@@ -387,6 +388,14 @@ function CreateVote({ finderRef, setModalOn }: Props) {
                 placeholder="질문 내용"
                 value={title}
                 onChange={onChangeTitle}
+                onFocus={() => {
+                  console.log('focused');
+                  window.removeEventListener('keyup', keyupHandler);
+                }}
+                onBlur={() => {
+                  console.log('blurred');
+                  window.addEventListener('keyup', keyupHandler);
+                }}
               />
 
               {/* option section */}
@@ -399,13 +408,14 @@ function CreateVote({ finderRef, setModalOn }: Props) {
                         placeholder="선택지 입력"
                         value={optionList[index]}
                         onChange={(e) => handleOption(e, index)}
-                        // onFocus={() => {
-                        //   console.log('focused');
-                        //   window.removeEventListener(
-                        //     'keyup',
-                        //     keyupHandler(finderRef),
-                        //   );
-                        // }}
+                        onFocus={() => {
+                          console.log('focused');
+                          window.removeEventListener('keyup', keyupHandler);
+                        }}
+                        onBlur={() => {
+                          console.log('blurred');
+                          window.addEventListener('keyup', keyupHandler);
+                        }}
                         style={isUnique === index ? { color: 'red' } : {}}
                       />
                       <DelOptionBtn onClick={() => DelBtn(index)}>
@@ -464,6 +474,7 @@ function CreateVote({ finderRef, setModalOn }: Props) {
                 </CheckboxAndTitle>
                 <CheckboxAndTitle>
                   <Scheduler
+                    keyupHandler={keyupHandler}
                     translate={'0px, -550px'}
                     CalenderValueHandler={CalenderValueHandler}
                   />
@@ -481,3 +492,6 @@ function CreateVote({ finderRef, setModalOn }: Props) {
 }
 
 export default CreateVote;
+function keyupHandler(arg0: string, keyupHandler: any) {
+  throw new Error('Function not implemented.');
+}

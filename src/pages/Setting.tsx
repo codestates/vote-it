@@ -62,12 +62,17 @@ const SideBarBtn = styled.div`
 interface IProps {
   //   isLogin: boolean;
   //   setIsLogin?: Dispatch<SetStateAction<boolean>>;
+  keyupHandler: (e: KeyboardEvent) => void;
 }
 
-const Setting: React.FunctionComponent<IProps> = () => {
+const Setting: React.FunctionComponent<IProps> = ({ keyupHandler }) => {
   const [content, setContent] = useState<number>(0);
   const [isSideBar, setIsSidaBar] = useState('none');
-  const menu = [<Profile />, <Activity />, <Security />];
+  const menu = [
+    <Profile keyupHandler={keyupHandler} />,
+    <Activity />,
+    <Security keyupHandler={keyupHandler} />,
+  ];
 
   useEffect(() => {
     const category = localStorage.getItem('setting'); // ex: "profile"
