@@ -39,6 +39,7 @@ export class PollsCommentsService {
           .select([
             'children.id',
             'children.content',
+            'children.createdAt',
             'author.id',
             'author.nickname',
           ])
