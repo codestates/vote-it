@@ -13,6 +13,9 @@ const Button = styled.button<{ isOn: boolean }>`
   width: var(--dm-button-size);
   height: var(--dm-button-size);
   background-color: transparent;
+  :hover {
+    background-color: var(--main-color);
+  }
 `;
 const Sun = styled.img<{ isOn: boolean }>`
   --dm-icon-size: 18px;

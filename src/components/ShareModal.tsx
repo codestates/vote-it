@@ -180,12 +180,14 @@ interface ShareModal {
 }
 
 interface Props {
+  voteSub: string;
   shareModal: ShareModal;
   setShareModal: Dispatch<SetStateAction<ShareModal>>;
 }
 
-export const Share = ({ shareModal, setShareModal }: Props) => {
+export const Share = ({ voteSub, shareModal, setShareModal }: Props) => {
   const copyUrlRef = useRef(null);
+  const copyBtnRef = useRef(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const urlValue = window.location.href;
   // const [scrollBtn, setScrollBtn] = useState({ left: false, right: true });
@@ -216,17 +218,27 @@ export const Share = ({ shareModal, setShareModal }: Props) => {
       const funcList = [
         () => {
           // 이메일 공유하기
+          window.open(
+            `mailto:?subject=Vote-it 링크 공유&body=아래 링크를 통해 투표에 참여해주세요!%0D%0A 주제: ${voteSub}%0D%0A${urlValue}`,
+          );
         },
         () => {
           // 카카오 메시지 템플릿 종류는 다음 링크 참고 후 적절한 것으로 변경 가능
           // https://developers.kakao.com/docs/latest/ko/message/message-template#type
           Kakao.Link.sendDefault({
             objectType: 'text',
-            text: '기본 템플릿으로 제공되는 텍스트 템플릿은 텍스트를 최대 200자까지 표시할 수 있습니다. 텍스트 템플릿은 텍스트 영역과 하나의 기본 버튼을 가집니다. 임의의 버튼을 설정할 수도 있습니다. 여러 장의 이미지, 프로필 정보 등 보다 확장된 형태의 카카오링크는 다른 템플릿을 이용해 보낼 수 있습니다.',
+            text: `투표에 참여해주세요: ${voteSub}`,
             link: {
               mobileWebUrl: `${urlValue}`,
               webUrl: `${urlValue}`,
             },
+          });
+        },
+        () => {
+          // 카카오스토리 공유하기
+          Kakao.Story.share({
+            url: `${urlValue}`,
+            text: `투표에 참여해주세요! [${voteSub}]\n [별도 링크: ${urlValue}]\n#vote-it #투표`,
           });
         },
         () => {
@@ -236,10 +248,7 @@ export const Share = ({ shareModal, setShareModal }: Props) => {
             `https://www.facebook.com/sharer/sharer.php?u=${urlValue}`,
           );
         },
-        () => {
-          // 인스타그램 공유하기
-          //! 아직 적절한 API를 찾지 못했습니다.
-        },
+
         () => {
           share2NaverBlog(
             urlValue,
@@ -257,12 +266,11 @@ export const Share = ({ shareModal, setShareModal }: Props) => {
           );
         },
         () => {
-          share2Pinterest(urlValue, 'Voit-it 핀터레스트 공유 Text', 500, 500);
+          // 트위터 공유하기
+          share2Twitter(urlValue, 'Vote-it 트위터 공유 Text', 600, 500);
         },
         () => {
-          // 트위터 공유하기
-          //! 현재 렌더링하지는 않았음. 이후 트위터 아이콘 따고 등록할것임
-          share2Twitter(urlValue, 'Vote-it 트위터 공유 Text', 500, 500);
+          share2Pinterest(urlValue, 'Voit-it 핀터레스트 공유 Text', 500, 500);
         },
       ];
       funcList[idx]();
@@ -340,7 +348,13 @@ export const Share = ({ shareModal, setShareModal }: Props) => {
         <div className="wrapper second">
           <div className="input-wrapper">
             <input ref={copyUrlRef} value={urlValue} readOnly />
-            <button onClick={copyUrl}>
+            <button
+              className="copyBtn"
+              onClick={() => {
+                // document.querySelector('.copyBtn')?.classList.add('btn-touch');
+                copyUrl();
+              }}
+            >
               <FaRegCopy />
             </button>
           </div>
