@@ -7,7 +7,7 @@ import { Poll } from './entities/poll.entity';
 import { PollOption } from '../polls-options/entities/poll-option.entity';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { UpdateUserPollDto } from '../users/dto/update-user-poll.dto';
-import { POLL_PICTURE_URL } from '../common/config/file-upload.config';
+import { joinPollPictureUrl } from '../common/config/join-picture-url.config';
 
 @Injectable()
 export class PollsService {
@@ -38,8 +38,7 @@ export class PollsService {
     return {
       polls: polls.map((poll) => ({
         ...poll,
-        picture:
-          poll.picture === null ? null : `${POLL_PICTURE_URL}/${poll.picture}`,
+        picture: joinPollPictureUrl(poll.picture),
       })),
       count,
     };
@@ -81,10 +80,7 @@ export class PollsService {
       subject: rawPolls[0].poll_subject,
       isPlural: rawPolls[0].poll_isPlural,
       expirationDate: rawPolls[0].poll_expirationDate,
-      picture:
-        rawPolls[0].poll_picture === null
-          ? null
-          : `${POLL_PICTURE_URL}/${rawPolls[0].poll_picture}`,
+      picture: joinPollPictureUrl(rawPolls[0].poll_picture),
       author: {
         id: rawPolls[0].author_id,
         nickname: rawPolls[0].author_nickname,
