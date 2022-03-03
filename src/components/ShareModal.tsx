@@ -207,7 +207,6 @@ export const Share = ({ voteSub, shareModal, setShareModal }: Props) => {
   };
 
   const setModalOff = () => {
-    document.body.classList.remove('stop-scroll');
     setShareModal({ isOn: false, isShow: false });
   };
 
