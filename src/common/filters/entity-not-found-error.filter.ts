@@ -26,6 +26,8 @@ export class EntityNotFoundErrorFilter
       .switchToHttp()
       .getResponse<Response>()
       .status(HttpStatus.NOT_FOUND)
-      .json({ message: `존재하지 않는 ${koreanEntityName}입니다.` });
+      .json({
+        message: `존재하지 않는 ${koreanEntityName ?? entityName}입니다.`,
+      });
   }
 }
