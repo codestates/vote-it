@@ -10,8 +10,6 @@ import {
 } from '@nestjs/common';
 import { EntityNotFoundError } from 'typeorm';
 import { User } from './entities/user.entity';
-import { USER_PICTURE_URL } from '../common/config/file-upload.config';
-import * as path from 'path';
 
 @Injectable()
 export class UsersService {
@@ -39,16 +37,10 @@ export class UsersService {
   async getUserById(userId: number) {
     const user = await this.userRepository
       .createQueryBuilder('user')
-      .select(['user.id', 'user.email', 'user.nickname', 'user.picture'])
+      .select(['user.id', 'user.email', 'user.nickname'])
       .where('user.id = :userId', { userId })
       .getOneOrFail();
-    return {
-      ...user,
-      picture:
-        user.picture === null
-          ? null
-          : path.join(USER_PICTURE_URL, user.picture),
-    };
+    return user;
   }
 
   async updateUserProfileById(
@@ -73,19 +65,6 @@ export class UsersService {
       throw new EntityNotFoundError(User, userId);
     }
     return updateUserProfileDto;
-  }
-
-  async updateUserPictureById(userId: number, picture: string) {
-    const updateResult = await this.userRepository
-      .createQueryBuilder('user')
-      .update()
-      .set({ picture })
-      .where('user.id = :userId', { userId })
-      .execute();
-    if (updateResult.affected === 0) {
-      throw new EntityNotFoundError(User, userId);
-    }
-    return { pictureUrl: path.join(USER_PICTURE_URL, picture) };
   }
 
   async updateUserPasswordById(
