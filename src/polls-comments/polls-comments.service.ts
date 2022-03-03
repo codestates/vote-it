@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { EntityNotFoundError, Repository } from 'typeorm';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { Poll } from '../polls/entities/poll.entity';
 import { CreatePollCommentDto } from './dto/create-poll-comment.dto';
@@ -73,5 +73,22 @@ export class PollsCommentsService {
       .execute();
     const insertedPollId = insertResult.raw[0].id as number;
     return { id: insertedPollId };
+  }
+
+  async deleteCommentOfPoll(
+    authorId: number,
+    pollId: number,
+    commentId: number,
+  ): Promise<void> {
+    const deleteResult = await this.pollCommentRepository
+      .createQueryBuilder()
+      .delete()
+      .where('id = :commentId', { commentId })
+      .andWhere('pollId = :pollId', { pollId })
+      .andWhere('authorId = :authorId', { authorId })
+      .execute();
+    if (deleteResult.affected === 0) {
+      throw new EntityNotFoundError(PollComment, commentId);
+    }
   }
 }
