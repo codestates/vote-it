@@ -69,7 +69,7 @@ export function share2Pinterest(
   width: number,
   height: number,
 ) {
-  const imgSrc = `${process.env.PUBLIC_URL}/vote-it_LOGO.png`;
+  const imgSrc = `https://mymy-project-adfs.com/MYMY.png`;
   const encodeURL = encodeURIComponent(url);
   const encodeIMG = encodeURIComponent(imgSrc);
   const encodeTXT = encodeURIComponent(text);
@@ -85,6 +85,6 @@ export function share2Twitter(
 ) {
   const encodeURL = encodeURIComponent(url);
   const encodeTXT = encodeURIComponent(text);
-  const link = `http://twitter.com?status="${encodeTXT}" ${encodeURL}`;
-  window.open(link, 'twitter', `width=${width}, height=${height}`);
+  const link = `https://twitter.com/intent/tweet?url=${encodeURL}&text=${encodeTXT}`;
+  window.open(link, '트위터로 공유하기', `width=${width}, height=${height}`);
 }

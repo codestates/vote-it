@@ -15,6 +15,7 @@ const MainOuter = styled.div`
   display: flex;
   justify-content: center;
   background-color: var(--bg);
+  transition: all 0.5s;
 `;
 
 const MainContainer = styled.div`
@@ -23,7 +24,7 @@ const MainContainer = styled.div`
   grid-template-columns: repeat(12, 1fr);
   column-gap: 24px;
   align-items: center;
-
+  transition: all 0.5s;
   @media only screen and (max-width: 1200px) {
     width: 768px;
   }
@@ -77,7 +78,9 @@ export const Main = () => {
           navigate('/emptymain');
         }
       })
-      .catch(() => {});
+      .catch((err) => {
+        setErr(err.message);
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

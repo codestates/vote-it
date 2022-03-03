@@ -227,7 +227,7 @@ export const Share = ({ voteSub, shareModal, setShareModal }: Props) => {
           // https://developers.kakao.com/docs/latest/ko/message/message-template#type
           Kakao.Link.sendDefault({
             objectType: 'text',
-            text: `투표에 참여해주세요: ${voteSub}`,
+            text: `[Vote-it] 투표에 참여해주세요! 주제: ${voteSub}`,
             link: {
               mobileWebUrl: `${urlValue}`,
               webUrl: `${urlValue}`,
@@ -238,39 +238,40 @@ export const Share = ({ voteSub, shareModal, setShareModal }: Props) => {
           // 카카오스토리 공유하기
           Kakao.Story.share({
             url: `${urlValue}`,
-            text: `투표에 참여해주세요! [${voteSub}]\n [별도 링크: ${urlValue}]\n#vote-it #투표`,
+            text: `[Vote-it] 투표에 참여해주세요! [${voteSub}]\n [별도 링크: ${urlValue}]\n#VoteIt #투표`,
           });
         },
         () => {
           // 페이스북 공유하기
           //! 링크오류가 발생함. 점검필요
+          //! localhost가 아닌 www상 도메인에서도 URL오류 발생하는지 확인 필요
           window.open(
             `https://www.facebook.com/sharer/sharer.php?u=${urlValue}`,
           );
         },
 
         () => {
-          share2NaverBlog(
-            urlValue,
-            'Vote-it 네이버 블로그 공유 Title',
-            500,
-            500,
-          );
+          share2NaverBlog(urlValue, `[Vote-it] ${voteSub}`, 500, 500);
         },
         () => {
           share2NaverBand(
             urlValue,
-            'Vote-it 네이버 밴드 공유 Content',
+            `[Vote-it] 투표에 참여해주세요!%0D%0A 주제: ${voteSub}`,
             500,
             500,
           );
         },
         () => {
           // 트위터 공유하기
-          share2Twitter(urlValue, 'Vote-it 트위터 공유 Text', 600, 500);
+          share2Twitter(
+            urlValue,
+            `[Vote-it] 투표해줘요!\n주제: ${voteSub}\n`,
+            600,
+            500,
+          );
         },
         () => {
-          share2Pinterest(urlValue, 'Voit-it 핀터레스트 공유 Text', 500, 500);
+          share2Pinterest(urlValue, `[Vote-it] 투표주제: ${voteSub}`, 500, 500);
         },
       ];
       funcList[idx]();

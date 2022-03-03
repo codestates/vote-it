@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { notify } from '../../modules/notification';
 import apiAxios from '../../utils/apiAxios';
 
-const ModalBackdrop = styled.div`
+const ModalBackdrop = styled.div<{ isEditOn: boolean }>`
   font-family: 'SUIT-Light';
   position: fixed;
   z-index: 999;
@@ -17,19 +17,28 @@ const ModalBackdrop = styled.div`
   background-color: rgba(0, 0, 0, 0.3);
   display: grid;
   place-items: center;
+  visibility: ${(props) => (props.isEditOn ? 'visible' : 'hidden')};
+  opacity: ${(props) => (props.isEditOn ? '1' : '0')};
+  transition: all 0.3s;
 `;
 
-const ModalView = styled.div`
-  background-color: #ffffff;
-  width: 500px;
-  height: 350px;
+const ModalView = styled.div<{ isEditOn: boolean }>`
+  background-color: var(--menu-bg);
+  width: 400px;
+  height: 200px;
   border-radius: 20px;
   display: flex;
   flex-direction: column;
   align-items: left;
   justify-content: space-around;
-  > div.close_btn {
-    background: red;
+  visibility: ${(props) => (props.isEditOn ? 'visible' : 'hidden')};
+  opacity: ${(props) => (props.isEditOn ? '1' : '0')};
+  transition: all 0.3s;
+  > div.close-btn {
+    align-self: flex-end;
+    margin-top: 10px;
+    margin-right: 10px;
+    width: 20px;
     cursor: pointer;
   }
   > div.buttonbox {
@@ -86,9 +95,10 @@ interface CalenderValue {
 interface Props {
   id: number;
   ModalHandler: () => void;
+  isEditOn: boolean;
 }
 
-export const EditVote = ({ id, ModalHandler }: Props) => {
+export const EditVote = ({ id, ModalHandler, isEditOn }: Props) => {
   const [calendarValue, setCalendarValue] = useState('');
   const [isPrivate, setIsPrivate] = useState(false);
 
@@ -154,18 +164,9 @@ export const EditVote = ({ id, ModalHandler }: Props) => {
   };
 
   return (
-    <ModalBackdrop onClick={ModalHandler}>
-      <ModalView onClick={(e) => e.stopPropagation()}>
-        <div
-          className="close-btn"
-          style={{
-            marginLeft: '20px',
-            marginTop: '10px',
-            width: '20px',
-            cursor: 'pointer',
-          }}
-          onClick={ModalHandler}
-        >
+    <ModalBackdrop isEditOn={isEditOn} onClick={ModalHandler}>
+      <ModalView isEditOn={isEditOn} onClick={(e) => e.stopPropagation()}>
+        <div className="close-btn" onClick={ModalHandler}>
           <AiOutlineClose />
         </div>
         <CheckboxAndTitle>
