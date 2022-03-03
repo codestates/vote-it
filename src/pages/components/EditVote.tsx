@@ -93,12 +93,18 @@ interface CalenderValue {
 }
 
 interface Props {
+  keyupHandler: (e: KeyboardEvent) => void;
   id: number;
   ModalHandler: () => void;
   isEditOn: boolean;
 }
 
-export const EditVote = ({ id, ModalHandler, isEditOn }: Props) => {
+export const EditVote = ({
+  keyupHandler,
+  id,
+  ModalHandler,
+  isEditOn,
+}: Props) => {
   const [calendarValue, setCalendarValue] = useState('');
   const [isPrivate, setIsPrivate] = useState(false);
 
@@ -171,6 +177,7 @@ export const EditVote = ({ id, ModalHandler, isEditOn }: Props) => {
         </div>
         <CheckboxAndTitle>
           <Scheduler
+            keyupHandler={keyupHandler}
             translate={'0px 0px'}
             CalenderValueHandler={CalenderValueHandler}
           />

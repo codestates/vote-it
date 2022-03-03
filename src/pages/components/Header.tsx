@@ -13,7 +13,6 @@ import {
 import { FaPlus, FaUserCircle, FaBell, FaSearch } from 'react-icons/fa';
 import { FiX } from 'react-icons/fi';
 import { darkHandler } from '../../modules/login';
-import { keyupHandler } from '../../functions';
 
 const Container = styled.div`
   position: fixed;
@@ -70,9 +69,8 @@ const SearchWrapper = styled.div`
 
 const Search = styled.input`
   /* flex: 1 0 auto; */
-  width: 70%;
+  width: 40%;
   height: 24px;
-
   padding: 4px;
   padding-left: 15px;
   border-radius: 10px;
@@ -80,6 +78,7 @@ const Search = styled.input`
   box-shadow: inset 2px 2px 3px 2px var(--box-shadow-darker);
 
   background-color: var(--box-bg-lighter);
+  transition: all 0.3s;
 
   @media only screen and (max-width: 768px) {
     width: 100%;
@@ -257,6 +256,7 @@ type Modal = {
 };
 
 interface Props {
+  keyupHandler: (e: KeyboardEvent) => void;
   finderRef: React.MutableRefObject<HTMLInputElement | null>;
   modalOn: Modal;
   setModalOn: Dispatch<SetStateAction<Modal>>;
@@ -268,6 +268,7 @@ interface Props {
 // };
 
 const Header: React.FunctionComponent<Props> = ({
+  keyupHandler,
   finderRef,
   modalOn,
   setModalOn,
@@ -341,13 +342,21 @@ const Header: React.FunctionComponent<Props> = ({
     }
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   window.addEventListener('keyup', keyupHandler(finderRef));
-  //   return () => {
+  // const keyupHandler = (e: KeyboardEvent) => {
+  //   if (e.key === '/') {
+  //     focusHandler(finderRef);
+  //   } else {
+  //     console.log('/ 키를 눌러 검색해보세요');
+  //   }
+  // };
 
-  //     window.removeEventListener('keyup', keyupHandler(finderRef));
-  //   };
-  // }, []);
+  useEffect(() => {
+    window.addEventListener('keyup', keyupHandler);
+    return () => {
+      window.removeEventListener('keyup', keyupHandler);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Container>
@@ -381,7 +390,18 @@ const Header: React.FunctionComponent<Props> = ({
           />
         </Link>
         <SearchWrapper>
-          <Search ref={finderRef} type={'text'}></Search>
+          <Search
+            ref={finderRef}
+            onFocus={() => {
+              console.log('focused');
+              window.removeEventListener('keyup', keyupHandler);
+            }}
+            onBlur={() => {
+              console.log('blurred');
+              window.addEventListener('keyup', keyupHandler);
+            }}
+            type={'text'}
+          ></Search>
           <SearchBox>
             <FaSearch style={{ color: 'white' }} />
           </SearchBox>

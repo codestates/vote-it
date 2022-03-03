@@ -93,9 +93,11 @@ const Warning = styled.div`
   color: red;
 `;
 
-interface IProps {}
+interface IProps {
+  keyupHandler: (e: KeyboardEvent) => void;
+}
 
-const Security: React.FunctionComponent<IProps> = () => {
+const Security: React.FunctionComponent<IProps> = ({ keyupHandler }) => {
   const [isWithdrawal, setIsWithdrawal] = useState(false);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -175,6 +177,14 @@ const Security: React.FunctionComponent<IProps> = () => {
                 onChange={(e) => {
                   setCurrentPassword(e.target.value);
                 }}
+                onFocus={() => {
+                  console.log('focused');
+                  window.removeEventListener('keyup', keyupHandler);
+                }}
+                onBlur={() => {
+                  console.log('blurred');
+                  window.addEventListener('keyup', keyupHandler);
+                }}
               />
             </InputWrapper>
             <InputWrapper>
@@ -185,6 +195,14 @@ const Security: React.FunctionComponent<IProps> = () => {
                 onChange={(e) => {
                   setNewPassword(e.target.value);
                 }}
+                onFocus={() => {
+                  console.log('focused');
+                  window.removeEventListener('keyup', keyupHandler);
+                }}
+                onBlur={() => {
+                  console.log('blurred');
+                  window.addEventListener('keyup', keyupHandler);
+                }}
               />
             </InputWrapper>
             <InputWrapper>
@@ -193,6 +211,14 @@ const Security: React.FunctionComponent<IProps> = () => {
                 type="password"
                 value={checkNew}
                 onChange={checkNewHandler}
+                onFocus={() => {
+                  console.log('focused');
+                  window.removeEventListener('keyup', keyupHandler);
+                }}
+                onBlur={() => {
+                  console.log('blurred');
+                  window.addEventListener('keyup', keyupHandler);
+                }}
               />
             </InputWrapper>
             <Warning style={isCheck ? { display: 'none' } : {}}>
@@ -206,6 +232,14 @@ const Security: React.FunctionComponent<IProps> = () => {
             <div
               onClick={() => {
                 setIsWithdrawal(true);
+              }}
+              onFocus={() => {
+                console.log('focused');
+                window.removeEventListener('keyup', keyupHandler);
+              }}
+              onBlur={() => {
+                console.log('blurred');
+                window.addEventListener('keyup', keyupHandler);
               }}
             >
               회원 탈퇴

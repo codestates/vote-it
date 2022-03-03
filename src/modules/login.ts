@@ -44,7 +44,7 @@ const initialState: LoginState = {
   userId: -1,
 };
 
-function login(
+function loginReducer(
   state: LoginState = initialState,
   action: CounterAction,
 ): LoginState {
@@ -60,4 +60,4 @@ function login(
   }
 }
 
-export default login;
+export default loginReducer;
