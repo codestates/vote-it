@@ -356,9 +356,9 @@ function CreateVote({ finderRef, keyupHandler, setModalOn }: Props) {
     if (optionList.includes(one)) {
       setIsUnique(index);
     } else setIsUnique(-1);
-    // if (one === '') {
-    //   setIsUnique(-1);
-    // }
+    if (one === '') {
+      setIsUnique(-1);
+    }
     onChangeOption(e, index);
   };
 

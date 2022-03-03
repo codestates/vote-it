@@ -31,7 +31,7 @@ const VoteContainer = styled.div`
   grid-template-columns: repeat(12, 1fr);
   column-gap: 24px;
   align-items: center;
-
+  border-bottom: 1px solid var(--border);
   @media only screen and (max-width: 1200px) {
     width: 768px;
   }
@@ -51,7 +51,11 @@ const SubBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px 0;
+  width: 80%;
+
+  padding: 16px 0 8px 0;
+  margin: 0 auto 12px auto;
+  border-bottom: 2px solid var(--border);
   @media only screen and (max-width: 768px) {
     grid-column: span 6;
   }
@@ -116,7 +120,6 @@ const ShareButton = styled.div`
 const OptionsBox = styled.div`
   font-family: 'SUIT-Medium';
   grid-column: 2 / span 10;
-
   @media only screen and (max-width: 768px) {
     grid-column: span 6;
   }
@@ -129,6 +132,11 @@ const ResultContainer = styled.div`
   @media only screen and (max-width: 768px) {
     grid-column: span 6;
   }
+`;
+
+const Divider = styled.div`
+  height: 0;
+  border-bottom: 1px solid black;
 `;
 
 interface Ioptions {
@@ -295,7 +303,6 @@ export const Vote = ({ keyupHandler }: Props) => {
   };
 
   const handleShareModal = () => {
-    document.body.classList.add('stop-scroll');
     setShareModal({ isOn: true, isShow: false });
     setTimeout(() => {
       setShareModal((prev) => {
@@ -304,7 +311,6 @@ export const Vote = ({ keyupHandler }: Props) => {
     }, 16);
   };
   const handelDelBtn = () => {
-    document.body.classList.add('stop-scroll');
     setDel(true);
   };
   const handleVotedCount = (id: number) => {
@@ -322,7 +328,6 @@ export const Vote = ({ keyupHandler }: Props) => {
   };
 
   const editModalHandler = () => {
-    document.body.classList.remove('stop-scroll');
     setIsEditOn(false);
   };
 
@@ -339,7 +344,6 @@ export const Vote = ({ keyupHandler }: Props) => {
         <EditDelBtn style={userId !== pollId ? { display: 'none' } : {}}>
           <div
             onClick={() => {
-              document.body.classList.add('stop-scroll');
               setIsEditOn(true);
             }}
           >
@@ -356,6 +360,7 @@ export const Vote = ({ keyupHandler }: Props) => {
           <BiShareAlt style={{ width: '20px', height: 'auto' }} />
           <div>공유하기</div>
         </ShareButton>
+
         <OptionsBox style={!isVoted && !isDone ? {} : { gridColumn: 'span 6' }}>
           {options.map((obj) => {
             return (
