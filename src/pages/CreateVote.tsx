@@ -282,7 +282,10 @@ function CreateVote({ finderRef, setModalOn }: Props) {
     setOptionList(newList);
   };
 
-  const CreateBtnHandler = () => {
+  const [file, setFile] = useState<File | null>(null);
+
+  const CreateBtnHandler = async () => {
+    console.log(file);
     if (title === '') {
       dispatch(notify('제목을 입력해주세요.'));
       return;
@@ -296,12 +299,26 @@ function CreateVote({ finderRef, setModalOn }: Props) {
       return;
     }
     const accessToken = localStorage.getItem('accessToken');
+    let fileId = null;
+    if (!!file) {
+      const formData = new FormData();
+      formData.append('picture', file);
+      const fileRes = await apiAxios.post('upload-poll-picture', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      fileId = fileRes.data.uploadId as string;
+    }
+
     apiAxios
       .post(
         'users/me/polls',
         {
           subject: title,
           expirationDate: calendarValue,
+          picture: fileId,
           isPrivate: isPrivate,
           isPlural: isPlural,
           options: optionList
@@ -407,7 +424,7 @@ function CreateVote({ finderRef, setModalOn }: Props) {
               <CheckboxContainer>
                 <ImgContainer>
                   <ImgBox className="img">
-                    <PollImage />
+                    <PollImage setFile={setFile} />
                   </ImgBox>
                   <div style={{ textAlign: 'left', marginLeft: '15px' }}>
                     이미지를 넣거나 드레그 해주세요.
