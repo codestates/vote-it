@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { MutableRefObject, useEffect } from 'react';
 
 export const copyClipboard = async (
   text: string,
@@ -92,3 +92,11 @@ export function useBeforeLeave(onBefore: () => void) {
     return () => document.removeEventListener('beforeunload', handle);
   });
 }
+
+export const keyupHandler =
+  (ref: MutableRefObject<HTMLInputElement | null>) => (e: KeyboardEvent) => {
+    if (e.key === '/') {
+      console.log(e);
+      if (ref.current) ref.current.focus();
+    }
+  };

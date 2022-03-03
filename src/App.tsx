@@ -4,7 +4,7 @@ import { Header } from './pages/components';
 import { Main, Setting, Vote, OAuth } from './pages';
 import CreateVote from './pages/CreateVote';
 import Footer from './pages/components/Footer';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { darkHandler, loginHandler, userHandler } from './modules/login';
 import NofiticationCenter from './components/NotificationCenter';
@@ -21,6 +21,7 @@ type Modal = {
 };
 
 function App() {
+  const finderRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
   const [headerVisibility, setHeaderVisibility] = useState(true);
   const [modalOn, setModalOn] = useState<Modal>({
@@ -32,6 +33,7 @@ function App() {
     const localLogin = localStorage.getItem('isLogin');
     const userColorTheme = localStorage.getItem('color-theme');
     const localUser = localStorage.getItem('userId');
+
     document.documentElement.setAttribute(
       'color-theme',
       userColorTheme || 'light',
@@ -47,6 +49,7 @@ function App() {
     } else if (userColorTheme === 'light') {
       dispatch(darkHandler(false));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -73,7 +76,11 @@ function App() {
       <div className="App">
         <>
           {headerVisibility ? (
-            <Header modalOn={modalOn} setModalOn={setModalOn} />
+            <Header
+              finderRef={finderRef}
+              modalOn={modalOn}
+              setModalOn={setModalOn}
+            />
           ) : null}
           <Routes>
             <Route path="/*" element={<Main />} />
@@ -84,7 +91,9 @@ function App() {
 
             <Route
               path="/createVote"
-              element={<CreateVote setModalOn={setModalOn} />}
+              element={
+                <CreateVote finderRef={finderRef} setModalOn={setModalOn} />
+              }
             ></Route>
 
             <Route path="/vote/:id" element={<Vote></Vote>} />

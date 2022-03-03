@@ -13,6 +13,7 @@ import {
 import { FaPlus, FaUserCircle, FaBell, FaSearch } from 'react-icons/fa';
 import { FiX } from 'react-icons/fi';
 import { darkHandler } from '../../modules/login';
+import { keyupHandler } from '../../functions';
 
 const Container = styled.div`
   position: fixed;
@@ -256,6 +257,7 @@ type Modal = {
 };
 
 interface Props {
+  finderRef: React.MutableRefObject<HTMLInputElement | null>;
   modalOn: Modal;
   setModalOn: Dispatch<SetStateAction<Modal>>;
 }
@@ -265,7 +267,11 @@ interface Props {
 //   isShow: boolean;
 // };
 
-const Header: React.FunctionComponent<Props> = ({ modalOn, setModalOn }) => {
+const Header: React.FunctionComponent<Props> = ({
+  finderRef,
+  modalOn,
+  setModalOn,
+}) => {
   // const [modalOn, setModalOn] = useState<Modal>({
   //   isOn: false,
   //   isShow: false,
@@ -335,6 +341,14 @@ const Header: React.FunctionComponent<Props> = ({ modalOn, setModalOn }) => {
     }
   }, [dispatch]);
 
+  // useEffect(() => {
+  //   window.addEventListener('keyup', keyupHandler(finderRef));
+  //   return () => {
+
+  //     window.removeEventListener('keyup', keyupHandler(finderRef));
+  //   };
+  // }, []);
+
   return (
     <Container>
       {isMiniOpen ? (
@@ -367,7 +381,7 @@ const Header: React.FunctionComponent<Props> = ({ modalOn, setModalOn }) => {
           />
         </Link>
         <SearchWrapper>
-          <Search type={'text'}></Search>
+          <Search ref={finderRef} type={'text'}></Search>
           <SearchBox>
             <FaSearch style={{ color: 'white' }} />
           </SearchBox>

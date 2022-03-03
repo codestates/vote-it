@@ -1,4 +1,10 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, {
+  Dispatch,
+  MutableRefObject,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 import styled from 'styled-components';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 import { Scheduler } from '../components';
@@ -8,7 +14,7 @@ import { useDispatch } from 'react-redux';
 import { notify } from '../modules/notification';
 import { useNavigate } from 'react-router-dom';
 import ServerErr from './ServerErr';
-import { useBeforeLeave } from '../functions';
+import { keyupHandler, useBeforeLeave } from '../functions';
 import { PollImage } from '../components/PollImage';
 
 const Outer = styled.div`
@@ -20,6 +26,7 @@ const Outer = styled.div`
   /* flex-direction: column; */
   justify-content: center;
   align-items: center;
+  transition: all 0.5s;
 `;
 const Container = styled.div`
   width: 1200px;
@@ -27,6 +34,7 @@ const Container = styled.div`
   grid-template-columns: repeat(12, 1fr);
   column-gap: 24px;
   align-items: center;
+  transition: all 0.5s;
   @media only screen and (max-width: 1200px) {
     width: 768px;
   }
@@ -191,10 +199,11 @@ interface IModalOn {
 }
 
 interface Props {
+  finderRef: MutableRefObject<HTMLInputElement | null>;
   setModalOn: Dispatch<SetStateAction<IModalOn>>;
 }
 
-function CreateVote({ setModalOn }: Props) {
+function CreateVote({ finderRef, setModalOn }: Props) {
   const [calendarValue, setCalendarValue] = useState('');
   const [title, setTitle] = useState('');
   const [optionList, setOptionList] = useState<string[]>(['', '', '', '']);
@@ -373,6 +382,13 @@ function CreateVote({ setModalOn }: Props) {
                         placeholder="선택지 입력"
                         value={optionList[index]}
                         onChange={(e) => handleOption(e, index)}
+                        // onFocus={() => {
+                        //   console.log('focused');
+                        //   window.removeEventListener(
+                        //     'keyup',
+                        //     keyupHandler(finderRef),
+                        //   );
+                        // }}
                         style={isUnique === index ? { color: 'red' } : {}}
                       />
                       <DelOptionBtn onClick={() => DelBtn(index)}>
