@@ -36,12 +36,16 @@ const VoteCardContainer = styled.div`
   }
 `;
 
-export const TitleBox = styled.div`
-  background-image: url('https://cdn.discordapp.com/attachments/940138951770001421/940774921255129108/vote-it_LOGO1.png');
+interface IImaProps {
+  src?: string;
+}
+
+export const TitleBox = styled.div<IImaProps>`
+  background-image: url(${(props) => props.src});
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 55% auto;
-  opacity: 0.8;
+  background-size: contain;
+  opacity: 1;
   width: 100%;
   flex: 1 1 200px;
   border-bottom: 1px solid var(--border-lightest);
@@ -54,12 +58,12 @@ export const TitleBox = styled.div`
   @media only screen and (max-width: 500px) {
     border-bottom: 0;
     border-right: 1px solid var(--border-lightest);
-    opacity: 0.5;
+    /* opacity: 0.5; */
   }
 `;
 
 const TitleCover = styled.div`
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.3);
   flex: 1 1 200px;
   display: flex;
   justify-content: center;
@@ -134,6 +138,7 @@ export const VoteCard = ({
   author,
   createdAt,
   expirationDate,
+  picture,
 }: IPost) => {
   // const location = useLocation().state as IPost;
   const navigate = useNavigate();
@@ -156,9 +161,13 @@ export const VoteCard = ({
     return `${dateArr[0]}년 ${dateArr[1]}월 ${dateArr[2]}일`;
   };
 
+  const pollImg = !!picture
+    ? picture
+    : 'https://cdn.discordapp.com/attachments/940138951770001421/940774921255129108/vote-it_LOGO1.png';
+
   return (
     <VoteCardContainer onClick={OpenVoteHandler}>
-      <TitleBox>
+      <TitleBox src={pollImg}>
         <TitleCover>{subject}</TitleCover>
       </TitleBox>
       <StyledBody>

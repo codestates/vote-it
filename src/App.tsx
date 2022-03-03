@@ -12,8 +12,12 @@ import { kakaoInit } from './lib/initialize';
 import { notify } from './modules/notification';
 import { MainEmpty } from './pages/MainEmpty';
 import ServerErr from './pages/ServerErr';
+import { focusHandler } from './functions';
+import { KeyNotice } from './components/KeyNotification';
 // import { RootState } from './modules';
 // export type LoginProps = boolean;
+
+let throttle: boolean = false;
 
 type Modal = {
   isOn: boolean;
@@ -28,6 +32,12 @@ function App() {
     isOn: false,
     isShow: false,
   });
+
+  const keyupHandler = (e: KeyboardEvent) => {
+    if (e.key === '/') {
+      focusHandler(finderRef);
+    }
+  };
 
   useEffect(() => {
     const localLogin = localStorage.getItem('isLogin');
@@ -78,6 +88,7 @@ function App() {
           {headerVisibility ? (
             <Header
               finderRef={finderRef}
+              keyupHandler={keyupHandler}
               modalOn={modalOn}
               setModalOn={setModalOn}
             />
@@ -92,19 +103,33 @@ function App() {
             <Route
               path="/createVote"
               element={
-                <CreateVote finderRef={finderRef} setModalOn={setModalOn} />
+                <CreateVote
+                  finderRef={finderRef}
+                  keyupHandler={keyupHandler}
+                  setModalOn={setModalOn}
+                />
               }
             ></Route>
 
-            <Route path="/vote/:id" element={<Vote></Vote>} />
+            <Route
+              path="/vote/:id"
+              element={<Vote keyupHandler={keyupHandler} />}
+            />
 
-            <Route path="/setting" element={<Setting />}></Route>
+            <Route
+              path="/setting"
+              element={<Setting keyupHandler={keyupHandler} />}
+            ></Route>
 
             <Route path="/emptymain" element={<MainEmpty />} />
           </Routes>
           <NofiticationCenter />
+
           {headerVisibility ? <Footer /> : null}
         </>
+        {/* {keyNoticeOn ? (
+          <KeyNotice noticeOn={keyNoticeOn} setNoticeOn={setKeyNoticeOn} />
+        ) : null} */}
       </div>
     </Router>
   );

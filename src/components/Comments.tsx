@@ -65,6 +65,7 @@ interface Icomments {
 }
 
 interface Iprops {
+  keyupHandler: (e: KeyboardEvent) => void;
   commentList: Icomments[];
   setCommentsList: Dispatch<SetStateAction<Icomments[]>>;
   isVoted: boolean;
@@ -72,6 +73,7 @@ interface Iprops {
 }
 
 export const Comments = ({
+  keyupHandler,
   commentList,
   setCommentsList,
   isVoted,
@@ -96,6 +98,14 @@ export const Comments = ({
         value={comment}
         onChange={(e) => {
           setComment(e.target.value);
+        }}
+        onFocus={() => {
+          console.log('focused');
+          window.removeEventListener('keyup', keyupHandler);
+        }}
+        onBlur={() => {
+          console.log('blurred');
+          window.addEventListener('keyup', keyupHandler);
         }}
       />
       <BtnBox onClick={CommentBtnFunc}>

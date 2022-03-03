@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import styled from 'styled-components';
@@ -34,9 +34,14 @@ const Preview = styled.img`
   background-color: #fff;
 `;
 
-export const PollImage = () => {
+interface IProps {
+  setFile: Dispatch<SetStateAction<File | null>>;
+}
+
+export const PollImage = ({ setFile }: IProps) => {
   const [selectedFile, setSelectedFile] = useState<File>();
   const [preview, setPreview] = useState('');
+  // const [formData, setFormData] = useState(new FormData())
 
   useEffect(() => {
     if (!selectedFile) {
@@ -55,8 +60,10 @@ export const PollImage = () => {
       setSelectedFile(undefined);
       return;
     }
+
     // const formData = new FormData();
-    // formData.append('file', e.target.files[0])
+    // formData.append('picture', e.target.files[0])
+
     // const accessToken = localStorage.getItem('accessToken')
     // apiAxios
     //   .post(
@@ -64,20 +71,47 @@ export const PollImage = () => {
     //     formData,
     //     {
     //       headers: {
+    //         "Content-Type": "multipart/form-data",
     //         Authorization: `Bearer ${accessToken}`
     //       }
     //     }
     //   )
 
     setSelectedFile(e.target.files[0]);
+    setFile(e.target.files[0]);
   };
+
+  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+
+  //   if (!!file) {
+  //     const formData = new FormData();
+  //     formData.append('picture', file)
+  //     console.log(formData.getAll('picture'))
+  //   }
+
+  //   const accessToken = localStorage.getItem('accessToken')
+  //   apiAxios
+  //     .post(
+  //       'upload-poll-picture',
+  //       formData,
+  //       {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //           Authorization: `Bearer ${accessToken}`
+  //         }
+  //       }
+  //     )
+  // }
 
   return (
     <InputViewContainer>
       <form
-        method="post"
+        // method="post"
         encType="multipart/form-data"
-        action="https://localhost:8000/upload-poll-picture"
+        // action="https://localhost:8000/upload-poll-picture"
+        name="photo"
+        // onSubmit={handleSubmit}
       >
         <InputBox
           type={'file'}
@@ -85,7 +119,7 @@ export const PollImage = () => {
           onChange={onSelectFile}
           accept="image/png,image/jpeg,image/webp,image/svg+xml"
         />
-        <input type={'submit'} value="사진 업로드" />
+        {/* <input type={'submit'} value="사진 업로드" /> */}
       </form>
       {selectedFile && (
         <Preview

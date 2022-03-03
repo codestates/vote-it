@@ -3,7 +3,6 @@ import apiAxios from '../utils/apiAxios';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { EditpostList } from '../lib/postList';
 import { notify } from '../modules/notification';
 import ServerErr from '../pages/ServerErr';
 const Canvas = styled.div<{ del: boolean }>`
@@ -81,9 +80,6 @@ const VoteModal: React.FunctionComponent<IProps> = ({ del, setDel, id }) => {
         },
       })
       .then((res) => {
-        console.log(res);
-        EditpostList(id);
-
         navigate(`/`);
         dispatch(notify('투표가 삭제 되었습니다.'));
       })

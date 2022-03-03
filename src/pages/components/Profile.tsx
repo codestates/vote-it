@@ -127,7 +127,9 @@ const ImgBox = styled.div<IImgProps>`
   background-repeat: no-repeat;
 `;
 
-interface IProps {}
+interface IProps {
+  keyupHandler: (e: KeyboardEvent) => void;
+}
 
 interface IuserInfo {
   id: number;
@@ -136,7 +138,7 @@ interface IuserInfo {
   picture: string;
 }
 
-const Profile: React.FunctionComponent<IProps> = () => {
+const Profile: React.FunctionComponent<IProps> = ({ keyupHandler }) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [username, setUsername] = useState('');
   const [err, setErr] = useState('');
@@ -228,6 +230,14 @@ const Profile: React.FunctionComponent<IProps> = () => {
             value={username}
             onChange={(e) => {
               setUsername(e.target.value);
+            }}
+            onFocus={() => {
+              console.log('focused');
+              window.removeEventListener('keyup', keyupHandler);
+            }}
+            onBlur={() => {
+              console.log('blurred');
+              window.addEventListener('keyup', keyupHandler);
             }}
           />
         ) : (

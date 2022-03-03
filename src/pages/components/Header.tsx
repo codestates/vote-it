@@ -13,7 +13,7 @@ import {
 import { FaPlus, FaUserCircle, FaBell, FaSearch } from 'react-icons/fa';
 import { FiX } from 'react-icons/fi';
 import { darkHandler } from '../../modules/login';
-import { keyupHandler } from '../../functions';
+import { useRef } from 'react';
 
 const Container = styled.div`
   position: fixed;
@@ -51,7 +51,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const SearchWrapper = styled.div`
+const SearchWrapper = styled.div<{ slashVisible: boolean }>`
   /* flex: 2 0 auto; */
   display: flex;
   align-items: center;
@@ -66,24 +66,52 @@ const SearchWrapper = styled.div`
   @media only screen and (max-width: 500px) {
     display: none;
   }
+  .shortcut-wrapper {
+    display: inline-block;
+    position: absolute;
+    width: 0;
+    height: 14px;
+  }
+  .search-shortcut {
+    user-select: none;
+    display: ${(props) => (props.slashVisible ? 'block' : 'none')};
+    position: absolute;
+    font-size: 12px;
+    padding: 1px 2px 2px 2px;
+    width: 14px;
+    height: 14px;
+    top: -2px;
+    left: 24px;
+    line-height: 14px;
+    color: var(--font-lighter);
+    border: 1px solid var(--border-lighter);
+    border-radius: 4px;
+    cursor: text;
+  }
 `;
 
 const Search = styled.input`
   /* flex: 1 0 auto; */
-  width: 70%;
+  min-width: 128px;
+  width: 128px;
   height: 24px;
-
   padding: 4px;
   padding-left: 15px;
-  border-radius: 10px;
+  border-radius: 8px;
   border: none;
-  box-shadow: inset 2px 2px 3px 2px var(--box-shadow-darker);
+  box-shadow: inset 1px 1px 2px 1px var(--box-shadow-darker);
 
   background-color: var(--box-bg-lighter);
+  transition: all 0.3s;
 
-  @media only screen and (max-width: 768px) {
-    width: 100%;
+  :focus {
+    width: 70%;
+    transition: all 0.3s;
   }
+
+  /* @media only screen and (max-width: 768px) {
+    width: 100%;
+  } */
 `;
 
 const SettingWrapper = styled.div`
@@ -264,6 +292,7 @@ type Modal = {
 };
 
 interface Props {
+  keyupHandler: (e: KeyboardEvent) => void;
   finderRef: React.MutableRefObject<HTMLInputElement | null>;
   modalOn: Modal;
   setModalOn: Dispatch<SetStateAction<Modal>>;
@@ -275,6 +304,7 @@ interface Props {
 // };
 
 const Header: React.FunctionComponent<Props> = ({
+  keyupHandler,
   finderRef,
   modalOn,
   setModalOn,
@@ -283,6 +313,7 @@ const Header: React.FunctionComponent<Props> = ({
   //   isOn: false,
   //   isShow: false,
   // });
+  const [slashVisible, setSlashVisible] = useState(true);
   const [dropOn, setDropOn] = useState(false);
   const [noticeOn, setNoticeOn] = useState(false);
   const [modalClass, setModalClass] = useState<number>(0);
@@ -348,13 +379,21 @@ const Header: React.FunctionComponent<Props> = ({
     }
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   window.addEventListener('keyup', keyupHandler(finderRef));
-  //   return () => {
+  // const keyupHandler = (e: KeyboardEvent) => {
+  //   if (e.key === '/') {
+  //     focusHandler(finderRef);
+  //   } else {
+  //     console.log('/ 키를 눌러 검색해보세요');
+  //   }
+  // };
 
-  //     window.removeEventListener('keyup', keyupHandler(finderRef));
-  //   };
-  // }, []);
+  useEffect(() => {
+    window.addEventListener('keyup', keyupHandler);
+    return () => {
+      window.removeEventListener('keyup', keyupHandler);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Container>
@@ -387,8 +426,38 @@ const Header: React.FunctionComponent<Props> = ({
             alt="vote-it logo"
           />
         </Link>
-        <SearchWrapper>
-          <Search ref={finderRef} type={'text'}></Search>
+        <SearchWrapper slashVisible={slashVisible}>
+          <Search
+            ref={finderRef}
+            onFocus={() => {
+              setSlashVisible(false);
+              window.removeEventListener('keyup', keyupHandler);
+            }}
+            onBlur={() => {
+              setTimeout(() => {
+                setSlashVisible(true);
+              }, 300);
+
+              window.addEventListener('keyup', keyupHandler);
+            }}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter') {
+                // Search 함수
+              }
+            }}
+            type={'text'}
+            placeholder={'검색...'}
+          />
+          <div className="shortcut-wrapper">
+            <div
+              onClick={() => {
+                finderRef.current?.focus();
+              }}
+              className="search-shortcut"
+            >
+              /
+            </div>
+          </div>
           <SearchBox>
             <FaSearch style={{ color: 'white' }} />
           </SearchBox>
