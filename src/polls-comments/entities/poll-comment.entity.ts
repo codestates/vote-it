@@ -8,7 +8,7 @@ export class PollComment extends CommonEntity {
   @Column({ type: 'varchar', nullable: false })
   content: string;
 
-  @Column()
+  @Column({ nullable: true })
   parentId: number;
 
   @ManyToOne(() => PollComment, (comment) => comment.children, {

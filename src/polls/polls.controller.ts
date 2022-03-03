@@ -6,11 +6,11 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { OptionalJwtAuthGuard } from '../../auth/guards/optional-jwt-auth.guard';
-import { JwtValidatePayload } from '../../auth/payloads/jwt-validate.payload';
-import { CurrentUser } from '../../common/decorators/current-user.decorator';
-import { PaginationQueryDto } from '../../common/dto/pagination-query.dto';
-import { PollsService } from '../polls.service';
+import { OptionalJwtAuthGuard } from '../auth/guards/optional-jwt-auth.guard';
+import { JwtValidatePayload } from '../auth/payloads/jwt-validate.payload';
+import { CurrentUser } from '../common/decorators/current-user.decorator';
+import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
+import { PollsService } from './polls.service';
 
 @Controller('polls')
 export class PollsController {
