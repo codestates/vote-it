@@ -229,11 +229,13 @@ interface Calender {
 }
 
 interface IProps {
+  keyupHandler: (e: KeyboardEvent) => void;
   translate: string;
   CalenderValueHandler: ({ date, time }: Calender) => void;
 }
 
 const Scheduler: React.FunctionComponent<IProps> = ({
+  keyupHandler,
   translate,
   CalenderValueHandler,
 }) => {
@@ -337,7 +339,17 @@ const Scheduler: React.FunctionComponent<IProps> = ({
           <Canvas onClick={handleView}></Canvas>
           <Popper ts={translate}>
             <View>
-              <InputWrapper focus={inputFocus}>
+              <InputWrapper
+                onFocus={() => {
+                  console.log('focused');
+                  window.removeEventListener('keyup', keyupHandler);
+                }}
+                onBlur={() => {
+                  console.log('blurred');
+                  window.addEventListener('keyup', keyupHandler);
+                }}
+                focus={inputFocus}
+              >
                 <div className="input-wrapper">
                   <input
                     type="number"
