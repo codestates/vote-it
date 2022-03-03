@@ -11,6 +11,7 @@ const FooterOuter = styled.div`
   justify-content: center;
   align-items: center;
   box-shadow: inset 0 8px 10px -6px var(--box-shadow);
+  transition: all 0.5s;
 `;
 
 const FooterContainer = styled.div`
@@ -20,6 +21,7 @@ const FooterContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   column-gap: 24px;
+  transition: all 0.5s;
   /* align-items: center; */
   @media only screen and (max-width: 500px) {
     width: 360px;
