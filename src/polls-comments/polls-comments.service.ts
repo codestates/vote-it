@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
+import { Poll } from '../polls/entities/poll.entity';
+import { CreatePollCommentDto } from './dto/create-poll-comment.dto';
 import { PollComment } from './entities/poll-comment.entity';
 
 @Injectable()
@@ -9,6 +11,8 @@ export class PollsCommentsService {
   constructor(
     @InjectRepository(PollComment)
     private readonly pollCommentRepository: Repository<PollComment>,
+    @InjectRepository(Poll)
+    private readonly pollRepository: Repository<Poll>,
   ) {}
 
   async getSpecificRangeCommentsOfPoll(
@@ -49,5 +53,25 @@ export class PollsCommentsService {
       }),
     );
     return { comments, count };
+  }
+
+  async createCommentOfPoll(
+    authorId: number,
+    pollId: number,
+    createPollCommentDto: CreatePollCommentDto,
+  ) {
+    const _existsPoll = await this.pollRepository
+      .createQueryBuilder()
+      .where('id = :pollId', { pollId })
+      .getOneOrFail();
+
+    const insertResult = await this.pollCommentRepository
+      .createQueryBuilder()
+      .insert()
+      .values({ authorId, pollId, ...createPollCommentDto })
+      .returning('id')
+      .execute();
+    const insertedPollId = insertResult.raw[0].id as number;
+    return { id: insertedPollId };
   }
 }

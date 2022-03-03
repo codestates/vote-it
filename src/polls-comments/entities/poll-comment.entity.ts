@@ -1,3 +1,10 @@
+import {
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsPositive,
+  IsString,
+} from 'class-validator';
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { CommonEntity } from '../../common/entities/common.entity';
 import { Poll } from '../../polls/entities/poll.entity';
@@ -6,9 +13,14 @@ import { User } from '../../users/entities/user.entity';
 @Entity()
 export class PollComment extends CommonEntity {
   @Column({ type: 'varchar', nullable: false })
+  @IsString()
+  @IsNotEmpty()
   content: string;
 
   @Column({ nullable: true })
+  @IsInt()
+  @IsPositive()
+  @IsOptional()
   parentId: number;
 
   @ManyToOne(() => PollComment, (comment) => comment.children, {
