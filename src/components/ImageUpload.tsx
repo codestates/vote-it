@@ -9,6 +9,22 @@ const InputViewContainer = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
+  label {
+    width: 90px;
+    height: 90px;
+    line-height: 90px;
+    font-size: 32px;
+    border-radius: 100px;
+
+    color: white;
+    background-color: rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    cursor: pointer;
+    :hover {
+      opacity: 1;
+      transition: all 0.3s;
+    }
+  }
 `;
 
 const InputBox = styled.input`
@@ -17,18 +33,19 @@ const InputBox = styled.input`
   border-radius: 100px;
   margin-bottom: 20px; */
   /* position: absolute; */
-  width: 70%;
-  height: 70%;
+  width: 0;
+  height: 0;
   padding: 0;
   overflow: hidden;
   border: 0;
+  border-radius: 100px;
   opacity: 0;
-  cursor: pointer;
 `;
 
 const Preview = styled.img`
-  width: 100px;
-  height: 100px;
+  position: absolute;
+  width: 90px;
+  height: 90px;
   border-radius: 100px;
   background-color: #fff;
 `;
@@ -61,11 +78,13 @@ export const ImageUpload = () => {
   return (
     <InputViewContainer>
       <InputBox
+        id="profile-image"
         type={'file'}
-        style={!selectedFile ? {} : { display: 'none' }}
+        // style={!selectedFile ? {} : { display: 'none' }}
         onChange={onSelectFile}
         accept="image/*"
       />
+      <label htmlFor="profile-image">+</label>
       {selectedFile && (
         <Preview
           src={preview}

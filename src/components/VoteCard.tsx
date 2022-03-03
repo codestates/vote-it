@@ -20,7 +20,7 @@ const VoteCardContainer = styled.div`
   cursor: pointer;
   &:hover {
     background: var(--box-bg-lighter);
-    margin-top: 10px;
+    transform: translateY(-8px);
   }
   @media only screen and (max-width: 1200px) {
     grid-column: span 4;
@@ -66,6 +66,7 @@ const TitleCover = styled.div`
   align-items: center;
   font-size: large;
   width: 100%;
+  border-radius: 10px 10px 0 0;
   /* height: 100%; */
   white-space: normal;
   word-break: break-all;
