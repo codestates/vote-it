@@ -21,7 +21,7 @@ const ModalBackdrop = styled.div`
 `;
 
 const ModalView = styled.div`
-  background-color: #ffffff;
+  background-color: var(--menu-bg);
   width: 500px;
   height: 350px;
   border-radius: 20px;
@@ -31,9 +31,8 @@ const ModalView = styled.div`
   }
   > div.desc {
     /* font-family: 'IBMPlexSansKR-Light'; */
-    background-color: #fff;
     margin-top: 25px;
-    color: #b80000;
+    color: var(--font-red);
     font-weight: bold;
     text-align: center;
   }
@@ -68,7 +67,8 @@ const StyledDiv = styled.div`
 const InputBox = styled.input`
   font-family: 'EliceDigitalBaeum_Bold';
   border: none;
-  box-shadow: -2px -2px 4px #f8f8f8, 3px 3px 6px rgb(184, 184, 184);
+  box-shadow: -1px -1px 2px var(--box-shadow),
+    2px 2px 4px var(--box-shadow-darker);
   border-radius: 13px;
   font-size: 14px;
   height: 35px;

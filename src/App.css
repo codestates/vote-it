@@ -11,6 +11,7 @@
   --option-hover: #e9e9e9;
   --option-shadow: -2px -2px 4px #ececec, 3px 3px 8px rgb(184, 184, 184);
   --font: black;
+  --font-red: #b80000;
   --title-font-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;
   --font-lighter: #222;
   --font-pale: #eee;
@@ -33,6 +34,7 @@
   --option-hover: #666666;
   --option-shadow: -2px -2px 4px #494949, 3px 3px 8px rgb(85, 85, 85);
   --font: white;
+  --font-red: #ff6666;
   --title-font-shadow: -1px 0 rgb(0, 0, 0), 0 1px rgb(0, 0, 0),
     1px 0 rgb(0, 0, 0), 0 -1px rgb(0, 0, 0);
   --font-lighter: #ddd;
