@@ -21,10 +21,6 @@ export class User extends CommonEntity {
   @IsNotEmpty()
   nickname: string;
 
-  @Column({ type: 'varchar', nullable: true })
-  @IsString()
-  picture: string | null;
-
   @OneToMany(() => Poll, (poll) => poll.author)
   polls: Poll[];
 
