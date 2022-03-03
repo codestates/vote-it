@@ -46,7 +46,7 @@ export class PollsService {
         picture:
           poll.picture === null
             ? null
-            : path.join(POLL_PICTURE_URL, poll.picture),
+            : `${POLL_PICTURE_URL}/${poll.picture}`,
         author: {
           ...poll.author,
           picture:
@@ -99,7 +99,7 @@ export class PollsService {
       picture:
         rawPolls[0].poll_picture === null
           ? null
-          : path.join(POLL_PICTURE_URL, rawPolls[0].poll_picture),
+            : `${POLL_PICTURE_URL}/${rawPolls[0].poll_picture}`,
       author: {
         id: rawPolls[0].author_id,
         nickname: rawPolls[0].author_nickname,
