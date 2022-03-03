@@ -19,5 +19,8 @@ export const EmptyChart = ({ number }: IProps) => {
         </div>
       </div>
     </>
+
   );
 };
+
+
