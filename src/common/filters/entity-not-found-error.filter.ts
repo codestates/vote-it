@@ -15,6 +15,7 @@ export class EntityNotFoundErrorFilter
     User: '유저',
     Poll: '투표',
     PollOption: '투표 옵션',
+    PollComment: '투표 댓글',
   };
 
   catch(exception: EntityNotFoundError, host: ArgumentsHost) {

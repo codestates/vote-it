@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -44,6 +45,21 @@ export class PollsCommentsController {
       userId,
       pollId,
       createPollCommentDto,
+    );
+  }
+
+  @Delete(':commentId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(JwtAuthGuard)
+  async deleteCommentOfPoll(
+    @CurrentUser() { userId }: JwtValidatePayload,
+    @Param('pollId', ParseIntPipe) pollId: number,
+    @Param('commentId', ParseIntPipe) commentId: number,
+  ): Promise<void> {
+    await this.pollsCommentsService.deleteCommentOfPoll(
+      userId,
+      pollId,
+      commentId,
     );
   }
 }
