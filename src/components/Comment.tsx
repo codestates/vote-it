@@ -1,16 +1,35 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FaCaretDown, FaCaretUp, FaRegThumbsUp } from 'react-icons/fa';
+import { AiOutlineDelete } from 'react-icons/ai';
+import { useSelector } from 'react-redux';
+import { RootState } from '../modules';
 
 const CommentInfo = styled.div`
   font-family: 'SUIT-Light';
   grid-column: span 12;
   border-bottom: 1px solid #dbdbdb;
+  margin-bottom: 10px;
+
+  > .delete_box {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+  }
+
+  .delete {
+    margin-left: 10px;
+    cursor: pointer;
+    &:hover {
+      color: blue;
+    }
+  }
 `;
 
 const CommentUsername = styled.div`
   color: #666666;
-  padding: 10px;
+  padding: 5px;
   font-size: smaller;
   text-align: left;
 `;
@@ -18,7 +37,6 @@ const CommentUsername = styled.div`
 const CommentContent = styled.div`
   padding: 10px;
   text-align: left;
-  margin-bottom: 10px;
 `;
 
 const ReplyDiv = styled.div`
@@ -42,10 +60,11 @@ const LikeBox = styled.div`
     &:hover {
       color: blue;
     }
+    margin-right: 10px;
   }
 
   div {
-    margin-left: 10px;
+    /* margin-left: 10px; */
     font-size: small;
     cursor: pointer;
     &:hover {
@@ -101,31 +120,42 @@ const CancleInputBtn = styled.div`
   }
 `;
 
+interface Iauthor {
+  id: number;
+  nickname: string;
+}
+
 interface Icomments {
   id: number;
+  createdAt: string;
   content: string;
-  username: string;
-  parrentId?: number;
+  author: Iauthor;
 }
 
 interface Iprops {
   id: number;
   username: string;
   content: string;
-  isReply: boolean;
+  userId: number;
   replies?: Icomments[];
+  commentHandler: (position: number, reply?: string) => void;
+  deleteCommentHandler: (id: number) => void;
 }
 
 export const Comment = ({
   id,
   username,
   content,
-  isReply,
+  userId,
   replies = [],
+  commentHandler,
+  deleteCommentHandler,
 }: Iprops) => {
   const [isRepliesOpen, setIsRepliesOpen] = useState(false);
   const [isInputReply, setIsReply] = useState(false);
   const [reply, setReply] = useState('');
+
+  const myId = useSelector((state: RootState) => state.login.userId);
 
   return (
     <CommentInfo key={id}>
@@ -133,6 +163,13 @@ export const Comment = ({
       <CommentContent>{content}</CommentContent>
       <LikeBox>
         <FaRegThumbsUp className="thumb" />
+        <AiOutlineDelete
+          onClick={() => {
+            deleteCommentHandler(id);
+          }}
+          className="thumb"
+          style={userId === myId ? {} : { display: 'none' }}
+        />
         <div
           onClick={() => {
             setIsReply(!isInputReply);
@@ -157,7 +194,16 @@ export const Comment = ({
           >
             취소
           </CancleInputBtn>
-          <InputBtn>확인</InputBtn>
+          <InputBtn
+            onClick={() => {
+              setIsRepliesOpen(true);
+              setIsReply(false);
+              commentHandler(id, reply);
+              setReply('');
+            }}
+          >
+            확인
+          </InputBtn>
         </InputReplyBox>
       ) : (
         ''
@@ -166,13 +212,22 @@ export const Comment = ({
         ? replies.map((obj) => {
             return (
               <CommentInfo key={obj.id} style={{ marginLeft: '50px' }}>
-                <CommentUsername>{obj.username}</CommentUsername>
+                <CommentUsername>{obj.author.nickname}</CommentUsername>
                 <CommentContent>{obj.content}</CommentContent>
+                <div className="delete_box">
+                  <AiOutlineDelete
+                    onClick={() => {
+                      deleteCommentHandler(obj.id);
+                    }}
+                    className="delete"
+                    style={obj.author.id === myId ? {} : { display: 'none' }}
+                  />
+                </div>
               </CommentInfo>
             );
           })
         : ''}
-      {isReply ? (
+      {replies.length !== 0 ? (
         <ReplyDiv
           onClick={() => {
             setIsRepliesOpen(!isRepliesOpen);

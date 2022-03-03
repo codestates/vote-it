@@ -134,23 +134,16 @@ const ResultContainer = styled.div`
   }
 `;
 
-const Divider = styled.div`
-  height: 0;
-  border-bottom: 1px solid black;
-`;
+// const Divider = styled.div`
+//   height: 0;
+//   border-bottom: 1px solid black;
+// `;
 
 interface Ioptions {
   id: number;
   content: string;
   votedCount: number;
   isVoted?: boolean;
-}
-
-interface Icomments {
-  id: number;
-  content: string;
-  username: string;
-  parrentId?: number;
 }
 
 interface Props {
@@ -170,7 +163,6 @@ export const Vote = ({ keyupHandler }: Props) => {
   const [username, setUsername] = useState('');
   const [options, setOptions] = useState<Ioptions[]>([]);
   const [voted, setVoted] = useState<number[]>([]);
-  const [commentsList, setCommentsList] = useState<Icomments[]>([]);
   const [shareModal, setShareModal] = useState({ isOn: false, isShow: false });
   // const [post, setPost] = useState<Post>(getPostById(id));
   const [del, setDel] = useState(false);
@@ -417,10 +409,8 @@ export const Vote = ({ keyupHandler }: Props) => {
         </ResultContainer>
       </VoteContainer>
       <Comments
+        pollId={id}
         keyupHandler={keyupHandler}
-        username={username}
-        commentList={commentsList}
-        setCommentsList={setCommentsList}
         isVoted={isVoted || isDone}
       ></Comments>
       {shareModal.isOn ? (
