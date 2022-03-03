@@ -17,6 +17,7 @@ const Canvas = styled.div<{ noticeOn: boolean }>`
 const Container = styled.div<{ noticeOn: boolean }>`
   position: fixed;
   top: 48px;
+  margin-right: calc(100% - 90%);
   /* transform: translate(-50%, 32px); */
   /* padding: 8px; */
   z-index: 999;
@@ -24,6 +25,12 @@ const Container = styled.div<{ noticeOn: boolean }>`
   transform: ${(props) => (props.noticeOn ? 'scaleY(1)' : 'scaleY(0)')};
   transform-origin: 0 0 0;
   transition: all 0.3s;
+  @media only screen and (max-width: 1200px) {
+    margin-right: calc(100% - 90%);
+  }
+  @media only screen and (max-width: 768px) {
+    margin-right: calc(100% - 80%);
+  }
 `;
 
 const View = styled.div`
