@@ -29,11 +29,20 @@ const Container = styled.div<{ dropOn: boolean }>`
     3px 3px 8px var(--box-shadow-darker);
   border-radius: 10px;
   z-index: 999;
-
+  margin-right: -100px;
   visibility: ${(props) => (props.dropOn ? 'visible' : 'hidden')};
   transform: ${(props) => (props.dropOn ? 'scaleY(1)' : 'scaleY(0)')};
   transform-origin: 0 0 0;
   transition: all 0.3s;
+  @media only screen and (max-width: 1200px) {
+    margin-right: calc(100% - 110%);
+  }
+  /* @media only screen and (max-width: 768px) {
+    margin-right: calc(100% - 120%);
+  } */
+  @media only screen and (max-width: 500px) {
+    margin-right: calc(100% - 110%);
+  }
 `;
 
 const Divider = styled.div`

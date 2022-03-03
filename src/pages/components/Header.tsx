@@ -118,7 +118,7 @@ const SettingWrapper = styled.div`
   user-select: none;
   display: flex;
   /* flex: 1 0 auto; */
-  grid-column: 11 / span 2;
+  grid-column: 11 / span 4;
   justify-content: space-around;
   svg {
     transform: translate(0, 6px);
@@ -130,9 +130,16 @@ const SettingWrapper = styled.div`
     height: 32px;
     line-height: 32px;
   }
+  @media only screen and (max-width: 1200px) {
+    grid-column: 10 / span 8;
+  }
 
-  @media only screen and (max-width: 500px) {
-    grid-column: 7 / span 6;
+  @media only screen and (max-width: 768px) {
+    grid-column: 8 / span 6;
+  }
+
+  @media only screen and (max-width: 501px) {
+    grid-column: 4 / span 9;
   }
 `;
 
