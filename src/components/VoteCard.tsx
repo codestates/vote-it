@@ -44,8 +44,8 @@ export const TitleBox = styled.div<IImaProps>`
   background-image: url(${(props) => props.src});
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 70% auto;
-  opacity: 0.8;
+  background-size: contain;
+  opacity: 1;
   width: 100%;
   flex: 1 1 200px;
   border-bottom: 1px solid var(--border-lightest);
@@ -58,12 +58,12 @@ export const TitleBox = styled.div<IImaProps>`
   @media only screen and (max-width: 500px) {
     border-bottom: 0;
     border-right: 1px solid var(--border-lightest);
-    opacity: 0.5;
+    /* opacity: 0.5; */
   }
 `;
 
 const TitleCover = styled.div`
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.3);
   flex: 1 1 200px;
   display: flex;
   justify-content: center;

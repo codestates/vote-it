@@ -190,7 +190,7 @@ const ImgBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px dotted black;
+  border: 1px dotted var(--font);
 `;
 
 interface IModalOn {
@@ -436,8 +436,14 @@ function CreateVote({ finderRef, keyupHandler, setModalOn }: Props) {
                   <ImgBox className="img">
                     <PollImage setFile={setFile} />
                   </ImgBox>
-                  <div style={{ textAlign: 'left', marginLeft: '15px' }}>
-                    이미지를 넣거나 드레그 해주세요.
+                  <div
+                    style={{
+                      textAlign: 'center',
+                      width: '256px',
+                      fontSize: 'small',
+                    }}
+                  >
+                    클릭하여 이미지를 넣거나 드레그 해주세요.
                   </div>
                 </ImgContainer>
                 <CheckboxAndTitle>
