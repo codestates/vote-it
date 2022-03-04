@@ -40,11 +40,12 @@ const Wrapper = styled.div`
   align-items: center;
   > a {
     flex: 1 0 auto;
+    align-items: flex-start;
   }
   #logo {
     /* color: var(--font); */
 
-    grid-column: 1 / span 1;
+    /* grid-column: 1 / span 1; */
     width: 80px;
     height: 32px;
   }
@@ -55,9 +56,8 @@ const Wrapper = styled.div`
 `;
 
 const SearchWrapper = styled.div<{ slashVisible: boolean }>`
-  /* flex: 2 0 auto; */
   display: flex;
-  flex: 2 0 auto;
+  flex: 3 0 auto;
   align-items: center;
   justify-content: center;
   /* grid-column: 3 / span 7; */
@@ -122,7 +122,8 @@ const Search = styled.input`
 const SettingWrapper = styled.div`
   user-select: none;
   display: flex;
-  flex: 1 0 auto;
+  max-width: 192px;
+  flex: 1 0 192px;
   /* grid-column: 11 / span 4; */
   justify-content: space-around;
   svg {
@@ -135,6 +136,9 @@ const SettingWrapper = styled.div`
     height: 32px;
     line-height: 32px;
   }
+  > a {
+    flex: 1 0 auto;
+  }
   > a > div {
     height: 32px;
     line-height: 32px;
@@ -145,6 +149,8 @@ const SettingWrapper = styled.div`
 
   @media only screen and (max-width: 768px) {
     grid-column: 8 / span 6;
+    max-width: 144px;
+    flex: 1 0 144px;
   }
 
   @media only screen and (max-width: 501px) {
@@ -169,6 +175,7 @@ const SearchIcon = styled.div`
 `;
 
 const Notice = styled.div`
+  flex: 1 0 auto;
   &:hover {
     color: var(--main-color);
   }
@@ -181,6 +188,7 @@ const Notice = styled.div`
 `;
 
 const Setting = styled.div`
+  flex: 1 0 auto;
   &:hover {
     color: var(--main-color);
   }
