@@ -135,6 +135,7 @@ const PlusOptionBtn = styled.button`
 const CheckboxContainer = styled.div`
   display: flex;
   margin: 16px 32px 8px 32px;
+  /* border: 1px solid black; */
   width: 80%;
   justify-content: space-around;
   .create-options {
@@ -183,10 +184,10 @@ const CreateBtn = styled.button`
 `;
 
 const ImgContainer = styled.div`
-  flex: 1 0 auto;
+  /* flex: 1 0 auto; */
   display: flex;
   flex-direction: column;
-  align-items: left;
+  /* align-items: right; */
   justify-content: center;
   height: 200px;
 `;
