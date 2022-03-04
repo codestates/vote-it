@@ -152,44 +152,36 @@ export const Main = () => {
   //   isPrivate: "",
   //   createdAt: "",
   //   expirationDate: ""
+  if (err !== '') {
+    return <ServerErr err={err} />;
+  }
+  if (posts.length === 0) {
+    return <MainEmpty />;
+  }
   return (
-    <>
-      {err === '' ? (
-        <>
-          {posts.length === 0 ? (
-            <MainEmpty />
-          ) : (
-            <div>
-              <MainOuter>
-                <MainContainer>
-                  {posts.map((el, idx) => {
-                    return (
-                      <VoteCard
-                        key={idx}
-                        id={el.id}
-                        subject={el.subject}
-                        author={el.author.nickname}
-                        createdAt={el.createdAt}
-                        expirationDate={el.expirationDate}
-                        picture={el.picture}
-                        participatedCount={el.participatedCount}
-                      />
-                    );
-                  })}
-                </MainContainer>
-                {btnStatus ? (
-                  <div onClick={handleTop}>
-                    <FloatBtn />
-                  </div>
-                ) : null}{' '}
-              </MainOuter>
-              {isLoading ? <LoadingVoteCard /> : ''}
-            </div>
-          )}
-        </>
-      ) : (
-        <ServerErr err={err} />
-      )}
-    </>
+    <div>
+      <MainOuter>
+        <MainContainer>
+          {posts.map((post) => (
+            <VoteCard
+              key={post.id}
+              id={post.id}
+              subject={post.subject}
+              author={post.author.nickname}
+              createdAt={post.createdAt}
+              expirationDate={post.expirationDate}
+              picture={post.picture}
+              participatedCount={post.participatedCount}
+            />
+          ))}
+        </MainContainer>
+        {btnStatus && (
+          <div onClick={handleTop}>
+            <FloatBtn />
+          </div>
+        )}
+      </MainOuter>
+      {isLoading && <LoadingVoteCard />}
+    </div>
   );
 };
