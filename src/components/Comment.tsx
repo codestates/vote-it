@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FaCaretDown, FaCaretUp, FaRegThumbsUp } from 'react-icons/fa';
-import { AiOutlineDelete } from 'react-icons/ai';
-import { useSelector } from 'react-redux';
+import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../modules';
+import apiAxios from '../utils/apiAxios';
+import { notify } from '../modules/notification';
 
 const CommentInfo = styled.div`
   font-family: 'SUIT-Light';
@@ -120,6 +122,40 @@ const CancleInputBtn = styled.div`
   }
 `;
 
+const CommentPatchContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+`;
+
+const CommentPatch = styled.textarea`
+  /* padding: 10px; */
+  margin: 10px;
+  resize: none;
+  border: none;
+  border-bottom: 1px solid #dbdbdb;
+  width: 80%;
+`;
+
+const PatchBtnBox = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 10%;
+`;
+
+const PatchBtn = styled.div`
+  margin-top: 10px;
+  border: 1px solid var(--font);
+  width: 50px;
+  height: 30px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 interface Iauthor {
   id: number;
   nickname: string;
@@ -137,6 +173,7 @@ interface Iprops {
   username: string;
   content: string;
   userId: number;
+  pollId: number;
   replies?: Icomments[];
   commentHandler: (position: number, reply?: string) => void;
   deleteCommentHandler: (id: number) => void;
@@ -147,6 +184,7 @@ export const Comment = ({
   username,
   content,
   userId,
+  pollId,
   replies = [],
   commentHandler,
   deleteCommentHandler,
@@ -154,15 +192,77 @@ export const Comment = ({
   const [isRepliesOpen, setIsRepliesOpen] = useState(false);
   const [isInputReply, setIsReply] = useState(false);
   const [reply, setReply] = useState('');
+  const [isPatchComment, setIsPatchComment] = useState(false);
+  const [patchComment, setPatchComment] = useState('');
+  const [isPatchReply, setIsPatchReply] = useState(-1);
+  const [patchReply, setPatchReply] = useState('');
+  const [isFixed, setIsFixed] = useState(false);
+  const [fixedValue, setFixedValue] = useState('');
 
   const myId = useSelector((state: RootState) => state.login.userId);
+  const dispatch = useDispatch();
+
+  const patchCommentHandler = () => {
+    if (patchComment === '') {
+      dispatch(notify('내용을 입력해주세요.'));
+      return;
+    }
+    const accessToken = localStorage.getItem('accessToken');
+    apiAxios
+      .patch(
+        `polls/${pollId}/comments/${id}`,
+        {
+          content: patchComment,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      )
+      .then((res) => {
+        setIsPatchComment(false);
+        setIsFixed(true);
+        setFixedValue(res.data.content);
+      })
+      .catch((err) => alert(err));
+  };
 
   return (
     <CommentInfo key={id}>
       <CommentUsername>{username}</CommentUsername>
-      <CommentContent>{content}</CommentContent>
+      {!isPatchComment ? (
+        <CommentContent>{!isFixed ? content : fixedValue}</CommentContent>
+      ) : (
+        <CommentPatchContainer>
+          <CommentPatch
+            placeholder={content}
+            value={patchComment}
+            onChange={(e) => {
+              setPatchComment(e.target.value);
+            }}
+          />
+          <PatchBtnBox>
+            <PatchBtn onClick={patchCommentHandler}>확인</PatchBtn>
+            <PatchBtn
+              onClick={() => {
+                setIsPatchComment(false);
+              }}
+            >
+              취소
+            </PatchBtn>
+          </PatchBtnBox>
+        </CommentPatchContainer>
+      )}
       <LikeBox>
         <FaRegThumbsUp className="thumb" />
+        <AiOutlineEdit
+          onClick={() => {
+            setIsPatchComment(!isPatchComment);
+          }}
+          className="thumb"
+          style={userId === myId ? {} : { display: 'none' }}
+        />
         <AiOutlineDelete
           onClick={() => {
             deleteCommentHandler(id);
@@ -209,12 +309,69 @@ export const Comment = ({
         ''
       )}
       {isRepliesOpen
-        ? replies.map((obj) => {
+        ? replies.map((obj, index) => {
+            const patchReplyHandler = () => {
+              if (patchReply === '') {
+                return;
+              }
+              const accessToken = localStorage.getItem('accessToken');
+              apiAxios
+                .patch(
+                  `polls/${pollId}/comments/${obj.id}`,
+                  {
+                    content: patchReply,
+                  },
+                  {
+                    headers: {
+                      Authorization: `Bearer ${accessToken}`,
+                    },
+                  },
+                )
+                .then((res) => {
+                  obj.content = res.data.content;
+                  setIsPatchReply(-1);
+                })
+                .catch((err) => alert(err));
+            };
+
             return (
               <CommentInfo key={obj.id} style={{ marginLeft: '50px' }}>
                 <CommentUsername>{obj.author.nickname}</CommentUsername>
-                <CommentContent>{obj.content}</CommentContent>
+                {index !== isPatchReply ? (
+                  <CommentContent>{obj.content}</CommentContent>
+                ) : (
+                  <CommentPatchContainer>
+                    <CommentPatch
+                      placeholder={obj.content}
+                      value={patchReply}
+                      onChange={(e) => {
+                        setPatchReply(e.target.value);
+                      }}
+                    />
+                    <PatchBtnBox>
+                      <PatchBtn onClick={patchReplyHandler}>확인</PatchBtn>
+                      <PatchBtn
+                        onClick={() => {
+                          setIsPatchReply(-1);
+                        }}
+                      >
+                        취소
+                      </PatchBtn>
+                    </PatchBtnBox>
+                  </CommentPatchContainer>
+                )}
                 <div className="delete_box">
+                  <AiOutlineEdit
+                    className="delete"
+                    style={obj.author.id === myId ? {} : { display: 'none' }}
+                    onClick={() => {
+                      if (isPatchReply === -1) {
+                        setIsPatchReply(index);
+                      } else {
+                        setIsPatchReply(-1);
+                      }
+                    }}
+                  />
                   <AiOutlineDelete
                     onClick={() => {
                       deleteCommentHandler(obj.id);
