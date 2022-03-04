@@ -9,7 +9,7 @@ import {
 import { OptionalJwtAuthGuard } from '../auth/guards/optional-jwt-auth.guard';
 import { JwtValidatePayload } from '../auth/payloads/jwt-validate.payload';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
-import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
+import { GetPollsPaginationQueryDto } from './dto/get-polls-pagination-query.dto';
 import { PollsService } from './polls.service';
 
 @Controller('polls')
@@ -17,8 +17,10 @@ export class PollsController {
   constructor(private readonly pollsService: PollsService) {}
 
   @Get()
-  getSpecificRangePolls(@Query() paginationQueryDto: PaginationQueryDto) {
-    return this.pollsService.getSpecificRangePolls(paginationQueryDto);
+  getSpecificRangePolls(
+    @Query() getPollsPaginationQueryDto: GetPollsPaginationQueryDto,
+  ) {
+    return this.pollsService.getSpecificRangePolls(getPollsPaginationQueryDto);
   }
 
   @Get(':pollId')
