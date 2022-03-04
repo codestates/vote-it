@@ -2,6 +2,7 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import '../fonts/font.css';
+import { NotImplemented } from './NotImplemented';
 
 const Canvas = styled.div<{ noticeOn: boolean }>`
   position: fixed;
@@ -49,6 +50,7 @@ const View = styled.div`
     3px 3px 8px var(--box-shadow-darker);
 
   overflow-y: auto;
+  overflow-x: hidden;
 `;
 
 const FeedWrapper = styled.div`
@@ -130,42 +132,46 @@ const Feed: React.FunctionComponent<IProps> = ({ noticeOn, setNoticeOn }) => {
       <Canvas noticeOn={noticeOn} onClick={handleFeedOff} />
       <Container noticeOn={noticeOn}>
         <View>
-          {feeds.length === 0 ? (
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '100%',
-              }}
-            >
-              <img
-                src={`${process.env.PUBLIC_URL}/vote-it_LOGO1.ico`}
+          {false ? (
+            feeds.length === 0 ? (
+              <div
                 style={{
-                  width: '30%',
-                  height: 'auto',
-                  opacity: '0.7',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: '100%',
                 }}
-                alt="feed"
-              />
-              <div>피드가 비었습니다</div>
-            </div>
+              >
+                <img
+                  src={`${process.env.PUBLIC_URL}/vote-it_LOGO1.ico`}
+                  style={{
+                    width: '30%',
+                    height: 'auto',
+                    opacity: '0.7',
+                  }}
+                  alt="feed"
+                />
+                <div>피드가 비었습니다</div>
+              </div>
+            ) : (
+              feeds.map((v) => {
+                return (
+                  <FeedWrapper key={v.id} onClick={handleFeedClick(1)}>
+                    <div className="feed-text">{v.msg}</div>
+                    <div
+                      className="feed-icon-check"
+                      style={{ fontSize: '15px' }}
+                      onClick={handleDelete(v.id)}
+                    >
+                      &times;
+                    </div>
+                  </FeedWrapper>
+                );
+              })
+            )
           ) : (
-            feeds.map((v) => {
-              return (
-                <FeedWrapper key={v.id} onClick={handleFeedClick(1)}>
-                  <div className="feed-text">{v.msg}</div>
-                  <div
-                    className="feed-icon-check"
-                    style={{ fontSize: '15px' }}
-                    onClick={handleDelete(v.id)}
-                  >
-                    &times;
-                  </div>
-                </FeedWrapper>
-              );
-            })
+            <NotImplemented />
           )}
         </View>
       </Container>
