@@ -221,6 +221,7 @@ export const Comments = ({ keyupHandler, isVoted, pollId }: Iprops) => {
           <Comment
             id={obj.id}
             key={obj.id}
+            pollId={pollId}
             username={obj.author.nickname}
             userId={obj.author.id}
             content={obj.content}
