@@ -138,10 +138,7 @@ export const Main = () => {
   };
 
   useEffect(() => {
-    const watch = () => {
-      window.addEventListener('scroll', handleFollow);
-    };
-    watch(); //addEventListener 함수 실행
+    window.addEventListener('scroll', handleFollow);
     return () => {
       window.removeEventListener('scroll', handleFollow);
     };
@@ -182,7 +179,6 @@ export const Main = () => {
           </div>
         )}
       </MainOuter>
-      {isLoading && <LoadingVoteCard />}
     </div>
   );
 };
