@@ -1,7 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Suggestion, SchedulerCalender } from './';
-import { FaRegCalendarAlt, FaRegTimesCircle } from 'react-icons/fa';
+import {
+  FaRegCalendarAlt,
+  FaRegTimesCircle,
+  FaCheckCircle,
+  FaTimesCircle,
+} from 'react-icons/fa';
 import { checkValidDate, setDateAlias } from '../functions';
 
 const Container = styled.div`
@@ -31,12 +36,14 @@ const Canvas = styled.div`
   top: 0;
   left: 0;
   /* background-color: gray; */
+  z-index: 998;
 `;
 
 const Popper = styled.div<{ ts: string }>`
   position: absolute;
   /* inset: 0px auto auto 0px; */
   transform: ${(props) => `translate(${props.ts})`};
+  z-index: 999;
 `;
 
 const View = styled.div`
@@ -50,6 +57,23 @@ const View = styled.div`
   box-shadow: 0 4px 8px 0 rgb(0 0 0 / 15%), 0 0 4px 0 rgb(0 0 0 / 40%);
   overflow: hidden;
   z-index: 999;
+  .confirm-exit {
+    display: flex;
+    padding: 4px;
+    border-bottom: 1px dotted var(--border-lighter);
+  }
+  .calender-controller {
+    flex: 1 0 auto;
+    padding: 4px 0;
+    border-radius: 4px;
+    cursor: pointer;
+    :hover {
+      background-color: var(--button-bg-lighter);
+    }
+  }
+  .confirm-circle {
+    color: green;
+  }
 `;
 
 const InputWrapper = styled.div<{ focus: boolean }>`
@@ -315,8 +339,8 @@ const Scheduler: React.FunctionComponent<IProps> = ({
     handleTimeWrapper();
   };
 
-  const handleKeyUp = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === 'Escape') setView(false);
+  const ESCKeyUp = (e: KeyboardEvent) => {
+    if (e.key === 'Escape' || e.key === 'Enter') setView(false);
   };
 
   useInterval(() => {
@@ -337,9 +361,16 @@ const Scheduler: React.FunctionComponent<IProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputValue]);
 
+  useEffect(() => {
+    window.addEventListener('keyup', ESCKeyUp);
+    return () => {
+      window.removeEventListener('keyup', ESCKeyUp);
+    };
+  }, []);
+
   //! 팝업버튼 이미지는 맘에 드는걸로 바꾸셔도됨
   return (
-    <Container onKeyUp={handleKeyUp}>
+    <Container>
       <PopupButton onClick={handleView}>
         <FaRegCalendarAlt />
 
@@ -350,6 +381,9 @@ const Scheduler: React.FunctionComponent<IProps> = ({
           <Canvas onClick={handleView}></Canvas>
           <Popper ts={translate}>
             <View>
+              <div onClick={handleView} className="confirm-exit">
+                <FaCheckCircle className="confirm-circle calender-controller" />
+              </div>
               <InputWrapper
                 onFocus={() => {
                   console.log('focused');
