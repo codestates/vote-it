@@ -24,7 +24,6 @@ interface Iprops {
   isVoted: boolean;
   voted: number[];
   VoteHandler: (optionId: number, isVote: boolean) => void;
-  handleVotedCount: (id: number) => void;
 }
 
 export const Option = ({
@@ -34,13 +33,12 @@ export const Option = ({
   voted,
   isVoted,
   VoteHandler,
-  handleVotedCount,
 }: Iprops) => {
   return (
     <OptionContainer
       onClick={() => {
         VoteHandler(id, isVoted);
-        handleVotedCount(id);
+        // handleVotedCount(id);
         // setTimeout(() => {
         //   window.location.href = `/vote/${pollId}`;
         // }, 1000)
