@@ -139,7 +139,7 @@ const CheckboxContainer = styled.div`
   justify-content: space-around;
   .create-options {
     flex: 3 0 auto;
-    width: 224px;
+    max-width: 224px;
   }
 `;
 const CheckboxAndTitle = styled.div`

@@ -24,7 +24,7 @@ const InputViewContainer = styled.div`
     line-height: 184px;
     font-size: 32px;
     /* border-radius: 100px; */
-    z-index: 100;
+    /* z-index: 1; */
     border-radius: 4px;
     color: white;
     background-color: rgba(0, 0, 0, 0.4);
