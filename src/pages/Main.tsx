@@ -102,9 +102,11 @@ export const Main = () => {
             setIsEnd(true);
             return;
           }
-          setPosts([...posts, ...res.data.polls]);
-          setOffset(offset + 12);
-          setIsLoading(false);
+          setTimeout(() => {
+            setPosts([...posts, ...res.data.polls]);
+            setOffset(offset + 12);
+            setIsLoading(false);
+          }, 1500);
         })
         .catch((err) => {
           if (err.response.status >= 500) {
@@ -158,32 +160,32 @@ export const Main = () => {
   return (
     <>
       {err === '' ? (
-        <MainOuter>
-          <MainContainer>
-            {posts.map((el, idx) => {
-              return (
-                <VoteCard
-                  key={idx}
-                  id={el.id}
-                  subject={el.subject}
-                  author={el.author.nickname}
-                  createdAt={el.createdAt}
-                  expirationDate={el.expirationDate}
-                  picture={el.picture}
-                  participatedCount={el.participatedCount}
-                />
-              );
-            })}
-            {isLoading
-              ? [1, 2, 3, 4].map((el) => <LoadingVoteCard key={el} />)
-              : ''}
-          </MainContainer>
-          {btnStatus ? (
-            <div onClick={handleTop}>
-              <FloatBtn />
-            </div>
-          ) : null}{' '}
-        </MainOuter>
+        <div>
+          <MainOuter>
+            <MainContainer>
+              {posts.map((el, idx) => {
+                return (
+                  <VoteCard
+                    key={idx}
+                    id={el.id}
+                    subject={el.subject}
+                    author={el.author.nickname}
+                    createdAt={el.createdAt}
+                    expirationDate={el.expirationDate}
+                    picture={el.picture}
+                    participatedCount={el.participatedCount}
+                  />
+                );
+              })}
+            </MainContainer>
+            {btnStatus ? (
+              <div onClick={handleTop}>
+                <FloatBtn />
+              </div>
+            ) : null}{' '}
+          </MainOuter>
+          {isLoading ? <LoadingVoteCard /> : ''}
+        </div>
       ) : (
         <ServerErr err={err} />
       )}
