@@ -183,13 +183,24 @@ interface Props {
   voteSub: string;
   shareModal: ShareModal;
   setShareModal: Dispatch<SetStateAction<ShareModal>>;
+  location: number;
 }
 
-export const Share = ({ voteSub, shareModal, setShareModal }: Props) => {
+export const Share = ({
+  voteSub,
+  shareModal,
+  setShareModal,
+  location,
+}: Props) => {
   const copyUrlRef = useRef(null);
   const copyBtnRef = useRef(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const urlValue = window.location.href;
+  const urlOrigin = window.location.origin;
+  console.log(location + '?approach=allow');
+  const urlMod = btoa(btoa(location + '?approach=allow'));
+  console.log(urlMod);
+  const urlValue = urlOrigin + '/vote/' + urlMod;
+  console.log(urlValue);
   // const [scrollBtn, setScrollBtn] = useState({ left: false, right: true });
   const dispatch = useDispatch();
   const copyUrl = () => {
