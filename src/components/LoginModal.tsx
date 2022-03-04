@@ -5,11 +5,7 @@ import { useDispatch } from 'react-redux';
 import { loginHandler, userHandler } from '../modules/login';
 import apiAxios from '../utils/apiAxios';
 import { notify } from '../modules/notification';
-import { RiGoogleFill, RiKakaoTalkFill } from 'react-icons/ri';
-import GoogleLogin from 'react-google-login';
 
-const { naver } = window as any;
-// import axios from 'axios';
 const Canvas = styled.div`
   position: fixed;
   left: 0;
@@ -27,8 +23,12 @@ const Canvas = styled.div`
 const View = styled.div`
   /* display: flex; */
   font-family: 'SUIT-Light';
+  display: flex;
   flex-direction: column;
+  justify-content: center;
+
   position: absolute;
+
   left: calc(50vw - var(--modal-width) / 2);
   top: calc(50vh - var(--modal-height) / 2);
   height: var(--modal-height);
@@ -48,12 +48,14 @@ const View = styled.div`
 
 const Wrapper = styled.div`
   display: flex;
+  height: 100%;
   flex: 100 0 auto;
   flex-direction: column;
   align-items: center;
 `;
 
 const InputWrapper = styled.div`
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
   /* flex: 1 0 auto; */
@@ -71,7 +73,7 @@ const InputWrapper = styled.div`
     height: 24px;
     margin: 16px;
     border: none;
-    border-bottom: 2.5px solid rgba(0, 0, 0, 0.2);
+    border-bottom: 2.5px solid var(--option-hover);
 
     :focus {
       outline: none;
@@ -88,10 +90,11 @@ const ButtonWrapper = styled.div`
 `;
 
 const Button = styled.button`
+  font-family: 'OTWelcomeRA';
   font-size: 13px;
   /* font-weight: bold; */
   width: 192px;
-  height: 24px;
+  height: 33px;
   margin-bottom: 8px;
   border: none;
   border-radius: 10px;
@@ -100,7 +103,7 @@ const Button = styled.button`
   align-items: center;
   background-color: ${(props) => props.color};
   cursor: pointer;
-  color: black;
+  color: white;
   box-shadow: -1px -1px 1px var(--box-shadow),
     1px 1px 3px var(--box-shadow-darker);
   :hover {
@@ -198,61 +201,6 @@ const LoginModal: React.FunctionComponent<IProps> = ({
         });
   };
 
-  const handleKakaoOAuth = () => {
-    const redirectURI = 'https://localhost:3000/oauth';
-    const link = `https://kauth.kakao.com/oauth/authorize?client_id=32ebca83d9953f1198b5dc3fd8415d1b&redirect_uri=${redirectURI}&response_type=code`;
-    window.location.href = link;
-  };
-
-  const handleGoogleOAuth = (res: any) => {
-    const params = new URLSearchParams();
-    params.append('idToken', res.tokenObj.id_token);
-
-    const googleLogin = async () => {
-      // const res = await axios.post("https://localhost:8000/", params, {
-      //   headers: {
-      //     "Content-Type": "application/x-www-form-urlencoded",
-      //   },
-      // });
-
-      // localStorage.setItem("accessToken", res.data.accessToken);
-      if (!!res.tokenObj.id_token) {
-        localStorage.setItem('isLogin', 'true');
-        dispatch(loginHandler(true));
-        setModalOn({ isOn: false, isShow: false });
-        dispatch(notify('로그인이 완료되었습니다.'));
-      }
-    };
-    googleLogin();
-  };
-
-  const initializeNaverLogin = () => {
-    const naverLogin = new naver.LoginWithNaverId({
-      clientId: 'ZZSSVSxep8EvMx2ZFltZ',
-      callbackUrl: 'https://localhost:3000',
-      isPopup: false, // popup 형식으로 띄울것인지 설정
-      loginButton: { color: 'white', type: 3, height: '40', width: '192' }, //버튼의 스타일, 타입, 크기를 지정
-      callbackHandle: true,
-    });
-    naverLogin.init();
-    // naverLogin.logout(); // TODO: logout
-  };
-
-  useEffect(() => {
-    initializeNaverLogin();
-    // window.location.href.includes('access_token') && GetUser();
-    // function GetUser() {
-    //   const location = window.location.href.split('=')[1];
-    //   const token = location.split('&')[0];
-    //   console.log("token: ", token);
-    //   if (!token) return ;
-    //   localStorage.setItem('isLogin', 'true');
-    //   dispatch(loginHandler());
-    //   setModalOn({ isOn: false, isShow: false });
-    //   dispatch(notify('로그인이 완료되었습니다.'));
-    // }
-  }, []);
-
   const modalESC = (e: KeyboardEvent) => {
     if (e.key === 'Escape') {
       handleModalOff();
@@ -300,65 +248,14 @@ const LoginModal: React.FunctionComponent<IProps> = ({
             />
           </InputWrapper>
           <ButtonWrapper>
-            <Button
-              onClick={handleButtonClick}
-              style={{ color: 'white' }}
-              color="var(--main-color)"
-            >
-              이메일로 로그인
-            </Button>
-            <GoogleLogin
-              clientId="36914989367-7i38jmhgl4mikqrc65cine521rrr5ja9.apps.googleusercontent.com"
-              onSuccess={handleGoogleOAuth}
-              render={(renderProps) => (
-                <Button color="white" onClick={renderProps.onClick}>
-                  <RiGoogleFill
-                    style={{
-                      marginRight: '10px',
-                      fontSize: '17px',
-                      color: 'red',
-                    }}
-                  />
-                  구글로그인
-                </Button>
-              )}
-            />
-            {/* <Button color="white">
-              <RiGoogleFill
-                style={{ marginRight: '10px', fontSize: '17px', color: 'red' }}
-              />
-              구글 로그인
-            </Button> */}
-            <Button color="white">
-              <div
-                id="naverIdLogin"
-                style={{ opacity: '0', position: 'absolute' }}
-              ></div>
-              <span
-                style={{
-                  marginRight: '5px',
-                  color: '#19CE60',
-                  fontSize: '15px',
-                  fontFamily: 'KOHIBaeumOTF',
-                }}
-              >
-                N
-              </span>
-              네이버 로그인
-            </Button>
-            <Button onClick={handleKakaoOAuth} color="white">
-              <RiKakaoTalkFill
-                style={{
-                  marginRight: '5px',
-                  fontSize: '17px',
-                  color: '#4e4600',
-                }}
-              />
-              카카오 로그인
+            <Button onClick={handleButtonClick} color="var(--main-color)">
+              로그인
             </Button>
           </ButtonWrapper>
           <SubWrapper>
-            <div onClick={handleClick('signup')}>회원가입</div>
+            <div style={{ fontSize: '14px' }} onClick={handleClick('signup')}>
+              회원가입
+            </div>
             {/* <div>계정 찾기</div> */}
           </SubWrapper>
         </Wrapper>
