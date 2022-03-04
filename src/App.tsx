@@ -14,6 +14,7 @@ import { MainEmpty } from './pages/MainEmpty';
 import ServerErr from './pages/ServerErr';
 import { focusHandler } from './functions';
 import { KeyNotice } from './components/KeyNotification';
+import { Search } from './pages/Search';
 // import { RootState } from './modules';
 // export type LoginProps = boolean;
 
@@ -32,6 +33,7 @@ function App() {
     isOn: false,
     isShow: false,
   });
+  const [searchQuery, setSearchQuery] = useState('');
 
   const keyupHandler = (e: KeyboardEvent) => {
     if (e.key === '/') {
@@ -90,6 +92,8 @@ function App() {
               keyupHandler={keyupHandler}
               modalOn={modalOn}
               setModalOn={setModalOn}
+              setSearchQuery={setSearchQuery}
+              searchQuery={searchQuery}
             />
           ) : null}
           <Routes>
@@ -98,6 +102,7 @@ function App() {
               path="/oauth"
               element={<OAuth setHeaderVisibility={setHeaderVisibility} />}
             />
+            <Route path="/search" element={<Search />} />
 
             <Route
               path="/createVote"

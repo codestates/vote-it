@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../modules';
@@ -14,6 +14,7 @@ import { FaPlus, FaUserCircle, FaBell, FaSearch } from 'react-icons/fa';
 import { FiX } from 'react-icons/fi';
 import { darkHandler } from '../../modules/login';
 import { useRef } from 'react';
+import { notify } from '../../modules/notification';
 
 const Container = styled.div`
   position: fixed;
@@ -323,6 +324,8 @@ interface Props {
   finderRef: React.MutableRefObject<HTMLInputElement | null>;
   modalOn: Modal;
   setModalOn: Dispatch<SetStateAction<Modal>>;
+  setSearchQuery: Dispatch<SetStateAction<string>>;
+  searchQuery: string;
 }
 
 // type TDrop = {
@@ -335,6 +338,8 @@ const Header: React.FunctionComponent<Props> = ({
   finderRef,
   modalOn,
   setModalOn,
+  setSearchQuery,
+  searchQuery,
 }) => {
   // const [modalOn, setModalOn] = useState<Modal>({
   //   isOn: false,
@@ -345,6 +350,8 @@ const Header: React.FunctionComponent<Props> = ({
   const [noticeOn, setNoticeOn] = useState(false);
   const [modalClass, setModalClass] = useState<number>(0);
   const [isMiniOpen, setIsMiniOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   const disableModal = () => {
     setDropOn(false);
@@ -477,10 +484,22 @@ const Header: React.FunctionComponent<Props> = ({
             onKeyPress={(e) => {
               if (e.key === 'Enter') {
                 // Search 함수
+                if (searchQuery === '') {
+                  dispatch(notify('검색어를 입력해주세요.'));
+                  return;
+                }
+                navigate(`/search?query=${searchQuery}`, {
+                  state: searchQuery,
+                });
               }
             }}
             type={'text'}
             placeholder={'검색...'}
+            value={searchQuery}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              // console.log(searchQuery)
+            }}
           />
           <div className="shortcut-wrapper">
             <div
