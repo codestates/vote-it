@@ -8,7 +8,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-
   margin: 8px;
 `;
 
@@ -189,7 +188,9 @@ const VoteList: React.FunctionComponent<IProps> = () => {
         <div style={{ width: '100%', display: 'flex' }}>
           <div className="votelist-id">ID</div>
           <div className="votelist-child">제목</div>
-          <div className="votelist-expiration">게시날짜</div>
+          <div className="votelist-expiration" style={{ fontSize: 'medium' }}>
+            게시날짜
+          </div>
         </div>
       </ChildWrapper>
       <Divider />
