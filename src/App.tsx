@@ -71,7 +71,6 @@ function App() {
     function GetUser() {
       const location = window.location.href.split('=')[1];
       const token = location.split('&')[0];
-      console.log('token: ', token);
       const login = localStorage.getItem('isLogin');
       if (login === 'false') {
         dispatch(notify('로그인이 완료되었습니다.'));

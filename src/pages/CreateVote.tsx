@@ -14,7 +14,7 @@ import { useDispatch } from 'react-redux';
 import { notify } from '../modules/notification';
 import { useNavigate } from 'react-router-dom';
 import ServerErr from './ServerErr';
-import { focusHandler, useBeforeLeave } from '../functions';
+import { useBeforeLeave } from '../functions';
 import { PollImage } from '../components/PollImage';
 
 const Outer = styled.div`
@@ -135,6 +135,7 @@ const PlusOptionBtn = styled.button`
 const CheckboxContainer = styled.div`
   display: flex;
   margin: 16px 32px 8px 32px;
+  /* border: 1px solid black; */
   width: 80%;
   justify-content: space-around;
   .create-options {
@@ -148,10 +149,7 @@ const CheckboxAndTitle = styled.div`
 
   align-items: center;
 `;
-const Checkbox = styled.input`
-  margin-right: 10px;
-  cursor: pointer;
-`;
+
 const CheckButton = styled.button`
   width: 96px;
   margin-left: 4px;
@@ -186,10 +184,10 @@ const CreateBtn = styled.button`
 `;
 
 const ImgContainer = styled.div`
-  flex: 1 0 auto;
+  /* flex: 1 0 auto; */
   display: flex;
   flex-direction: column;
-  align-items: left;
+  /* align-items: right; */
   justify-content: center;
   height: 200px;
 `;
@@ -304,7 +302,6 @@ function CreateVote({ finderRef, keyupHandler, setModalOn }: Props) {
   const [file, setFile] = useState<File | null>(null);
 
   const CreateBtnHandler = async () => {
-    console.log(file);
     if (title === '') {
       dispatch(notify('제목을 입력해주세요.'));
       return;
@@ -407,11 +404,9 @@ function CreateVote({ finderRef, keyupHandler, setModalOn }: Props) {
                 value={title}
                 onChange={onChangeTitle}
                 onFocus={() => {
-                  console.log('focused');
                   window.removeEventListener('keyup', keyupHandler);
                 }}
                 onBlur={() => {
-                  console.log('blurred');
                   window.addEventListener('keyup', keyupHandler);
                 }}
               />
@@ -427,11 +422,9 @@ function CreateVote({ finderRef, keyupHandler, setModalOn }: Props) {
                         value={optionList[index]}
                         onChange={(e) => handleOption(e, index)}
                         onFocus={() => {
-                          console.log('focused');
                           window.removeEventListener('keyup', keyupHandler);
                         }}
                         onBlur={() => {
-                          console.log('blurred');
                           window.addEventListener('keyup', keyupHandler);
                         }}
                         style={isUnique === index ? { color: 'red' } : {}}
@@ -520,6 +513,3 @@ function CreateVote({ finderRef, keyupHandler, setModalOn }: Props) {
 }
 
 export default CreateVote;
-function keyupHandler(arg0: string, keyupHandler: any) {
-  throw new Error('Function not implemented.');
-}

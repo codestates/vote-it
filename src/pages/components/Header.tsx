@@ -32,12 +32,15 @@ const Container = styled.div`
 `;
 
 const Wrapper = styled.div`
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
+  display: flex;
+  /* grid-template-columns: repeat(12, 1fr); */
   width: 1200px;
   grid-gap: 24px;
   padding: 8px;
   align-items: center;
+  > a {
+    flex: 1 0 auto;
+  }
   #logo {
     /* color: var(--font); */
 
@@ -54,14 +57,16 @@ const Wrapper = styled.div`
 const SearchWrapper = styled.div<{ slashVisible: boolean }>`
   /* flex: 2 0 auto; */
   display: flex;
+  flex: 2 0 auto;
   align-items: center;
   justify-content: center;
-  grid-column: 3 / span 7;
+  /* grid-column: 3 / span 7; */
   /* border: 1px solid blue; */
 
-  @media only screen and (max-width: 768px) {
+  /* @media only screen and (max-width: 768px) {
     grid-column: 4 / span 4;
   }
+  */
 
   @media only screen and (max-width: 500px) {
     display: none;
@@ -117,8 +122,8 @@ const Search = styled.input`
 const SettingWrapper = styled.div`
   user-select: none;
   display: flex;
-  /* flex: 1 0 auto; */
-  grid-column: 11 / span 4;
+  flex: 1 0 auto;
+  /* grid-column: 11 / span 4; */
   justify-content: space-around;
   svg {
     transform: translate(0, 6px);
@@ -148,6 +153,8 @@ const SettingWrapper = styled.div`
 `;
 
 const SearchIcon = styled.div`
+  flex: 1 0 auto;
+  margin: 0 8px 0 4px;
   &:hover {
     color: var(--main-color);
   }
@@ -187,7 +194,9 @@ const Setting = styled.div`
 `;
 
 const TextButton = styled.div`
-  /* flex: 1 0 auto; */
+  flex: 1 0 auto;
+  line-height: 38px;
+  height: 38px;
   &:hover {
     color: var(--main-color);
   }
@@ -212,16 +221,17 @@ const CreateVoteBtn = styled.div`
 
 const LoginWrapper = styled.div`
   display: flex;
-  /* flex: 1 0 auto; */
-  grid-column: 11 / span 2;
-  justify-content: space-around;
+  max-width: 192px;
+  flex: 1 0 192px;
+  /* grid-column: 11 / span 2; */
+  align-items: center;
   div {
     height: 32px;
     line-height: 32px;
   }
 
   @media only screen and (max-width: 768px) {
-    grid-column: 8 / span 4;
+    grid-column: 8 / span 9;
   }
 
   @media only screen and (max-width: 500px) {
@@ -331,6 +341,7 @@ const Header: React.FunctionComponent<Props> = ({
   const disableModal = () => {
     setDropOn(false);
     setNoticeOn(false);
+    setIsMiniOpen(false);
   };
 
   const isLogin = useSelector((state: RootState) => state.login.isLogin);
@@ -426,9 +437,7 @@ const Header: React.FunctionComponent<Props> = ({
             <FaSearch />
           </MiniSearchIcon>
         </MiniSearchContainer>
-      ) : (
-        ''
-      )}
+      ) : null}
       <Wrapper>
         <Link to="/" onClick={disableModal}>
           <img
@@ -484,6 +493,7 @@ const Header: React.FunctionComponent<Props> = ({
             <Toggle darkMode={darkMode} handleDarkMode={handleDarkMode} />
             <SearchIcon
               onClick={() => {
+                disableModal();
                 setIsMiniOpen(!isMiniOpen);
               }}
             >
@@ -508,7 +518,8 @@ const Header: React.FunctionComponent<Props> = ({
             <Toggle darkMode={darkMode} handleDarkMode={handleDarkMode} />
             <SearchIcon
               onClick={() => {
-                setIsMiniOpen(true);
+                disableModal();
+                setIsMiniOpen(!isMiniOpen);
               }}
               style={{ marginTop: '5px' }}
             >

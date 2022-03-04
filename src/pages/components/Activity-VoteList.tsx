@@ -21,6 +21,10 @@ const ChildWrapper = styled.div<{ sub: boolean }>`
     /* .center {
     text-align: center;
   } */ 
+  .vote_box {
+    display: flex;
+    width: 75%;
+  }
   .votelist-id {
     margin: 0 8px;
     width: 64px;
@@ -49,6 +53,21 @@ const ChildWrapper = styled.div<{ sub: boolean }>`
     white-space: pre;
     display: flex;
     justify-content: left;
+  }
+  @media only screen and (max-width: 1200px) {
+    .vote_box {
+      width: 70%;
+    }
+  }
+  @media only screen and (max-width: 1000px) {
+    .vote_box {
+      width: 60%;
+    }
+  }
+  @media only screen and (max-width: 600px) {
+    .vote_box {
+      width: 50%;
+    }
   }
   @media only screen and (max-width: 500px) {
     flex-direction: column;
@@ -167,7 +186,7 @@ const VoteList: React.FunctionComponent<IProps> = () => {
   return (
     <Container>
       <ChildWrapper sub={false}>
-        <div style={{ display: 'flex', width: '100%' }}>
+        <div style={{ width: '100%', display: 'flex' }}>
           <div className="votelist-id">ID</div>
           <div className="votelist-child">제목</div>
           <div className="votelist-expiration">게시날짜</div>
@@ -207,7 +226,7 @@ const VoteList: React.FunctionComponent<IProps> = () => {
                 key={v.id}
                 sub
               >
-                <div style={{ display: 'flex', width: '75%' }}>
+                <div className="vote_box">
                   <div className="votelist-id">{v.id}</div>
                   <div className="votelist-child">{v.subject}</div>
                 </div>

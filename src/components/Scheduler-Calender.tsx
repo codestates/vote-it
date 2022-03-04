@@ -207,6 +207,8 @@ const SchedulerCalender: React.FunctionComponent<IProps> = ({
 
   useEffect(() => {
     setDayList(renderCalender());
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

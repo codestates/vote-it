@@ -12,7 +12,6 @@ function ServerErr(err: IProps) {
         height: '100%',
       }}
     >
-      {console.log(err)}
       <img
         src={`${process.env.PUBLIC_URL}/serverErr.png`}
         alt="server error img"

@@ -137,8 +137,6 @@ type InputValue = {
   password: string;
 };
 
-// console.log(process.env);
-
 const LoginModal: React.FunctionComponent<IProps> = ({
   modalOn,
   setModalOn,
@@ -152,7 +150,6 @@ const LoginModal: React.FunctionComponent<IProps> = ({
   const dispatch = useDispatch();
 
   const handleModalOff = () => {
-    console.log('Modal Off');
     setModalOn({ isOn: false, isShow: false });
   };
 
