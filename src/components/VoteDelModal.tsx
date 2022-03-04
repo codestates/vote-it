@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import apiAxios from '../utils/apiAxios';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
@@ -92,6 +92,19 @@ const VoteModal: React.FunctionComponent<IProps> = ({ del, setDel, id }) => {
         }
       });
   };
+
+  const modalESC = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      handleDropOff();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keyup', modalESC);
+    return () => {
+      document.removeEventListener('keyup', modalESC);
+    };
+  }, []);
 
   return (
     <>

@@ -247,16 +247,21 @@ const SearchBox = styled.div`
 `;
 
 const MiniSearchContainer = styled.div`
-  width: 100%;
+  width: 80%;
   height: 48px;
   z-index: 999;
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 48px;
+  left: auto;
   background-color: var(--box-bg);
-  display: flex;
+  display: none;
+  box-shadow: 2px 2px 4px 1px var(--box-shadow-darker);
+  border-radius: 0 0 8px 8px;
   justify-content: center;
   align-items: center;
+  @media only screen and (max-width: 501px) {
+    display: flex;
+  }
 `;
 
 const CloseMiniSearch = styled.div`
@@ -269,7 +274,7 @@ const CloseMiniSearch = styled.div`
 `;
 
 const MiniSearch = styled.input`
-  width: 60%;
+  width: 70%;
   height: 35px;
   border: none;
   padding-left: 10px;
@@ -374,6 +379,12 @@ const Header: React.FunctionComponent<Props> = ({
     setDropOn(!dropOn);
   };
 
+  const inputESC = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      finderRef.current?.blur();
+    }
+  };
+
   useEffect(() => {
     const dark = localStorage.getItem('color-theme');
     if (dark === 'dark') {
@@ -436,6 +447,7 @@ const Header: React.FunctionComponent<Props> = ({
             onFocus={() => {
               setSlashVisible(false);
               window.removeEventListener('keyup', keyupHandler);
+              window.addEventListener('keyup', inputESC);
             }}
             onBlur={() => {
               setTimeout(() => {
@@ -443,6 +455,7 @@ const Header: React.FunctionComponent<Props> = ({
               }, 300);
 
               window.addEventListener('keyup', keyupHandler);
+              window.removeEventListener('keyup', inputESC);
             }}
             onKeyPress={(e) => {
               if (e.key === 'Enter') {
@@ -471,7 +484,7 @@ const Header: React.FunctionComponent<Props> = ({
             <Toggle darkMode={darkMode} handleDarkMode={handleDarkMode} />
             <SearchIcon
               onClick={() => {
-                setIsMiniOpen(true);
+                setIsMiniOpen(!isMiniOpen);
               }}
             >
               <FaSearch />
