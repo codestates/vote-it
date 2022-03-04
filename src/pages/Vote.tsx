@@ -214,7 +214,7 @@ export const Vote = ({ keyupHandler }: Props) => {
   const [username, setUsername] = useState('');
   const [options, setOptions] = useState<Ioptions[]>([]);
   const [voted, setVoted] = useState<number[]>([]);
-  const [expires, setExpires] = useState('');
+  const [expires, setExpires] = useState('2022-03-01T14:59:59.000Z');
   const [shareModal, setShareModal] = useState({ isOn: false, isShow: false });
   // const [post, setPost] = useState<Post>(getPostById(id));
   const [del, setDel] = useState(false);
@@ -222,10 +222,10 @@ export const Vote = ({ keyupHandler }: Props) => {
   const [isVoted, setIsVoted] = useState(false);
   const [isPlural, setIsPlural] = useState(0);
   const [isEditOn, setIsEditOn] = useState(false);
+  const [expiresForRender, setExpiresForRender] = useState('loading..');
   const userId = useSelector((state: RootState) => state.login.userId);
   const isLogin = useSelector((state: RootState) => state.login.isLogin);
   const dispatch = useDispatch();
-  const [fixedExpires, setFixedExpires] = useState('');
 
   const timeHandler = (value: string) => {
     if (value === null) {
@@ -327,6 +327,22 @@ export const Vote = ({ keyupHandler }: Props) => {
           },
         })
         .then((res) => {
+          // if (isPlural) {
+          //   setVoted([...voted, optionId]);
+          // } else {
+          //   setVoted([optionId]);
+          // }
+          // setIsVoted(true);
+          // setOptions(
+          //   options.map((el: any) => {
+          //     // console.log(el)
+          //     if (el.id === optionId) {
+          //       return { ...el, isVoted: true, votedCount: el.votedCount + 1 };
+          //     }
+          //     return el;
+          //   }),
+          // );
+          // window.location.href = `/vote/${id}`;
           apiAxios
             .get(
               `polls/${id}`,
@@ -339,6 +355,7 @@ export const Vote = ({ keyupHandler }: Props) => {
               setPollId(res.data.author.id);
               setVoteSub(res.data.subject);
               setUsername(res.data.author.nickname);
+              // setOptions(res.data.options);
               setIsVoted(res.data.isVoted);
               setVoted(
                 res.data.options
@@ -375,18 +392,6 @@ export const Vote = ({ keyupHandler }: Props) => {
   const editModalHandler = () => {
     setIsEditOn(false);
   };
-  const timeMaker = (value: string) => {
-    if (!value) return '기한이 없습니다.';
-    let date = new Date(value);
-    let dateArr = date.toLocaleString().split('. ');
-    let timeArr = date.toLocaleString().split(' ');
-    return (
-      `${dateArr[0]}년 ${dateArr[1]}월 ${dateArr[2]}일 ` +
-      `${timeArr[3]} ${
-        timeArr[4].split(':')[0] + ':' + timeArr[4].split(':')[1]
-      }`
-    );
-  };
 
   return (
     <VoteOuter>
@@ -398,7 +403,7 @@ export const Vote = ({ keyupHandler }: Props) => {
             ModalHandler={editModalHandler}
             isEditOn={isEditOn}
             expires={expires}
-            setFixedExpires={setFixedExpires}
+            setExpiresForRender={setExpiresForRender}
           />
           <VoteContainer>
             <SubBox>{voteSub}</SubBox>
@@ -417,11 +422,7 @@ export const Vote = ({ keyupHandler }: Props) => {
               </div>
             </EditDelBtn>
             <UserNameBox>{username}</UserNameBox>
-            <ExpiresBox>
-              {fixedExpires === ''
-                ? timeMaker(expires)
-                : timeMaker(fixedExpires)}
-            </ExpiresBox>
+            <ExpiresBox>{expiresForRender}</ExpiresBox>
             <ShareButton onClick={handleShareModal}>
               <BiShareAlt style={{ width: '20px', height: 'auto' }} />
               <div>공유하기</div>
