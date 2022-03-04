@@ -6,9 +6,9 @@ import { VoteCard } from '../components/VoteCard';
 import apiAxios from '../utils/apiAxios';
 import { useDispatch } from 'react-redux';
 import { notify } from '../modules/notification';
-import { useNavigate } from 'react-router-dom';
 import ServerErr from './ServerErr';
 import { Loading } from '.';
+import { MainEmpty } from './MainEmpty';
 
 const MainOuter = styled.div`
   padding-top: 48px;
@@ -66,7 +66,6 @@ export const Main = () => {
   const [isEnd, setIsEnd] = useState(false);
   const [err, setErr] = useState('');
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   useEffect(() => {
     setIsLoading(true);
@@ -76,10 +75,6 @@ export const Main = () => {
         setPosts(res.data.polls);
         setOffset(offset + 12);
         setIsLoading(false);
-
-        if (res.data.polls.length === 0) {
-          navigate('/emptymain');
-        }
       })
       .catch((err) => {
         setErr(err.message);
@@ -103,9 +98,11 @@ export const Main = () => {
             setIsEnd(true);
             return;
           }
-          setPosts([...posts, ...res.data.polls]);
-          setOffset(offset + 12);
-          setIsLoading(false);
+          setTimeout(() => {
+            setPosts([...posts, ...res.data.polls]);
+            setOffset(offset + 12);
+            setIsLoading(false);
+          }, 1500);
         })
         .catch((err) => {
           if (err.response.status >= 500) {
@@ -156,39 +153,36 @@ export const Main = () => {
   //   isPrivate: "",
   //   createdAt: "",
   //   expirationDate: ""
+  if (err !== '') {
+    return <ServerErr err={err} />;
+  }
+  if (posts.length === 0) {
+    return <MainEmpty />;
+  }
   return (
-    <>
-      {err === '' ? (
-        <MainOuter>
-          <MainContainer>
-            {posts.map((el, idx) => {
-              return (
-                <VoteCard
-                  key={idx}
-                  id={el.id}
-                  subject={el.subject}
-                  author={el.author.nickname}
-                  createdAt={el.createdAt}
-                  expirationDate={el.expirationDate}
-                  picture={el.picture}
-                  participatedCount={el.participatedCount}
-                />
-              );
-            })}
-            {isLoading ? (
-              // ? [1, 2, 3, 4].map((el) => <LoadingVoteCard key={el} />)
-              <Loading />
-            ) : null}
-          </MainContainer>
-          {btnStatus ? (
-            <div onClick={handleTop}>
-              <FloatBtn />
-            </div>
-          ) : null}{' '}
-        </MainOuter>
-      ) : (
-        <ServerErr err={err} />
-      )}
-    </>
+    <div>
+      <MainOuter>
+        <MainContainer>
+          {posts.map((post) => (
+            <VoteCard
+              key={post.id}
+              id={post.id}
+              subject={post.subject}
+              author={post.author.nickname}
+              createdAt={post.createdAt}
+              expirationDate={post.expirationDate}
+              picture={post.picture}
+              participatedCount={post.participatedCount}
+            />
+          ))}
+        </MainContainer>
+        {btnStatus && (
+          <div onClick={handleTop}>
+            <FloatBtn />
+          </div>
+        )}
+      </MainOuter>
+      {isLoading && <LoadingVoteCard />}
+    </div>
   );
 };

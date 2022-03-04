@@ -313,10 +313,10 @@ function CreateVote({ finderRef, keyupHandler, setModalOn }: Props) {
       dispatch(notify('선택지는 최소 2개 이상입니다.'));
       return;
     }
-    if (calendarValue === '') {
-      dispatch(notify('마감 시간을 입력해주세요.'));
-      return;
-    }
+    // if (calendarValue === '') {
+    //   dispatch(notify('마감 시간을 입력해주세요.'));
+    //   return;
+    // }
     const accessToken = localStorage.getItem('accessToken');
     let fileId = null;
     if (!!file) {
@@ -336,7 +336,7 @@ function CreateVote({ finderRef, keyupHandler, setModalOn }: Props) {
         'users/me/polls',
         {
           subject: title,
-          expirationDate: calendarValue,
+          expirationDate: calendarValue === '' ? null : calendarValue,
           picture: fileId,
           isPrivate: isPrivate,
           isPlural: isPlural,

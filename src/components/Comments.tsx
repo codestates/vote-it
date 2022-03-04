@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { notify } from '../modules/notification';
@@ -90,21 +90,59 @@ export const Comments = ({ keyupHandler, isVoted, pollId }: Iprops) => {
   const [commentList, setCommentList] = useState<Icomments[]>([]);
   const [offset, setOffset] = useState(0);
   const [comment, setComment] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [isEnd, setIsEnd] = useState(false);
   const dispatch = useDispatch();
+  const accessToken = localStorage.getItem('accessToken');
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
+    setIsLoading(true);
     apiAxios
-      .get(`polls/${pollId}/comments?offset=${offset}&limit=20`, {
+      .get(`polls/${pollId}/comments?offset=${offset}&limit=${15}`, {
         headers: {
           Autorization: `Bearer ${accessToken}`,
         },
       })
       .then((res) => {
-        setCommentList(res.data.comments);
-        setOffset(offset + 20);
+        setCommentList([...commentList, ...res.data.comments]);
+        setOffset(offset + 15);
+        setIsLoading(false);
       });
   }, []);
+
+  const handleScroll = useCallback((): void => {
+    const { innerHeight } = window;
+    const { scrollHeight } = document.body;
+    const { scrollTop } = document.documentElement;
+    if (Math.round(scrollTop + innerHeight) > scrollHeight && !isEnd) {
+      setIsLoading(true);
+
+      apiAxios
+        .get(`polls/${pollId}/comments?offset=${offset}&limit=${15}`, {
+          headers: {
+            Autorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((res) => {
+          if (res.data.comments.length === 0) {
+            setIsLoading(false);
+            setIsEnd(true);
+            return;
+          }
+          setTimeout(() => {
+            setCommentList([...commentList, ...res.data.comments]);
+            setOffset(offset + 15);
+            setIsLoading(false);
+          }, 1500);
+        });
+    }
+  }, [isEnd, pollId, offset, accessToken, commentList]);
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, true);
+    return () => {
+      window.removeEventListener('scroll', handleScroll, true);
+    };
+  }, [handleScroll]);
 
   const commentHandler = (position: number, reply?: string) => {
     const accessToken = localStorage.getItem('accessToken');
@@ -216,11 +254,13 @@ export const Comments = ({ keyupHandler, isVoted, pollId }: Iprops) => {
           댓글 달기
         </CommentBtn>
       </BtnBox>
+      {console.log(commentList)}
       {commentList.map((obj) => {
         return (
           <Comment
             id={obj.id}
             key={obj.id}
+            pollId={pollId}
             username={obj.author.nickname}
             userId={obj.author.id}
             content={obj.content}
@@ -230,6 +270,22 @@ export const Comments = ({ keyupHandler, isVoted, pollId }: Iprops) => {
           ></Comment>
         );
       })}
+      {isLoading ? (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            textAlign: 'center',
+            width: '100%',
+          }}
+        >
+          <img
+            src={`${process.env.PUBLIC_URL}/commentLoading.gif`}
+            style={{ width: '40px', height: 'auto', marginLeft: '20px' }}
+            alt="loading"
+          />
+        </div>
+      ) : null}
       <div style={{ margin: '10px' }}></div>
     </CommentsContainer>
   );
