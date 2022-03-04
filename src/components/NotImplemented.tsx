@@ -28,7 +28,7 @@ export const NotImplemented = () => {
       <div className="not-implemented-wrapper">
         <img src={`${process.env.PUBLIC_URL}/images/cry.png`} alt="cry" />
         <div className="not-implemented-text">아직 미구현이에요..</div>
-        <div className="not-implemented-text">빠른 시일 내에 찾아봴게요!</div>
+        <div className="not-implemented-text">빠른 시일 내에 찾아뵐게요!</div>
       </div>
     </Container>
   );
