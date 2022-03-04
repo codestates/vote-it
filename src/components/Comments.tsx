@@ -1,5 +1,8 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import { notify } from '../modules/notification';
+import apiAxios from '../utils/apiAxios';
 import { Comment } from './Comment';
 
 const CommentsContainer = styled.div`
@@ -57,38 +60,134 @@ const CommentBtn = styled.div`
   color: white;
   font-weight: bold;
 `;
+interface Iauthor {
+  id: number;
+  nickname: string;
+}
+
+interface IChildren {
+  id: number;
+  createdAt: string;
+  content: string;
+  author: Iauthor;
+}
+
 interface Icomments {
   id: number;
+  createdAt: string;
   content: string;
-  username: string;
-  parrentId?: number;
+  author: Iauthor;
+  children?: IChildren[];
 }
 
 interface Iprops {
   keyupHandler: (e: KeyboardEvent) => void;
-  commentList: Icomments[];
-  setCommentsList: Dispatch<SetStateAction<Icomments[]>>;
   isVoted: boolean;
-  username: string;
+  pollId: number;
 }
 
-export const Comments = ({
-  keyupHandler,
-  commentList,
-  setCommentsList,
-  isVoted,
-  username,
-}: Iprops) => {
+export const Comments = ({ keyupHandler, isVoted, pollId }: Iprops) => {
+  const [commentList, setCommentList] = useState<Icomments[]>([]);
+  const [offset, setOffset] = useState(0);
   const [comment, setComment] = useState('');
+  const dispatch = useDispatch();
 
-  const CommentBtnFunc = () => {
-    if (comment === '') return;
-    const id = commentList.length;
-    setCommentsList([
-      ...commentList,
-      { id: id, content: comment, username: username },
-    ]);
-    setComment('');
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    apiAxios
+      .get(`polls/${pollId}/comments?offset=${offset}&limit=20`, {
+        headers: {
+          Autorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((res) => {
+        setCommentList(res.data.comments);
+        setOffset(offset + 20);
+      });
+  }, []);
+
+  const commentHandler = (position: number, reply?: string) => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (position === -1) {
+      if (comment.length === 0) {
+        dispatch(notify('내용을 입력해주세요.'));
+        return;
+      }
+      apiAxios
+        .post(
+          `polls/${pollId}/comments`,
+          {
+            content: comment,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          },
+        )
+        .then((res) => {
+          setComment('');
+          apiAxios
+            .get(`polls/${pollId}/comments?offset=0&limit=1`, {
+              headers: {
+                Autorization: `Bearer ${accessToken}`,
+              },
+            })
+            .then((res) => {
+              setCommentList([...res.data.comments, ...commentList]);
+            });
+        });
+    } else {
+      if (reply === '') {
+        dispatch(notify('내용을 입력해주세요.'));
+        return;
+      }
+      apiAxios
+        .post(
+          `polls/${pollId}/comments`,
+          {
+            content: reply,
+            parentId: position,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          },
+        )
+        .then((res) => {
+          apiAxios
+            .get(`polls/${pollId}/comments?offset=0&limit=20`, {
+              headers: {
+                Autorization: `Bearer ${accessToken}`,
+              },
+            })
+            .then((res) => {
+              setCommentList(res.data.comments);
+            });
+        });
+    }
+  };
+
+  const deleteCommentHandler = (id: number) => {
+    const accessToken = localStorage.getItem('accessToken');
+    apiAxios
+      .delete(`polls/${pollId}/comments/${id}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then(() => {
+        apiAxios
+          .get(`polls/${pollId}/comments?offset=0&limit=20`, {
+            headers: {
+              Autorization: `Bearer ${accessToken}`,
+            },
+          })
+          .then((res) => {
+            setCommentList(res.data.comments);
+          });
+      });
   };
 
   return (
@@ -108,32 +207,26 @@ export const Comments = ({
           window.addEventListener('keyup', keyupHandler);
         }}
       />
-      <BtnBox onClick={CommentBtnFunc}>
-        <CommentBtn>댓글 달기</CommentBtn>
+      <BtnBox>
+        <CommentBtn
+          onClick={() => {
+            commentHandler(-1);
+          }}
+        >
+          댓글 달기
+        </CommentBtn>
       </BtnBox>
       {commentList.map((obj) => {
-        const replies = commentList.filter(
-          (reply) => reply.parrentId === obj.id,
-        );
-        let isReply = false;
-        commentList
-          .filter((reply) => !!reply.parrentId)
-          .forEach((reply) => {
-            if (reply.parrentId === obj.id) {
-              isReply = true;
-            }
-          });
-        if (!!obj.parrentId) {
-          return '';
-        }
         return (
           <Comment
             id={obj.id}
             key={obj.id}
-            username={obj.username}
+            username={obj.author.nickname}
+            userId={obj.author.id}
             content={obj.content}
-            isReply={isReply}
-            replies={replies}
+            replies={obj.children}
+            commentHandler={commentHandler}
+            deleteCommentHandler={deleteCommentHandler}
           ></Comment>
         );
       })}
