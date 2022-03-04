@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { RootState } from '../../modules';
+import apiAxios from '../../utils/apiAxios';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -28,7 +29,10 @@ const ChildWrapper = styled.div<{ sub: boolean }>`
     margin-right: 8px;
     padding: 8px;
     text-align: left;
-    width: 100%;
+    width: 80%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     a {
       color: var(--font);
       text-decoration: none;
@@ -38,10 +42,12 @@ const ChildWrapper = styled.div<{ sub: boolean }>`
     }
   }
   .votelist-expiration {
-    width: 144px;
+    width: 180px;
     margin: 0 8px;
     line-height: 36px;
     white-space: pre;
+    display: flex;
+    justify-content: left;
   }
 `;
 
@@ -59,244 +65,38 @@ interface IProps {}
 
 //subject, isPrivate, expirationDate
 const VoteList: React.FunctionComponent<IProps> = () => {
-  interface Idummy {
+  interface Poll {
     id: number;
+    createdAt: string;
     subject: string;
     isPrivate: boolean;
+    isPlural: boolean;
     expirationDate: string;
+    picture: string;
   }
-  const [dummy, setDummy] = useState<Idummy[]>([
-    // {
-    //   id: 1,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2021-08-05T09:51:31',
-    // },
-    // {
-    //   id: 2,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2021-08-05T09:51:31',
-    // },
-    // {
-    //   id: 3,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2021-08-05T09:51:31',
-    // },
-    // {
-    //   id: 6,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: true,
-    //   expirationDate: '2021-08-05T09:51:31',
-    // },
-    // {
-    //   id: 7,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 8,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: true,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 11,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 13,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 15,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 16,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 17,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 18,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 19,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 20,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 21,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 22,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 23,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 24,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 25,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 26,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 27,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 28,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 29,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 30,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 31,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 32,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 33,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 34,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 35,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 36,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 37,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 38,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 39,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 123,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 124,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 125,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-    // {
-    //   id: 126,
-    //   subject: '투표글 제목입니다.',
-    //   isPrivate: false,
-    //   expirationDate: '2022-08-05T09:51:31',
-    // },
-  ]);
+  const [polls, setPolls] = useState<Poll[]>([]);
+  const [offset, setOffset] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isEnd, setIsEnd] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
-    setDummy(dummy);
-  }, [dummy]);
+    const accessToken = localStorage.getItem('accessToken');
+    setIsLoading(true);
+    apiAxios
+      .get(`users/me/polls?offset=${offset}&limit=20`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((res) => {
+        setPolls(res.data.myPolls);
+        setIsLoading(false);
+        setOffset(20);
+      });
+  }, []);
 
-  const [list, setList] = useState([...dummy.slice(0, 15)]);
-  const [page, setPage] = useState(15);
-  const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const handleScroll = useCallback((): void => {
@@ -309,32 +109,28 @@ const VoteList: React.FunctionComponent<IProps> = () => {
       innerHeight !== undefined &&
       scrollHeight !== undefined
     ) {
-      if (Math.round(scrollTop + innerHeight) >= scrollHeight) {
-        // 배열 불러오기 Promise 동기처리 => 이후 ajax 요청으로 변환
-        // Promise.resolve()
-        //   .then(() => {
-        //     setIsLoading(true);
-        //   })
-        //   .then(() => {
+      if (Math.round(scrollTop + innerHeight) >= scrollHeight && !isEnd) {
+        const accessToken = localStorage.getItem('accessToken');
         setIsLoading(true);
-        setTimeout(() => {
-          setList([...list, ...dummy.slice(page, page + 5)]);
-          setPage(page + 5);
-          setIsLoading(false);
-        }, 2000);
-        // })
-        // .then(() => {
-        //   setIsLoading(false);
-        // });
+        apiAxios
+          .get(`users/me/polls?offset=${offset}&limit=20`, {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          })
+          .then((res) => {
+            if (res.data.myPolls.length === 0) {
+              setIsLoading(false);
+              setIsEnd(true);
+              return;
+            }
+            setPolls([...polls, ...res.data.myPolls]);
+            setIsLoading(false);
+            setOffset(offset + 20);
+          });
       }
     }
-  }, [list, page, dummy]);
-
-  // console.log(list.length);
-
-  // useEffect(() => {
-  //   setList([dummy[0]]);
-  // }, []);
+  }, [isEnd, offset, polls]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, true);
@@ -345,16 +141,29 @@ const VoteList: React.FunctionComponent<IProps> = () => {
 
   const isDark = useSelector((state: RootState) => state.login.isDark);
 
+  const timeMaker = (value: string) => {
+    if (!value) return '';
+    let date = new Date(value);
+    let dateArr = date.toLocaleString().split('. ');
+    let timeArr = date.toLocaleString().split(' ');
+    return (
+      `${dateArr[0]}년 ${dateArr[1]}월 ${dateArr[2]}일 ` +
+      `${timeArr[3]} ${
+        timeArr[4].split(':')[0] + ':' + timeArr[4].split(':')[1]
+      }`
+    );
+  };
+
   return (
     <Container>
       <ChildWrapper sub={false}>
         <div className="votelist-id">ID</div>
         <div className="votelist-child">제목</div>
-        <div className="votelist-expiration">만료날짜</div>
+        <div className="votelist-expiration">게시날짜</div>
       </ChildWrapper>
       <Divider />
       <ScrollWrapper ref={scrollRef}>
-        {list.length === 0 ? (
+        {polls.length === 0 ? (
           <div
             style={{
               display: 'flex',
@@ -377,15 +186,19 @@ const VoteList: React.FunctionComponent<IProps> = () => {
             />
           </div>
         ) : (
-          list.map((v) => {
+          polls.map((v) => {
             return (
-              <ChildWrapper key={v.id} sub>
+              <ChildWrapper
+                onClick={() => {
+                  navigate(`/vote/${v.id}`, { state: v.id });
+                }}
+                key={v.id}
+                sub
+              >
                 <div className="votelist-id">{v.id}</div>
-                <div className="votelist-child">
-                  <Link to="#">{v.subject}</Link>
-                </div>
+                <div className="votelist-child">{v.subject}</div>
                 <div className="votelist-expiration">
-                  {v.expirationDate.split('T').join(' ')}
+                  {timeMaker(v.createdAt)}
                 </div>
               </ChildWrapper>
             );
