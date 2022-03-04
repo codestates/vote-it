@@ -87,59 +87,12 @@ export const PollImage = ({ setFile }: IProps) => {
       setSelectedFile(undefined);
       return;
     }
-
-    // const formData = new FormData();
-    // formData.append('picture', e.target.files[0])
-
-    // const accessToken = localStorage.getItem('accessToken')
-    // apiAxios
-    //   .post(
-    //     'upload-poll-picture',
-    //     formData,
-    //     {
-    //       headers: {
-    //         "Content-Type": "multipart/form-data",
-    //         Authorization: `Bearer ${accessToken}`
-    //       }
-    //     }
-    //   )
-
     setSelectedFile(e.target.files[0]);
     setFile(e.target.files[0]);
   };
-
-  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-
-  //   if (!!file) {
-  //     const formData = new FormData();
-  //     formData.append('picture', file)
-  //     console.log(formData.getAll('picture'))
-  //   }
-
-  //   const accessToken = localStorage.getItem('accessToken')
-  //   apiAxios
-  //     .post(
-  //       'upload-poll-picture',
-  //       formData,
-  //       {
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //           Authorization: `Bearer ${accessToken}`
-  //         }
-  //       }
-  //     )
-  // }
-
   return (
     <InputViewContainer>
-      <form
-        // method="post"
-        encType="multipart/form-data"
-        // action="https://localhost:8000/upload-poll-picture"
-        name="photo"
-        // onSubmit={handleSubmit}
-      >
+      <form encType="multipart/form-data" name="photo">
         <InputBox
           id="add-vote-image"
           type={'file'}

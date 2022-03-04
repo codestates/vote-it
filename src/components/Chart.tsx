@@ -49,7 +49,7 @@ const renderActiveShape = (props: any) => {
 interface Ioptions {
   id: number;
   content: string;
-  votedCount?: number;
+  votedCount: number;
 }
 
 interface IProps {
@@ -57,6 +57,7 @@ interface IProps {
 }
 function Chart({ options }: IProps) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const copy = [...options];
   const onPieEnter = useCallback(
     (_, index) => {
       setActiveIndex(index);
@@ -93,7 +94,9 @@ function Chart({ options }: IProps) {
         <Pie
           activeIndex={activeIndex}
           activeShape={renderActiveShape}
-          data={options}
+          data={copy.sort((a, b) => {
+            return b.votedCount - a.votedCount;
+          })}
           innerRadius="55%"
           outerRadius="95%"
           dataKey="votedCount"
