@@ -116,7 +116,7 @@ export class PollsService {
       const optionsVotedCount = await this.pollRepository
         .createQueryBuilder('poll')
         .select('options.id', 'optionId')
-        .addSelect('COUNT(voteHistories.userId)', 'votedCount')
+        .addSelect('COUNT(DISTINCT voteHistories.userId)', 'votedCount')
         .leftJoin('poll.options', 'options')
         .leftJoin('options.voteHistories', 'voteHistories')
         .where('poll.id = :pollId', { pollId })
@@ -129,6 +129,29 @@ export class PollsService {
       }));
     }
     return poll;
+  }
+
+  async getPollsOfUserPagination(
+    authorId: number,
+    { offset, limit }: PaginationQueryDto,
+  ) {
+    const [myPolls, allMyPollsCount] = await this.pollRepository
+      .createQueryBuilder('poll')
+      .select([
+        'poll.id',
+        'poll.createdAt',
+        'poll.subject',
+        'poll.isPrivate',
+        'poll.isPlural',
+        'poll.expirationDate',
+        'poll.picture',
+      ])
+      .where('poll.authorId = :authorId', { authorId })
+      .offset(offset)
+      .limit(limit)
+      .orderBy('poll.createdAt', 'DESC')
+      .getManyAndCount();
+    return { myPolls, allMyPollsCount };
   }
 
   async createPoll({ authorId, options, ...createPollDto }: CreatePollDto) {
