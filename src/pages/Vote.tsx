@@ -134,23 +134,16 @@ const ResultContainer = styled.div`
   }
 `;
 
-const Divider = styled.div`
-  height: 0;
-  border-bottom: 1px solid black;
-`;
+// const Divider = styled.div`
+//   height: 0;
+//   border-bottom: 1px solid black;
+// `;
 
 interface Ioptions {
   id: number;
   content: string;
   votedCount: number;
   isVoted?: boolean;
-}
-
-interface Icomments {
-  id: number;
-  content: string;
-  username: string;
-  parrentId?: number;
 }
 
 interface Props {
@@ -170,7 +163,6 @@ export const Vote = ({ keyupHandler }: Props) => {
   const [username, setUsername] = useState('');
   const [options, setOptions] = useState<Ioptions[]>([]);
   const [voted, setVoted] = useState<number[]>([]);
-  const [commentsList, setCommentsList] = useState<Icomments[]>([]);
   const [shareModal, setShareModal] = useState({ isOn: false, isShow: false });
   // const [post, setPost] = useState<Post>(getPostById(id));
   const [del, setDel] = useState(false);
@@ -281,22 +273,50 @@ export const Vote = ({ keyupHandler }: Props) => {
           },
         })
         .then((res) => {
-          if (isPlural) {
-            setVoted([...voted, optionId]);
-          } else {
-            setVoted([optionId]);
-          }
-          setIsVoted(true);
-          setOptions(
-            options.map((el: any) => {
-              // console.log(el)
-              if (el.id === optionId) {
-                return { ...el, isVoted: true, votedCount: el.votedCount + 1 };
-              }
-              return el;
-            }),
-          );
+          // if (isPlural) {
+          //   setVoted([...voted, optionId]);
+          // } else {
+          //   setVoted([optionId]);
+          // }
+          // setIsVoted(true);
+          // setOptions(
+          //   options.map((el: any) => {
+          //     // console.log(el)
+          //     if (el.id === optionId) {
+          //       return { ...el, isVoted: true, votedCount: el.votedCount + 1 };
+          //     }
+          //     return el;
+          //   }),
+          // );
           // window.location.href = `/vote/${id}`;
+          apiAxios
+            .get(
+              `polls/${id}`,
+              isLogin
+                ? { headers: { Authorization: `Bearer ${accessToken}` } }
+                : undefined,
+            )
+            .then((res) => {
+              setIsPlural(res.data.isPlural);
+              setPollId(res.data.author.id);
+              setVoteSub(res.data.subject);
+              setUsername(res.data.author.nickname);
+              // setOptions(res.data.options);
+              setIsVoted(res.data.isVoted);
+              setVoted(
+                res.data.options
+                  .filter((el: any) => el.isVoted)
+                  .map((obj: any) => obj.id),
+              );
+              setOptions(
+                res.data.options.map((el: any, idx: number) => {
+                  if (!el.votedCount) {
+                    el.votedCount = 0;
+                  }
+                  return el;
+                }),
+              );
+            });
         })
         .catch((err) => dispatch(notify(err.response.data.message)));
     }
@@ -389,10 +409,8 @@ export const Vote = ({ keyupHandler }: Props) => {
         </ResultContainer>
       </VoteContainer>
       <Comments
+        pollId={id}
         keyupHandler={keyupHandler}
-        username={username}
-        commentList={commentsList}
-        setCommentsList={setCommentsList}
         isVoted={isVoted || isDone}
       ></Comments>
       {shareModal.isOn ? (
