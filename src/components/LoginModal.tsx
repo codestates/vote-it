@@ -212,6 +212,7 @@ const LoginModal: React.FunctionComponent<IProps> = ({
     return () => {
       document.removeEventListener('keyup', modalESC);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

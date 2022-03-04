@@ -351,8 +351,10 @@ function CreateVote({ finderRef, keyupHandler, setModalOn }: Props) {
       )
       .then((res) => {
         dispatch(notify('투표가 등록되었습니다.'));
+        console.log(res.data.pollId);
+        const id = res.data.pollId;
         // window.location.href = '/';
-        navigate('/');
+        navigate(`/vote/${id}`, { state: id });
       })
       .catch((err) => {
         if (err.response.status >= 500) {
@@ -497,7 +499,7 @@ function CreateVote({ finderRef, keyupHandler, setModalOn }: Props) {
                       fontSize: 'small',
                     }}
                   >
-                    클릭하여 이미지를 넣거나 드레그 해주세요.
+                    클릭하여 이미지를 넣어주세요.
                   </div>
                 </ImgContainer>
               </CheckboxContainer>

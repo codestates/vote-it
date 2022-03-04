@@ -141,7 +141,6 @@ interface IuserInfo {
 const Profile: React.FunctionComponent<IProps> = ({ keyupHandler }) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [username, setUsername] = useState('');
-  const [err, setErr] = useState('');
   const [userInfo, setUserInfo] = useState<IuserInfo>({
     id: 1,
     email: 'Loading...',

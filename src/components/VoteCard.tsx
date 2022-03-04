@@ -41,7 +41,7 @@ interface IImaProps {
 }
 
 export const TitleBox = styled.div<IImaProps>`
-  background-image: url(${(props) => props.src});
+  background-image: url(${(props) => `'${props.src}'`});
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;

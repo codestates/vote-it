@@ -11,14 +11,10 @@ import NofiticationCenter from './components/NotificationCenter';
 import { kakaoInit } from './lib/initialize';
 import { notify } from './modules/notification';
 import { MainEmpty } from './pages/MainEmpty';
-import ServerErr from './pages/ServerErr';
 import { focusHandler } from './functions';
-import { KeyNotice } from './components/KeyNotification';
 import { Search } from './pages/Search';
 // import { RootState } from './modules';
 // export type LoginProps = boolean;
-
-let throttle: boolean = false;
 
 type Modal = {
   isOn: boolean;
@@ -71,8 +67,8 @@ function App() {
   useEffect(() => {
     window.location.href.includes('access_token') && GetUser();
     function GetUser() {
-      const location = window.location.href.split('=')[1];
-      const token = location.split('&')[0];
+      // const location = window.location.href.split('=')[1];
+      // const token = location.split('&')[0];
       const login = localStorage.getItem('isLogin');
       if (login === 'false') {
         dispatch(notify('로그인이 완료되었습니다.'));
