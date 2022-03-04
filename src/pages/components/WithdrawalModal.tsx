@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { AiOutlineClose } from 'react-icons/ai';
 import apiAxios from '../../utils/apiAxios';
@@ -114,6 +114,19 @@ export const WithdrawalModal = ({ WithdrawalModalHandler }: Iprop) => {
       })
       .catch((err) => alert(err));
   };
+
+  const modalESC = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      WithdrawalModalHandler();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keyup', modalESC);
+    return () => {
+      document.removeEventListener('keyup', modalESC);
+    };
+  }, []);
 
   return (
     <ModalBackdrop onClick={WithdrawalModalHandler}>

@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useRef } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { copyClipboard } from '../functions';
 import { FaRegCopy, FaAngleLeft, FaAngleRight } from 'react-icons/fa';
@@ -311,6 +311,19 @@ export const Share = ({ voteSub, shareModal, setShareModal }: Props) => {
   //   };
   // },[handleScroll]);
   // const { Kakao } = window;
+
+  const modalESC = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      setModalOff();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keyup', modalESC);
+    return () => {
+      document.removeEventListener('keyup', modalESC);
+    };
+  }, []);
 
   return (
     <>
