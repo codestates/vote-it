@@ -137,7 +137,15 @@ export class PollsService {
   ) {
     const [myPolls, allMyPollsCount] = await this.pollRepository
       .createQueryBuilder('poll')
-      .select()
+      .select([
+        'poll.id',
+        'poll.createdAt',
+        'poll.subject',
+        'poll.isPrivate',
+        'poll.isPlural',
+        'poll.expirationDate',
+        'poll.picture',
+      ])
       .where('poll.authorId = :authorId', { authorId })
       .offset(offset)
       .limit(limit)
