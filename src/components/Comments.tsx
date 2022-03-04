@@ -94,6 +94,7 @@ export const Comments = ({ keyupHandler, isVoted, pollId }: Iprops) => {
   const [isEnd, setIsEnd] = useState(false);
   const dispatch = useDispatch();
   const accessToken = localStorage.getItem('accessToken');
+
   useEffect(() => {
     setIsLoading(true);
     apiAxios
