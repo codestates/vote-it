@@ -13,14 +13,28 @@ import {
   Param,
   ParseIntPipe,
   Patch,
+  Get,
+  Query,
 } from '@nestjs/common';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { UpdateUserPollDto } from '../dto/update-user-poll.dto';
+import { PaginationQueryDto } from '../../common/dto/pagination-query.dto';
 
 @Controller('users/me/polls')
 @UseGuards(JwtAuthGuard)
 export class UsersMePollsController {
   constructor(private readonly pollsService: PollsService) {}
+
+  @Get()
+  getMyPolls(
+    @CurrentUser() { userId }: JwtValidatePayload,
+    @Query() paginationQueryDto: PaginationQueryDto,
+  ) {
+    return this.pollsService.getPollsOfUserPagination(
+      userId,
+      paginationQueryDto,
+    );
+  }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -35,7 +49,6 @@ export class UsersMePollsController {
   }
 
   @Patch(':pollId')
-  @UseGuards(JwtAuthGuard)
   updateMyPoll(
     @CurrentUser() { userId }: JwtValidatePayload,
     @Param('pollId', ParseIntPipe) pollId: number,
