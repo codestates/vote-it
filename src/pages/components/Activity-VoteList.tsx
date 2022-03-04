@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { RootState } from '../../modules';
 import apiAxios from '../../utils/apiAxios';
@@ -29,7 +29,10 @@ const ChildWrapper = styled.div<{ sub: boolean }>`
     margin-right: 8px;
     padding: 8px;
     text-align: left;
-    width: 100%;
+    width: 80%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     a {
       color: var(--font);
       text-decoration: none;
@@ -75,6 +78,8 @@ const VoteList: React.FunctionComponent<IProps> = () => {
   const [offset, setOffset] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [isEnd, setIsEnd] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
@@ -125,7 +130,7 @@ const VoteList: React.FunctionComponent<IProps> = () => {
           });
       }
     }
-  }, [offset, polls]);
+  }, [isEnd, offset, polls]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, true);
@@ -154,7 +159,7 @@ const VoteList: React.FunctionComponent<IProps> = () => {
       <ChildWrapper sub={false}>
         <div className="votelist-id">ID</div>
         <div className="votelist-child">제목</div>
-        <div className="votelist-expiration">만료날짜</div>
+        <div className="votelist-expiration">게시날짜</div>
       </ChildWrapper>
       <Divider />
       <ScrollWrapper ref={scrollRef}>
@@ -183,13 +188,17 @@ const VoteList: React.FunctionComponent<IProps> = () => {
         ) : (
           polls.map((v) => {
             return (
-              <ChildWrapper key={v.id} sub>
+              <ChildWrapper
+                onClick={() => {
+                  navigate(`/vote/${v.id}`, { state: v.id });
+                }}
+                key={v.id}
+                sub
+              >
                 <div className="votelist-id">{v.id}</div>
-                <div className="votelist-child">
-                  <Link to="#">{v.subject}</Link>
-                </div>
+                <div className="votelist-child">{v.subject}</div>
                 <div className="votelist-expiration">
-                  {timeMaker(v.expirationDate)}
+                  {timeMaker(v.createdAt)}
                 </div>
               </ChildWrapper>
             );
