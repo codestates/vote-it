@@ -11,7 +11,8 @@ const FloatingBtn = styled.div`
   height: 50px;
   border-radius: 30px;
   background-color: #5d6dbe;
-  box-shadow: -2px -2px 4px #f8f8f8, 3px 3px 6px rgb(184, 184, 184);
+  box-shadow: -2px -2px 4px var(--box-shadow),
+    3px 3px 6px var(--box-shadow-darker);
   cursor: pointer;
 `;
 

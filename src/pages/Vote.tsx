@@ -201,7 +201,6 @@ export const Vote = ({ keyupHandler }: Props) => {
     }
   };
   const approach = approachFunc();
-  console.log(approach);
   // const approach = atob(atob(window.location.pathname.split('/')[2]))
   //   .split('?')[1]
   //   .split('=')
@@ -210,7 +209,6 @@ export const Vote = ({ keyupHandler }: Props) => {
     : approach[0][1] === 'allow' && approach[0][0] === 'approach'
     ? approach[1]
     : null;
-  console.log(id);
   const [pollId, setPollId] = useState(-1);
   const [voteSub, setVoteSub] = useState('');
   const [username, setUsername] = useState('');
