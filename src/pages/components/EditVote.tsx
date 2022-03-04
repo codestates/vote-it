@@ -191,9 +191,13 @@ export const EditVote = ({
     const time = timeTemp[0] + ':' + timeTemp[1];
     CalenderValueHandler({ date, time });
     setExpiresForCalendar(date + 'T' + time);
-    setExpiresForRender(
-      `${dateTemp[0]}-${dateTemp[1]}-${dateTemp[2]} ${time} 까지`,
-    );
+    if (+dateTemp[0] < 2000) {
+      setExpiresForRender('기한이 없습니다.');
+    } else {
+      setExpiresForRender(
+        `${dateTemp[0]}-${dateTemp[1]}-${dateTemp[2]} ${time} 까지`,
+      );
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [expires]);
 
