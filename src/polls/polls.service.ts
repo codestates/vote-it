@@ -19,7 +19,7 @@ export class PollsService {
   ) {}
 
   async getSpecificRangePolls({ offset, limit }: PaginationQueryDto) {
-    const [polls, count] = await this.pollRepository
+    const rawPolls = await this.pollRepository
       .createQueryBuilder('poll')
       .select([
         'poll.id',
@@ -29,18 +29,39 @@ export class PollsService {
         'poll.picture',
         'author.nickname',
       ])
+      .addSelect('COUNT(DISTINCT voteHistories.userId)', 'participatedCount')
       .leftJoin('poll.author', 'author')
+      .leftJoin('poll.options', 'options')
+      .leftJoin('options.voteHistories', 'voteHistories')
       .where('poll.isPrivate = false')
       .offset(offset)
       .limit(limit)
       .orderBy('poll.createdAt', 'DESC')
-      .getManyAndCount();
+      .groupBy('poll.id')
+      .getRawMany();
+    const polls = rawPolls.map((rawPoll) => ({
+      id: rawPoll.poll_id,
+      createdAt: rawPoll.poll_createdAt,
+      subject: rawPoll.poll_subject,
+      expirationDate: rawPoll.poll_expirationDate,
+      picture: joinPollPictureUrl(rawPoll.poll_picture),
+      participatedCount: parseInt(rawPoll.participatedCount, 10),
+      author: {
+        nickname: rawPoll.author_nickname,
+      },
+    }));
+
+    const [{ allPollsCountString }]: [{ allPollsCountString: string }] =
+      await this.pollRepository
+        .createQueryBuilder('poll')
+        .select('COUNT(DISTINCT poll.id)', 'allPollsCountString')
+        .where('poll.isPrivate = false')
+        .execute();
+    const allPollsCount = parseInt(allPollsCountString, 10);
+
     return {
-      polls: polls.map((poll) => ({
-        ...poll,
-        picture: joinPollPictureUrl(poll.picture),
-      })),
-      count,
+      polls,
+      allPollsCount,
     };
   }
 
