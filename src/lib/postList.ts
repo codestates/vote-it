@@ -7,4 +7,5 @@ export interface IPost {
   createdAt: string;
   expirationDate: string;
   picture: string | null;
+  participatedCount: number;
 }
