@@ -13,7 +13,6 @@ import {
 import { FaPlus, FaUserCircle, FaBell, FaSearch } from 'react-icons/fa';
 import { FiX } from 'react-icons/fi';
 import { darkHandler } from '../../modules/login';
-import { useRef } from 'react';
 import { notify } from '../../modules/notification';
 
 const Container = styled.div`
@@ -90,6 +89,7 @@ const SearchWrapper = styled.div<{ slashVisible: boolean }>`
     left: 48px;
     line-height: 14px;
     color: var(--font-lighter);
+    background-color: var(--box-bg-lighter);
     border: 1px solid var(--border-lighter);
     border-radius: 4px;
     cursor: text;
@@ -248,22 +248,22 @@ const LoginWrapper = styled.div`
   }
 `;
 
-const SearchBox = styled.div`
-  margin-left: 10px;
-  padding: 7px 10px 5px 10px;
-  border-radius: 10px;
-  /* border: 1px solid #dbdbdb; */
-  /* box-shadow: inset 2px 2px 3px 2px var(--box-shadow-darker); */
-  background-color: var(--main-color);
-  cursor: pointer;
-  &:hover {
-    background-color: var(--main-color-tint);
-  }
+// const SearchBox = styled.div`
+//   margin-left: 10px;
+//   padding: 7px 10px 5px 10px;
+//   border-radius: 10px;
+//   /* border: 1px solid #dbdbdb; */
+//   /* box-shadow: inset 2px 2px 3px 2px var(--box-shadow-darker); */
+//   background-color: var(--main-color);
+//   cursor: pointer;
+//   &:hover {
+//     background-color: var(--main-color-tint);
+//   }
 
-  @media only screen and (max-width: 500px) {
-    display: none;
-  }
-`;
+//   @media only screen and (max-width: 500px) {
+//     display: none;
+//   }
+// `;
 
 const MiniSearchContainer = styled.div`
   width: 80%;

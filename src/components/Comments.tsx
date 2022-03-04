@@ -108,6 +108,7 @@ export const Comments = ({ keyupHandler, isVoted, pollId }: Iprops) => {
         setOffset(offset + 15);
         setIsLoading(false);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleScroll = useCallback((): void => {
