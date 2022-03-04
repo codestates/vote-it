@@ -176,10 +176,11 @@ export const Vote = ({ keyupHandler }: Props) => {
   const dispatch = useDispatch();
 
   const timeHandler = (value: string) => {
+    if (value === null) {
+      return 1;
+    }
     const today = new Date();
     const timeValue = new Date(value);
-    console.log(`today: ${today}`);
-    console.log(`time: ${timeValue}`);
 
     return timeValue.getTime() - today.getTime();
   };
