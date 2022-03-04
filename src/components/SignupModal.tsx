@@ -67,7 +67,7 @@ const InputWrapper = styled.div`
     height: 24px;
     margin: 16px;
     border: none;
-    border-bottom: 2.5px solid rgba(0, 0, 0, 0.2);
+    border-bottom: 2.5px solid var(--option-hover);
 
     :focus {
       outline: none;
@@ -87,7 +87,7 @@ const Button = styled.button`
   font-size: 13px;
   /* font-weight: bold; */
   width: 192px;
-  height: 24px;
+  height: 33px;
   margin-bottom: 8px;
   border: none;
   border-radius: 10px;
@@ -310,39 +310,6 @@ const SignupModal: React.FunctionComponent<IProps> = ({
                   onClick={SignupHandler}
                 >
                   이메일로 계정 만들기
-                </Button>
-                <Button color="white">
-                  <RiGoogleFill
-                    style={{
-                      marginRight: '10px',
-                      fontSize: '17px',
-                      color: 'red',
-                    }}
-                  />
-                  구글 로그인
-                </Button>
-                <Button color="white">
-                  <span
-                    style={{
-                      marginRight: '5px',
-                      color: '#19CE60',
-                      fontSize: '15px',
-                      fontFamily: 'KOHIBaeumOTF',
-                    }}
-                  >
-                    N
-                  </span>
-                  네이버 로그인
-                </Button>
-                <Button color="white">
-                  <RiKakaoTalkFill
-                    style={{
-                      marginRight: '5px',
-                      fontSize: '17px',
-                      color: '#4e4600',
-                    }}
-                  />
-                  카카오 로그인
                 </Button>
               </ButtonWrapper>
               <SubWrapper>
