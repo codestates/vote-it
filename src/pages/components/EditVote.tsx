@@ -65,20 +65,13 @@ const ModalView = styled.div<{ isEditOn: boolean }>`
       background-color: var(--main-color-tint);
     }
   }
-
-  @media only screen and (max-width: 500px) {
-    width: 360px;
-  }
 `;
 
 const CheckboxAndTitle = styled.div`
   display: flex;
   align-items: center;
 `;
-const Checkbox = styled.input`
-  margin-right: 10px;
-  cursor: pointer;
-`;
+
 const CheckButton = styled.button`
   width: 96px;
   padding: 4px;
@@ -184,20 +177,6 @@ export const EditVote = ({
       .catch((err) => console.log(err.response));
   };
 
-  const modalESC = (e: KeyboardEvent) => {
-    if (e.key === 'Escape') {
-      ModalHandler();
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener('keyup', modalESC);
-    return () => {
-      document.removeEventListener('keyup', modalESC);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   useEffect(() => {
     let kstGap = 9 * 60 * 60 * 1000;
     let originDate = new Date(expires),
@@ -231,7 +210,7 @@ export const EditVote = ({
         <CheckboxAndTitle>
           <Scheduler
             keyupHandler={keyupHandler}
-            translate={'0px px'}
+            translate={'0px, -128px'}
             CalenderValueHandler={CalenderValueHandler}
             expiresForCalender={expiresForCalendar}
           />
