@@ -52,7 +52,7 @@ const SubBox = styled.div`
   justify-content: center;
   align-items: center;
   width: 80%;
-
+  word-break: keep-all;
   padding: 16px 0 8px 0;
   margin: 0 auto 12px auto;
   border-bottom: 2px solid var(--border);

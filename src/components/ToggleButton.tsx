@@ -2,8 +2,10 @@ import { Component } from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
+  flex: 1 0 auto;
   position: relative;
   display: inline-block;
+  transform: translateY(1px);
 `;
 
 const Button = styled.button<{ isOn: boolean }>`
