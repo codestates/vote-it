@@ -20,7 +20,8 @@ const ChildWrapper = styled.div<{ sub: boolean }>`
     props.sub ? ':hover{ background-color: var(--box-bg-lighter) }' : ''}
     /* .center {
     text-align: center;
-  } */ .votelist-id {
+  } */ 
+  .votelist-id {
     margin: 0 8px;
     width: 64px;
     line-height: 36px;
@@ -48,6 +49,15 @@ const ChildWrapper = styled.div<{ sub: boolean }>`
     white-space: pre;
     display: flex;
     justify-content: left;
+  }
+  @media only screen and (max-width: 500px) {
+    flex-direction: column;
+    .votelist-expiration {
+      font-size: small;
+      width: 90%;
+      display: flex;
+      justify-content: right;
+    }
   }
 `;
 
@@ -157,9 +167,11 @@ const VoteList: React.FunctionComponent<IProps> = () => {
   return (
     <Container>
       <ChildWrapper sub={false}>
-        <div className="votelist-id">ID</div>
-        <div className="votelist-child">제목</div>
-        <div className="votelist-expiration">게시날짜</div>
+        <div style={{ display: 'flex', width: '100%' }}>
+          <div className="votelist-id">ID</div>
+          <div className="votelist-child">제목</div>
+          <div className="votelist-expiration">게시날짜</div>
+        </div>
       </ChildWrapper>
       <Divider />
       <ScrollWrapper ref={scrollRef}>
@@ -195,8 +207,10 @@ const VoteList: React.FunctionComponent<IProps> = () => {
                 key={v.id}
                 sub
               >
-                <div className="votelist-id">{v.id}</div>
-                <div className="votelist-child">{v.subject}</div>
+                <div style={{ display: 'flex', width: '75%' }}>
+                  <div className="votelist-id">{v.id}</div>
+                  <div className="votelist-child">{v.subject}</div>
+                </div>
                 <div className="votelist-expiration">
                   {timeMaker(v.createdAt)}
                 </div>
