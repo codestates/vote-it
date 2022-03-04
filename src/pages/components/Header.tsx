@@ -126,7 +126,11 @@ const SettingWrapper = styled.div`
       color: var(--font-lighter);
     }
   }
-  div {
+  > div {
+    height: 32px;
+    line-height: 32px;
+  }
+  > a > div {
     height: 32px;
     line-height: 32px;
   }

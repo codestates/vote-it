@@ -134,9 +134,13 @@ const PlusOptionBtn = styled.button`
 `;
 const CheckboxContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  width: 100%;
+  margin: 16px 32px 8px 32px;
+  width: 80%;
   justify-content: space-around;
+  .create-options {
+    flex: 3 0 auto;
+    width: 224px;
+  }
 `;
 const CheckboxAndTitle = styled.div`
   display: flex;
@@ -176,11 +180,11 @@ const CreateBtn = styled.button`
 `;
 
 const ImgContainer = styled.div`
+  flex: 1 0 auto;
   display: flex;
   flex-direction: column;
   align-items: left;
   justify-content: center;
-  width: 100%;
   height: 200px;
 `;
 
@@ -190,7 +194,15 @@ const ImgBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 4px;
   border: 1px dotted var(--font);
+`;
+
+const Divider = styled.div`
+  height: 1px;
+  width: 100%;
+  margin: 16px 0;
+  border-bottom: 1px solid var(--border);
 `;
 
 interface IModalOn {
@@ -429,9 +441,51 @@ function CreateVote({ finderRef, keyupHandler, setModalOn }: Props) {
                 </PlusOptionBtn>
               </OptionContainer>
 
+              <Divider />
               {/* checkbox & calendar section */}
 
               <CheckboxContainer>
+                <div className="create-options">
+                  <CheckboxAndTitle>
+                    <Checkbox
+                      type={'checkbox'}
+                      onChange={() => {
+                        setIsPlural(!isPlural);
+                      }}
+                      checked={isPlural}
+                    />
+                    <CheckboxTitle
+                      onClick={() => {
+                        setIsPlural(!isPlural);
+                      }}
+                    >
+                      중복 체크 여부
+                    </CheckboxTitle>
+                  </CheckboxAndTitle>
+                  <CheckboxAndTitle>
+                    <Checkbox
+                      type={'checkbox'}
+                      onChange={() => {
+                        setIsPrivate(!isPrivate);
+                      }}
+                      checked={isPrivate}
+                    />
+                    <CheckboxTitle
+                      onClick={() => {
+                        setIsPrivate(!isPrivate);
+                      }}
+                    >
+                      비공개
+                    </CheckboxTitle>
+                  </CheckboxAndTitle>
+                  <CheckboxAndTitle>
+                    <Scheduler
+                      keyupHandler={keyupHandler}
+                      translate={'0px, -550px'}
+                      CalenderValueHandler={CalenderValueHandler}
+                    />
+                  </CheckboxAndTitle>
+                </div>
                 <ImgContainer>
                   <ImgBox className="img">
                     <PollImage setFile={setFile} />
@@ -446,45 +500,6 @@ function CreateVote({ finderRef, keyupHandler, setModalOn }: Props) {
                     클릭하여 이미지를 넣거나 드레그 해주세요.
                   </div>
                 </ImgContainer>
-                <CheckboxAndTitle>
-                  <Checkbox
-                    type={'checkbox'}
-                    onChange={() => {
-                      setIsPlural(!isPlural);
-                    }}
-                    checked={isPlural}
-                  />
-                  <CheckboxTitle
-                    onClick={() => {
-                      setIsPlural(!isPlural);
-                    }}
-                  >
-                    중복 체크 여부
-                  </CheckboxTitle>
-                </CheckboxAndTitle>
-                <CheckboxAndTitle>
-                  <Checkbox
-                    type={'checkbox'}
-                    onChange={() => {
-                      setIsPrivate(!isPrivate);
-                    }}
-                    checked={isPrivate}
-                  />
-                  <CheckboxTitle
-                    onClick={() => {
-                      setIsPrivate(!isPrivate);
-                    }}
-                  >
-                    비공개
-                  </CheckboxTitle>
-                </CheckboxAndTitle>
-                <CheckboxAndTitle>
-                  <Scheduler
-                    keyupHandler={keyupHandler}
-                    translate={'0px, -550px'}
-                    CalenderValueHandler={CalenderValueHandler}
-                  />
-                </CheckboxAndTitle>
               </CheckboxContainer>
               <CreateBtn onClick={CreateBtnHandler}>투표만들기</CreateBtn>
             </SubBox>

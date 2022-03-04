@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { NotImplemented } from '../../components/NotImplemented';
 import { RootState } from '../../modules';
 
 const Container = styled.div`
@@ -323,6 +324,7 @@ const VoteList: React.FunctionComponent<IProps> = () => {
       <Divider />
       <ScrollWrapper ref={scrollRef}>
         {list.length === 0 ? (
+          //! 미구현 처리해야함!
           <div
             style={{
               display: 'flex',
@@ -330,7 +332,7 @@ const VoteList: React.FunctionComponent<IProps> = () => {
               alignItems: 'center',
             }}
           >
-            <img
+            {/* <img
               src={
                 isDark
                   ? `${process.env.PUBLIC_URL}/activity-dark.png`
@@ -342,7 +344,8 @@ const VoteList: React.FunctionComponent<IProps> = () => {
                 height: 'auto',
               }}
               alt="달그림"
-            />
+            /> */}
+            <NotImplemented />
           </div>
         ) : (
           list.map((v) => {
@@ -359,7 +362,7 @@ const VoteList: React.FunctionComponent<IProps> = () => {
           })
         )}
         {/* <Divider /> */}
-        {isLoading ? '무한스크롤' : null}
+        {/* {isLoading ? '무한스크롤' : null} */}
         {/* <Divider /> */}
       </ScrollWrapper>
     </Container>
