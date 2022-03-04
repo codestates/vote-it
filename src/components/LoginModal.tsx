@@ -90,6 +90,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const Button = styled.button`
+  font-family: 'OTWelcomeRA';
   font-size: 13px;
   /* font-weight: bold; */
   width: 192px;
@@ -102,7 +103,7 @@ const Button = styled.button`
   align-items: center;
   background-color: ${(props) => props.color};
   cursor: pointer;
-  color: black;
+  color: white;
   box-shadow: -1px -1px 1px var(--box-shadow),
     1px 1px 3px var(--box-shadow-darker);
   :hover {
@@ -247,16 +248,14 @@ const LoginModal: React.FunctionComponent<IProps> = ({
             />
           </InputWrapper>
           <ButtonWrapper>
-            <Button
-              onClick={handleButtonClick}
-              style={{ color: 'white' }}
-              color="var(--main-color)"
-            >
-              이메일로 로그인
+            <Button onClick={handleButtonClick} color="var(--main-color)">
+              로그인
             </Button>
           </ButtonWrapper>
           <SubWrapper>
-            <div onClick={handleClick('signup')}>회원가입</div>
+            <div style={{ fontSize: '14px' }} onClick={handleClick('signup')}>
+              회원가입
+            </div>
             {/* <div>계정 찾기</div> */}
           </SubWrapper>
         </Wrapper>

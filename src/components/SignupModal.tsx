@@ -305,11 +305,11 @@ const SignupModal: React.FunctionComponent<IProps> = ({
               </InputWrapper>
               <ButtonWrapper>
                 <Button
-                  style={{ color: 'white' }}
+                  style={{ fontFamily: 'OTWelcomeRA', color: 'white' }}
                   color="var(--main-color)"
                   onClick={SignupHandler}
                 >
-                  이메일로 계정 만들기
+                  계정 만들기
                 </Button>
               </ButtonWrapper>
               <SubWrapper>
