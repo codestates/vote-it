@@ -21,6 +21,7 @@ const ChildWrapper = styled.div<{ sub: boolean }>`
     /* .center {
     text-align: center;
   } */ 
+  cursor: pointer;
   .vote_box {
     display: flex;
     width: 75%;
@@ -105,6 +106,7 @@ const VoteList: React.FunctionComponent<IProps> = () => {
   }
   const [polls, setPolls] = useState<Poll[]>([]);
   const [offset, setOffset] = useState(0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoading, setIsLoading] = useState(false);
   const [isEnd, setIsEnd] = useState(false);
 
@@ -124,6 +126,7 @@ const VoteList: React.FunctionComponent<IProps> = () => {
         setIsLoading(false);
         setOffset(20);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const scrollRef = useRef<HTMLDivElement>(null);

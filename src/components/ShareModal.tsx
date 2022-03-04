@@ -193,14 +193,10 @@ export const Share = ({
   location,
 }: Props) => {
   const copyUrlRef = useRef(null);
-  const copyBtnRef = useRef(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const urlOrigin = window.location.origin;
-  console.log(location + '?approach=allow');
   const urlMod = btoa(btoa(location + '?approach=allow'));
-  console.log(urlMod);
   const urlValue = urlOrigin + '/vote/' + urlMod;
-  console.log(urlValue);
   // const [scrollBtn, setScrollBtn] = useState({ left: false, right: true });
   const dispatch = useDispatch();
   const copyUrl = () => {
@@ -334,6 +330,7 @@ export const Share = ({
     return () => {
       document.removeEventListener('keyup', modalESC);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

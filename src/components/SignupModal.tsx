@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import apiAxios from '../utils/apiAxios';
 import { useDispatch } from 'react-redux';
 import { notify } from '../modules/notification';
-import { RiGoogleFill, RiKakaoTalkFill } from 'react-icons/ri';
 import ServerErr from '../pages/ServerErr';
 const Canvas = styled.div`
   position: fixed;
@@ -237,6 +236,7 @@ const SignupModal: React.FunctionComponent<IProps> = ({
     return () => {
       document.removeEventListener('keyup', modalESC);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

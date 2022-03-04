@@ -351,8 +351,10 @@ function CreateVote({ finderRef, keyupHandler, setModalOn }: Props) {
       )
       .then((res) => {
         dispatch(notify('투표가 등록되었습니다.'));
+        console.log(res.data.pollId);
+        const id = res.data.pollId;
         // window.location.href = '/';
-        navigate('/');
+        navigate(`/vote/${id}`, { state: id });
       })
       .catch((err) => {
         if (err.response.status >= 500) {

@@ -4,7 +4,6 @@ import { WithdrawalModal } from './WithdrawalModal';
 import apiAxios from '../../utils/apiAxios';
 import { useDispatch } from 'react-redux';
 import { notify } from '../../modules/notification';
-import { setServers } from 'dns';
 import ServerErr from '../ServerErr';
 
 const Container = styled.div`
