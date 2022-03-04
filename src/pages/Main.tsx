@@ -9,7 +9,7 @@ import { notify } from '../modules/notification';
 import ServerErr from './ServerErr';
 import { Loading } from '.';
 import { MainEmpty } from './MainEmpty';
-
+import { LoadingVoteCard } from '../components/LoadingVoteCard';
 const MainOuter = styled.div`
   padding-top: 48px;
   width: 100%;
@@ -166,7 +166,7 @@ export const Main = () => {
           </div>
         )}
       </MainOuter>
-      {/* {isLoading && <LoadingVoteCard />} */}
+      {isLoading && <LoadingVoteCard />}
     </div>
   );
 };
