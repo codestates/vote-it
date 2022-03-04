@@ -7,6 +7,7 @@ import {
   IsBoolean,
   IsDateString,
   IsNotEmpty,
+  IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
@@ -33,6 +34,7 @@ export class Poll extends CommonEntity {
 
   @Column({ type: 'timestamp', nullable: true })
   @IsDateString()
+  @IsOptional()
   expirationDate: Date | null;
 
   @Column({ type: 'varchar', nullable: true })
