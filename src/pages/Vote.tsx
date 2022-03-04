@@ -352,19 +352,6 @@ export const Vote = ({ keyupHandler }: Props) => {
   const handelDelBtn = () => {
     setDel(true);
   };
-  const handleVotedCount = (id: number) => {
-    if (isPlural === 0 && isVoted) {
-      return;
-    }
-    setOptions(
-      options.map((el) => {
-        if (el.id === id) {
-          return { ...el, votedCount: el.votedCount + 1 };
-        }
-        return el;
-      }),
-    );
-  };
 
   const editModalHandler = () => {
     setIsEditOn(false);
@@ -414,7 +401,6 @@ export const Vote = ({ keyupHandler }: Props) => {
                 isVoted={obj.isVoted || false}
                 voted={voted}
                 VoteHandler={VoteHandler}
-                handleVotedCount={handleVotedCount}
               ></Option>
             );
           })}
