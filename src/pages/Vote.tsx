@@ -148,10 +148,23 @@ const ResultContainer = styled.div`
   }
 `;
 
-// const Divider = styled.div`
-//   height: 0;
-//   border-bottom: 1px solid black;
-// `;
+const WrongApproach = styled.div`
+  user-select: none;
+  display: flex;
+  align-items: center;
+  width: 512px;
+  height: 512px;
+  > div {
+    flex: 1 0 auto;
+  }
+  > div > img {
+    width: 128px;
+    height: 128px;
+  }
+  > div > div {
+    font-size: 18px;
+  }
+`;
 
 interface Ioptions {
   id: number;
@@ -169,9 +182,35 @@ interface Props {
 //   author: string;
 // }
 
+// const approach = new URLSearchParams(window.location.search).get('approach');
+
 export const Vote = ({ keyupHandler }: Props) => {
   const location = useLocation().state as number;
-  const id = location;
+  const approachFunc = (): [string[], number] => {
+    try {
+      return [
+        atob(atob(window.location.pathname.split('/')[2]))
+          .split('?')[1]
+          .split('='),
+        Number(
+          atob(atob(window.location.pathname.split('/')[2])).split('?')[0],
+        ),
+      ];
+    } catch {
+      return [['hello', 'world'], 999];
+    }
+  };
+  const approach = approachFunc();
+  console.log(approach);
+  // const approach = atob(atob(window.location.pathname.split('/')[2]))
+  //   .split('?')[1]
+  //   .split('=')
+  const id = location
+    ? location
+    : approach[0][1] === 'allow' && approach[0][0] === 'approach'
+    ? approach[1]
+    : null;
+  console.log(id);
   const [pollId, setPollId] = useState(-1);
   const [voteSub, setVoteSub] = useState('');
   const [username, setUsername] = useState('');
@@ -187,7 +226,6 @@ export const Vote = ({ keyupHandler }: Props) => {
   const [isEditOn, setIsEditOn] = useState(false);
   const [expiresForRender, setExpiresForRender] = useState('loading..');
   const userId = useSelector((state: RootState) => state.login.userId);
-
   const isLogin = useSelector((state: RootState) => state.login.isLogin);
   const dispatch = useDispatch();
 
@@ -359,75 +397,91 @@ export const Vote = ({ keyupHandler }: Props) => {
 
   return (
     <VoteOuter>
-      <EditVote
-        keyupHandler={keyupHandler}
-        id={id}
-        ModalHandler={editModalHandler}
-        isEditOn={isEditOn}
-        expires={expires}
-        setExpiresForRender={setExpiresForRender}
-      />
-      <VoteContainer>
-        <SubBox>{voteSub}</SubBox>
-        <EditDelBtn style={userId !== pollId ? { display: 'none' } : {}}>
-          <div
-            onClick={() => {
-              setIsEditOn(true);
-            }}
-          >
-            <AiOutlineEdit />
-            <div>수정하기</div>
-          </div>
-          <div onClick={handelDelBtn}>
-            <AiOutlineDelete />
-            <div>삭제하기</div>
-          </div>
-        </EditDelBtn>
-        <UserNameBox>{username}</UserNameBox>
-        <ExpiresBox>{expiresForRender}</ExpiresBox>
-        <ShareButton onClick={handleShareModal}>
-          <BiShareAlt style={{ width: '20px', height: 'auto' }} />
-          <div>공유하기</div>
-        </ShareButton>
+      {id ? (
+        <>
+          <EditVote
+            keyupHandler={keyupHandler}
+            id={id}
+            ModalHandler={editModalHandler}
+            isEditOn={isEditOn}
+            expires={expires}
+            setExpiresForRender={setExpiresForRender}
+          />
+          <VoteContainer>
+            <SubBox>{voteSub}</SubBox>
+            <EditDelBtn style={userId !== pollId ? { display: 'none' } : {}}>
+              <div
+                onClick={() => {
+                  setIsEditOn(true);
+                }}
+              >
+                <AiOutlineEdit />
+                <div>수정하기</div>
+              </div>
+              <div onClick={handelDelBtn}>
+                <AiOutlineDelete />
+                <div>삭제하기</div>
+              </div>
+            </EditDelBtn>
+            <UserNameBox>{username}</UserNameBox>
+            <ExpiresBox>{expiresForRender}</ExpiresBox>
+            <ShareButton onClick={handleShareModal}>
+              <BiShareAlt style={{ width: '20px', height: 'auto' }} />
+              <div>공유하기</div>
+            </ShareButton>
 
-        <OptionsBox style={!isVoted && !isDone ? {} : { gridColumn: 'span 6' }}>
-          {options.map((obj) => {
-            return (
-              <Option
-                key={obj.id}
-                id={obj.id}
-                pollId={id}
-                content={obj.content}
-                isVoted={obj.isVoted || false}
-                voted={voted}
-                VoteHandler={VoteHandler}
-              ></Option>
-            );
-          })}
-        </OptionsBox>
-        <ResultContainer style={!isDone && !isVoted ? { display: 'none' } : {}}>
-          <div style={{ fontFamily: 'OTWelcomeRA' }}>
-            {isVoted ? (
-              <Chart options={options} />
-            ) : (
-              <EmptyChart number={options.length} />
-            )}
+            <OptionsBox
+              style={!isVoted && !isDone ? {} : { gridColumn: 'span 6' }}
+            >
+              {options.map((obj) => {
+                return (
+                  <Option
+                    key={obj.id}
+                    id={obj.id}
+                    pollId={id}
+                    content={obj.content}
+                    isVoted={obj.isVoted || false}
+                    voted={voted}
+                    VoteHandler={VoteHandler}
+                  ></Option>
+                );
+              })}
+            </OptionsBox>
+            <ResultContainer
+              style={!isDone && !isVoted ? { display: 'none' } : {}}
+            >
+              <div style={{ fontFamily: 'OTWelcomeRA' }}>
+                {isVoted ? (
+                  <Chart options={options} />
+                ) : (
+                  <EmptyChart number={options.length} />
+                )}
+              </div>
+            </ResultContainer>
+          </VoteContainer>
+          <Comments
+            pollId={id}
+            keyupHandler={keyupHandler}
+            isVoted={isVoted || isDone}
+          ></Comments>
+          {shareModal.isOn ? (
+            <Share
+              voteSub={voteSub}
+              shareModal={shareModal}
+              setShareModal={setShareModal}
+              location={id}
+            />
+          ) : null}
+          <VoteDelModal del={del} setDel={setDel} id={id} />
+        </>
+      ) : (
+        <WrongApproach>
+          <div>
+            <img src={`${process.env.PUBLIC_URL}/images/cry.png`} alt="cry" />
+            <div>잘못된 접근입니다</div>
           </div>
-        </ResultContainer>
-      </VoteContainer>
-      <Comments
-        pollId={id}
-        keyupHandler={keyupHandler}
-        isVoted={isVoted || isDone}
-      ></Comments>
-      {shareModal.isOn ? (
-        <Share
-          voteSub={voteSub}
-          shareModal={shareModal}
-          setShareModal={setShareModal}
-        />
-      ) : null}
-      <VoteDelModal del={del} setDel={setDel} id={id} />
+        </WrongApproach>
+      )}
     </VoteOuter>
   );
 };
