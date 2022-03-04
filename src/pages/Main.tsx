@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import styled from 'styled-components';
 import FloatBtn from '../components/FloatBtn';
-import { LoadingVoteCard } from '../components/LoadingVoteCard';
+// import { LoadingVoteCard } from '../components/LoadingVoteCard';
 import { VoteCard } from '../components/VoteCard';
 import apiAxios from '../utils/apiAxios';
 import { useDispatch } from 'react-redux';
@@ -59,21 +59,20 @@ interface Post {
 
 export const Main = () => {
   const [posts, setPosts] = useState<Post[]>([]); //+
-  const [scrollY, setScrollY] = useState(0); //스크롤 값 저장
   const [btnStatus, setBtnStatus] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [offset, setOffset] = useState(0);
   const [isEnd, setIsEnd] = useState(false);
   const [err, setErr] = useState('');
+  const offset = useRef(0);
   const dispatch = useDispatch();
 
   useEffect(() => {
     setIsLoading(true);
     apiAxios
-      .get(`/polls?offset=${offset}&limit=${12}`)
+      .get(`/polls?offset=${offset.current}&limit=${12}`)
       .then((res) => {
         setPosts(res.data.polls);
-        setOffset(offset + 12);
+        offset.current += 12;
         setIsLoading(false);
       })
       .catch((err) => {
@@ -83,73 +82,61 @@ export const Main = () => {
   }, []);
 
   const handleScroll = useCallback((): void => {
-    //+
     const { innerHeight } = window;
     const { scrollHeight } = document.body;
     const { scrollTop } = document.documentElement;
-    if (Math.round(scrollTop + innerHeight) > scrollHeight && !isEnd) {
-      setIsLoading(true);
-      apiAxios
-        .get(`/polls?offset=${offset}&limit=${12}`)
-        .then((res) => {
-          if (res.data.polls.length === 0) {
-            dispatch(notify('모든 투표를 불러왔습니다.'));
-            setIsLoading(false);
-            setIsEnd(true);
-            return;
-          }
-          setTimeout(() => {
-            setPosts([...posts, ...res.data.polls]);
-            setOffset(offset + 12);
-            setIsLoading(false);
-          }, 1500);
-        })
-        .catch((err) => {
-          if (err.response.status >= 500) {
-            setErr(err.response.data.message);
-          } else {
-            console.log(err.response.data.message);
-          }
-          // alert(err)
-        });
+    if (isEnd || Math.round(scrollTop + innerHeight) <= scrollHeight) {
+      return;
     }
-  }, [dispatch, isEnd, offset, posts]);
+    setIsLoading(true);
+    apiAxios
+      .get(`/polls?offset=${offset.current}&limit=${12}`)
+      .then((res) => {
+        setIsLoading(false);
+        if (res.data.polls.length === 0) {
+          setIsEnd(true);
+          dispatch(notify('모든 투표를 불러왔습니다.'));
+          return;
+        }
+        setPosts([...posts, ...res.data.polls]);
+        offset.current += 12;
+      })
+      .catch((err) => {
+        if (err.response.status >= 500) {
+          setErr(err.response.data.message);
+        } else {
+          console.log(err.response.data.message);
+        }
+      });
+  }, [dispatch, isEnd, posts]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, true);
-
     return () => {
       window.removeEventListener('scroll', handleScroll, true);
     };
   }, [handleScroll]);
 
-  const handleFollow = () => {
-    setScrollY(window.pageYOffset); //스크롤 값 저장
-    if (scrollY > 100) setBtnStatus(true);
-    //버튼 보이는 범위 설정
-    else setBtnStatus(false);
-  };
-
   const handleTop = () => {
     //클릭하면 스크롤이 위로 올라가는 함수
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    setScrollY(0);
     setBtnStatus(false);
   };
 
   useEffect(() => {
+    const handleFollow = () => {
+      if (window.pageYOffset > 100) {
+        setBtnStatus(true);
+      } else {
+        setBtnStatus(false);
+      }
+    };
     window.addEventListener('scroll', handleFollow);
     return () => {
       window.removeEventListener('scroll', handleFollow);
     };
-  });
+  }, []);
 
-  //   id : "",
-  //   subject: "",
-  //   authorId: "",
-  //   isPrivate: "",
-  //   createdAt: "",
-  //   expirationDate: ""
   if (err !== '') {
     return <ServerErr err={err} />;
   }
@@ -179,6 +166,7 @@ export const Main = () => {
           </div>
         )}
       </MainOuter>
+      {/* {isLoading && <LoadingVoteCard />} */}
     </div>
   );
 };
