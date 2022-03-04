@@ -8,6 +8,7 @@ import { PollOption } from '../polls-options/entities/poll-option.entity';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { UpdateUserPollDto } from '../users/dto/update-user-poll.dto';
 import { joinPollPictureUrl } from '../common/utils/join-picture-url.util';
+import { GetPollsPaginationQueryDto } from './dto/get-polls-pagination-query.dto';
 
 @Injectable()
 export class PollsService {
@@ -18,8 +19,12 @@ export class PollsService {
     private readonly connection: Connection,
   ) {}
 
-  async getSpecificRangePolls({ offset, limit }: PaginationQueryDto) {
-    const rawPolls = await this.pollRepository
+  async getSpecificRangePolls({
+    offset,
+    limit,
+    query,
+  }: GetPollsPaginationQueryDto) {
+    const pollQueryBuilder = this.pollRepository
       .createQueryBuilder('poll')
       .select([
         'poll.id',
@@ -37,8 +42,13 @@ export class PollsService {
       .offset(offset)
       .limit(limit)
       .orderBy('poll.createdAt', 'DESC')
-      .groupBy('poll.id')
-      .getRawMany();
+      .groupBy('poll.id');
+    if (query !== undefined) {
+      pollQueryBuilder.andWhere('poll.subject LIKE :query', {
+        query: `%${query}%`,
+      });
+    }
+    const rawPolls = await pollQueryBuilder.getRawMany();
     const polls = rawPolls.map((rawPoll) => ({
       id: rawPoll.poll_id,
       createdAt: rawPoll.poll_createdAt,
