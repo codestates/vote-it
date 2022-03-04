@@ -1,7 +1,9 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import { notify } from '../modules/notification';
 
 const InputViewContainer = styled.div`
   display: flex;
@@ -54,6 +56,8 @@ export const ImageUpload = () => {
   const [selectedFile, setSelectedFile] = useState<File>();
   const [preview, setPreview] = useState('');
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     if (!selectedFile) {
       setPreview('');
@@ -84,7 +88,14 @@ export const ImageUpload = () => {
         onChange={onSelectFile}
         accept="image/*"
       />
-      <label htmlFor="profile-image">+</label>
+      <label
+        onClick={() => {
+          dispatch(notify('아직 미구현이에요!'));
+        }}
+        htmlFor="profile-image-not-implemented"
+      >
+        +
+      </label>
       {selectedFile && (
         <Preview
           src={preview}

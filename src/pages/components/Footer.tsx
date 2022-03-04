@@ -10,7 +10,7 @@ const FooterOuter = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: inset 0 8px 10px -6px var(--box-shadow);
+  box-shadow: inset 0 8px 10px -6px var(--box-shadow-darker);
   transition: all 0.5s;
 `;
 
