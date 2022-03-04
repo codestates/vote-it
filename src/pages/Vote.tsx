@@ -419,7 +419,6 @@ export const Vote = ({ keyupHandler }: Props) => {
               ></Option>
             );
           })}
-          {console.log(options)}
         </OptionsBox>
         <ResultContainer style={!isDone && !isVoted ? { display: 'none' } : {}}>
           <div style={{ fontFamily: 'OTWelcomeRA' }}>
