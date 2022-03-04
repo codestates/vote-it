@@ -58,7 +58,6 @@ export const OAuth = ({ setHeaderVisibility }: Props) => {
         },
       })
       .then((res) => {
-        // console.log(res.data.access_token);
         sendKakaoTokenToServer(res.data.access_token);
       });
   };

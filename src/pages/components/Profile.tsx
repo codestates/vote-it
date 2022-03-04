@@ -232,11 +232,9 @@ const Profile: React.FunctionComponent<IProps> = ({ keyupHandler }) => {
               setUsername(e.target.value);
             }}
             onFocus={() => {
-              console.log('focused');
               window.removeEventListener('keyup', keyupHandler);
             }}
             onBlur={() => {
-              console.log('blurred');
               window.addEventListener('keyup', keyupHandler);
             }}
           />
