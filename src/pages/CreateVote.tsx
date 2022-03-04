@@ -145,13 +145,19 @@ const CheckboxContainer = styled.div`
 const CheckboxAndTitle = styled.div`
   display: flex;
   margin: 10px;
+
   align-items: center;
 `;
 const Checkbox = styled.input`
   margin-right: 10px;
   cursor: pointer;
 `;
-const CheckboxTitle = styled.div`
+const CheckButton = styled.button`
+  width: 96px;
+  margin-left: 4px;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
   cursor: pointer;
   :hover {
     color: var(--font-lighter);
@@ -447,42 +453,43 @@ function CreateVote({ finderRef, keyupHandler, setModalOn }: Props) {
               <CheckboxContainer>
                 <div className="create-options">
                   <CheckboxAndTitle>
-                    <Checkbox
+                    {/* <Checkbox
                       type={'checkbox'}
                       onChange={() => {
                         setIsPlural(!isPlural);
                       }}
                       checked={isPlural}
-                    />
-                    <CheckboxTitle
+                    /> */}
+                    <CheckButton
                       onClick={() => {
                         setIsPlural(!isPlural);
                       }}
                     >
-                      중복 체크 여부
-                    </CheckboxTitle>
+                      {isPlural ? '중복 투표 가능' : '중복 투표 불가'}
+                    </CheckButton>
                   </CheckboxAndTitle>
                   <CheckboxAndTitle>
-                    <Checkbox
+                    {/* <Checkbox
                       type={'checkbox'}
                       onChange={() => {
                         setIsPrivate(!isPrivate);
                       }}
                       checked={isPrivate}
-                    />
-                    <CheckboxTitle
+                    /> */}
+                    <CheckButton
                       onClick={() => {
                         setIsPrivate(!isPrivate);
                       }}
                     >
-                      비공개
-                    </CheckboxTitle>
+                      {isPrivate ? '투표 비공개' : '투표 공개'}
+                    </CheckButton>
                   </CheckboxAndTitle>
                   <CheckboxAndTitle>
                     <Scheduler
                       keyupHandler={keyupHandler}
                       translate={'0px, -550px'}
                       CalenderValueHandler={CalenderValueHandler}
+                      expiresForCalender={''}
                     />
                   </CheckboxAndTitle>
                 </div>

@@ -69,6 +69,20 @@ const UserNameBox = styled.div`
   display: flex;
   justify-content: right;
   align-items: center;
+  margin-bottom: 8px;
+  @media only screen and (max-width: 768px) {
+    grid-column: span 6;
+  }
+`;
+
+const ExpiresBox = styled.div`
+  font-family: 'SUIT-Medium';
+  font-size: small;
+  color: gray;
+  grid-column: span 11;
+  display: flex;
+  justify-content: right;
+  align-items: center;
   margin-bottom: 20px;
   @media only screen and (max-width: 768px) {
     grid-column: span 6;
@@ -163,6 +177,7 @@ export const Vote = ({ keyupHandler }: Props) => {
   const [username, setUsername] = useState('');
   const [options, setOptions] = useState<Ioptions[]>([]);
   const [voted, setVoted] = useState<number[]>([]);
+  const [expires, setExpires] = useState('2022-03-01T14:59:59.000Z');
   const [shareModal, setShareModal] = useState({ isOn: false, isShow: false });
   // const [post, setPost] = useState<Post>(getPostById(id));
   const [del, setDel] = useState(false);
@@ -170,6 +185,7 @@ export const Vote = ({ keyupHandler }: Props) => {
   const [isVoted, setIsVoted] = useState(false);
   const [isPlural, setIsPlural] = useState(0);
   const [isEditOn, setIsEditOn] = useState(false);
+  const [expiresForRender, setExpiresForRender] = useState('loading..');
   const userId = useSelector((state: RootState) => state.login.userId);
 
   const isLogin = useSelector((state: RootState) => state.login.isLogin);
@@ -213,6 +229,8 @@ export const Vote = ({ keyupHandler }: Props) => {
             return el;
           }),
         );
+
+        setExpires(res.data.expirationDate);
         return res;
       })
       .then((res) => {
@@ -316,6 +334,7 @@ export const Vote = ({ keyupHandler }: Props) => {
                   return el;
                 }),
               );
+              setExpires(res.data.expirationDate);
             });
         })
         .catch((err) => dispatch(notify(err.response.data.message)));
@@ -358,6 +377,8 @@ export const Vote = ({ keyupHandler }: Props) => {
         id={id}
         ModalHandler={editModalHandler}
         isEditOn={isEditOn}
+        expires={expires}
+        setExpiresForRender={setExpiresForRender}
       />
       <VoteContainer>
         <SubBox>{voteSub}</SubBox>
@@ -376,6 +397,7 @@ export const Vote = ({ keyupHandler }: Props) => {
           </div>
         </EditDelBtn>
         <UserNameBox>{username}</UserNameBox>
+        <ExpiresBox>{expiresForRender}</ExpiresBox>
         <ShareButton onClick={handleShareModal}>
           <BiShareAlt style={{ width: '20px', height: 'auto' }} />
           <div>공유하기</div>

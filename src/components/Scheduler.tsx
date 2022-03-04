@@ -232,12 +232,14 @@ interface IProps {
   keyupHandler: (e: KeyboardEvent) => void;
   translate: string;
   CalenderValueHandler: ({ date, time }: Calender) => void;
+  expiresForCalender: string;
 }
 
 const Scheduler: React.FunctionComponent<IProps> = ({
   keyupHandler,
   translate,
   CalenderValueHandler,
+  expiresForCalender,
 }) => {
   const [view, setView] = useState(false);
   const [buttonText, setButtonText] = useState('마감시간');
@@ -320,6 +322,15 @@ const Scheduler: React.FunctionComponent<IProps> = ({
   useInterval(() => {
     time();
   }, 1000);
+
+  useEffect(() => {
+    if (expiresForCalender !== '') {
+      const date = expiresForCalender.split('T')[0];
+      const time = expiresForCalender.split('T')[1];
+      setInputValue({ date, time });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [expiresForCalender]);
 
   useEffect(() => {
     modifyButtonText();

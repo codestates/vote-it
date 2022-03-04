@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import apiAxios from '../utils/apiAxios';
 import { useDispatch } from 'react-redux';
@@ -227,6 +227,19 @@ const SignupModal: React.FunctionComponent<IProps> = ({
         }
       });
   };
+
+  const modalESC = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      handleModalOff();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keyup', modalESC);
+    return () => {
+      document.removeEventListener('keyup', modalESC);
+    };
+  }, []);
 
   return (
     <>

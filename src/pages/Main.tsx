@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { notify } from '../modules/notification';
 import { useNavigate } from 'react-router-dom';
 import ServerErr from './ServerErr';
+import { Loading } from '.';
 
 const MainOuter = styled.div`
   padding-top: 48px;
@@ -174,9 +175,10 @@ export const Main = () => {
                 />
               );
             })}
-            {isLoading
-              ? [1, 2, 3, 4].map((el) => <LoadingVoteCard key={el} />)
-              : ''}
+            {isLoading ? (
+              // ? [1, 2, 3, 4].map((el) => <LoadingVoteCard key={el} />)
+              <Loading />
+            ) : null}
           </MainContainer>
           {btnStatus ? (
             <div onClick={handleTop}>
