@@ -238,7 +238,7 @@ const VoteList: React.FunctionComponent<IProps> = () => {
           })
         )}
         {/* <Divider /> */}
-        {isLoading ? '무한스크롤' : null}
+        {/* {isLoading ? '무한스크롤' : null} */}
         {/* <Divider /> */}
       </ScrollWrapper>
     </Container>
