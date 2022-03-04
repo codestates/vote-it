@@ -499,7 +499,7 @@ function CreateVote({ finderRef, keyupHandler, setModalOn }: Props) {
                       fontSize: 'small',
                     }}
                   >
-                    클릭하여 이미지를 넣거나 드레그 해주세요.
+                    클릭하여 이미지를 넣어주세요.
                   </div>
                 </ImgContainer>
               </CheckboxContainer>
