@@ -237,11 +237,9 @@ export const Comments = ({ keyupHandler, isVoted, pollId }: Iprops) => {
           setComment(e.target.value);
         }}
         onFocus={() => {
-          console.log('focused');
           window.removeEventListener('keyup', keyupHandler);
         }}
         onBlur={() => {
-          console.log('blurred');
           window.addEventListener('keyup', keyupHandler);
         }}
       />
@@ -254,7 +252,6 @@ export const Comments = ({ keyupHandler, isVoted, pollId }: Iprops) => {
           댓글 달기
         </CommentBtn>
       </BtnBox>
-      {console.log(commentList)}
       {commentList.map((obj) => {
         return (
           <Comment

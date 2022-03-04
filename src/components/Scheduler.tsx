@@ -5,7 +5,6 @@ import {
   FaRegCalendarAlt,
   FaRegTimesCircle,
   FaCheckCircle,
-  FaTimesCircle,
 } from 'react-icons/fa';
 import { checkValidDate, setDateAlias } from '../functions';
 
@@ -311,7 +310,6 @@ const Scheduler: React.FunctionComponent<IProps> = ({
         const leng = value.length;
         const validCheck = checkValidDate(y, m, d, leng);
         if (validCheck !== inputValidCheck) {
-          // console.log('validcheck');
           setInputValidCheck(validCheck);
         }
       }
@@ -363,9 +361,11 @@ const Scheduler: React.FunctionComponent<IProps> = ({
 
   useEffect(() => {
     window.addEventListener('keyup', ESCKeyUp);
+
     return () => {
       window.removeEventListener('keyup', ESCKeyUp);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //! 팝업버튼 이미지는 맘에 드는걸로 바꾸셔도됨
@@ -386,11 +386,9 @@ const Scheduler: React.FunctionComponent<IProps> = ({
               </div>
               <InputWrapper
                 onFocus={() => {
-                  console.log('focused');
                   window.removeEventListener('keyup', keyupHandler);
                 }}
                 onBlur={() => {
-                  console.log('blurred');
                   window.addEventListener('keyup', keyupHandler);
                 }}
                 focus={inputFocus}

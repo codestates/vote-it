@@ -178,11 +178,9 @@ const Security: React.FunctionComponent<IProps> = ({ keyupHandler }) => {
                   setCurrentPassword(e.target.value);
                 }}
                 onFocus={() => {
-                  console.log('focused');
                   window.removeEventListener('keyup', keyupHandler);
                 }}
                 onBlur={() => {
-                  console.log('blurred');
                   window.addEventListener('keyup', keyupHandler);
                 }}
               />
@@ -196,11 +194,9 @@ const Security: React.FunctionComponent<IProps> = ({ keyupHandler }) => {
                   setNewPassword(e.target.value);
                 }}
                 onFocus={() => {
-                  console.log('focused');
                   window.removeEventListener('keyup', keyupHandler);
                 }}
                 onBlur={() => {
-                  console.log('blurred');
                   window.addEventListener('keyup', keyupHandler);
                 }}
               />
@@ -212,11 +208,9 @@ const Security: React.FunctionComponent<IProps> = ({ keyupHandler }) => {
                 value={checkNew}
                 onChange={checkNewHandler}
                 onFocus={() => {
-                  console.log('focused');
                   window.removeEventListener('keyup', keyupHandler);
                 }}
                 onBlur={() => {
-                  console.log('blurred');
                   window.addEventListener('keyup', keyupHandler);
                 }}
               />
@@ -234,11 +228,9 @@ const Security: React.FunctionComponent<IProps> = ({ keyupHandler }) => {
                 setIsWithdrawal(true);
               }}
               onFocus={() => {
-                console.log('focused');
                 window.removeEventListener('keyup', keyupHandler);
               }}
               onBlur={() => {
-                console.log('blurred');
                 window.addEventListener('keyup', keyupHandler);
               }}
             >

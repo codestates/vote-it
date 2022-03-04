@@ -269,7 +269,6 @@ export const Vote = ({ keyupHandler }: Props) => {
           setVoted(voted.filter((el) => el !== optionId));
           setOptions(
             options.map((el: any) => {
-              // console.log(el)
               if (el.id === optionId) {
                 return { ...el, isVoted: false, votedCount: el.votedCount - 1 };
               }
@@ -419,7 +418,6 @@ export const Vote = ({ keyupHandler }: Props) => {
               ></Option>
             );
           })}
-          {console.log(options)}
         </OptionsBox>
         <ResultContainer style={!isDone && !isVoted ? { display: 'none' } : {}}>
           <div style={{ fontFamily: 'OTWelcomeRA' }}>

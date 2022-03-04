@@ -213,7 +213,6 @@ const SignupModal: React.FunctionComponent<IProps> = ({
     apiAxios
       .post('auth/signup', { email, nickname: name, password })
       .then((res) => {
-        console.log(res.data);
         // window.location.href = './';
         dispatch(notify('회원가입이 완료되었습니다.'));
         setModalOn({ isOn: false, isShow: false });
@@ -223,7 +222,6 @@ const SignupModal: React.FunctionComponent<IProps> = ({
           setErr(err.response.data.message);
         } else {
           dispatch(notify(err.response.data.message));
-          console.log(err.response.data.message);
         }
       });
   };
