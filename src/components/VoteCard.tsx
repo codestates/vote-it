@@ -139,6 +139,7 @@ export const VoteCard = ({
   createdAt,
   expirationDate,
   picture,
+  participatedCount,
 }: IPost) => {
   // const location = useLocation().state as IPost;
   const navigate = useNavigate();
@@ -172,7 +173,7 @@ export const VoteCard = ({
       </TitleBox>
       <StyledBody>
         <HiddenTitle>{subject}</HiddenTitle>
-        <StyledNum>참여인원 45명</StyledNum>
+        <StyledNum>참여인원 {participatedCount}명</StyledNum>
         <StyledDate>시작일 {dateMaker(createdAt)}</StyledDate>
         <StyledDate>
           {!expirationDate

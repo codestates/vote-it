@@ -53,6 +53,7 @@ interface Post {
   expirationDate: string;
   author: Author;
   picture: string | null;
+  participatedCount: number;
 }
 
 export const Main = () => {
@@ -169,6 +170,7 @@ export const Main = () => {
                   createdAt={el.createdAt}
                   expirationDate={el.expirationDate}
                   picture={el.picture}
+                  participatedCount={el.participatedCount}
                 />
               );
             })}
