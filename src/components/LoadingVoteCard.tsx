@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { TitleBox, StyledBody } from './VoteCard';
-
+import { useSelector } from 'react-redux';
+import { RootState } from '../modules';
 const LoadingContainer = styled.div`
   grid-column: span 3;
   display: flex;
@@ -59,19 +60,31 @@ const StyledView = styled.div`
 `;
 
 export const LoadingVoteCard = () => {
+  const isDark = useSelector((state: RootState) => state.login.isDark);
   return (
-    <LoadingContainer>
-      <TitleBox>
-        <TitleCover>
-          <TitleView>title입니다~</TitleView>
-        </TitleCover>
-      </TitleBox>
-      <StyledBody>
-        <StyledView>참여인원 loading~ 명</StyledView>
-        <StyledView>시작일 loading~</StyledView>
-        <StyledView>마감일 loading~~</StyledView>
-        <StyledView>작성자 loading~~</StyledView>
-      </StyledBody>
-    </LoadingContainer>
+    <div>
+      <img
+        src={
+          isDark
+            ? `${process.env.PUBLIC_URL}/Infinity-dark.gif`
+            : `${process.env.PUBLIC_URL}/Infinity-light.gif`
+        }
+        alt="mainLoading"
+      />
+    </div>
+
+    // <LoadingContainer>
+    //   <TitleBox>
+    //     <TitleCover>
+    //       <TitleView>title입니다~</TitleView>
+    //     </TitleCover>
+    //   </TitleBox>
+    //   <StyledBody>
+    //     <StyledView>참여인원 loading~ 명</StyledView>
+    //     <StyledView>시작일 loading~</StyledView>
+    //     <StyledView>마감일 loading~~</StyledView>
+    //     <StyledView>작성자 loading~~</StyledView>
+    //   </StyledBody>
+    // </LoadingContainer>
   );
 };
