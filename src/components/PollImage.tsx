@@ -10,6 +10,31 @@ const InputViewContainer = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
+  form {
+    width: 99%;
+    height: 99%;
+    justify-content: center;
+    align-items: center;
+  }
+  label {
+    flex: 1 0 auto;
+    margin: 8px;
+    width: 240px;
+    height: 184px;
+    line-height: 184px;
+    font-size: 32px;
+    /* border-radius: 100px; */
+    z-index: 100;
+    border-radius: 4px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    cursor: pointer;
+    :hover {
+      opacity: 1;
+      transition: all 0.3s;
+    }
+  }
 `;
 
 const InputBox = styled.input`
@@ -18,6 +43,7 @@ const InputBox = styled.input`
   border-radius: 100px;
   margin-bottom: 20px; */
   /* position: absolute; */
+  display: none;
   width: 70%;
   height: 70%;
   padding: 0;
@@ -28,6 +54,7 @@ const InputBox = styled.input`
 `;
 
 const Preview = styled.img`
+  position: absolute;
   width: 256px;
   height: 200px;
   /* border-radius: 100px; */
@@ -114,11 +141,13 @@ export const PollImage = ({ setFile }: IProps) => {
         // onSubmit={handleSubmit}
       >
         <InputBox
+          id="add-vote-image"
           type={'file'}
           style={!selectedFile ? {} : { display: 'none' }}
           onChange={onSelectFile}
           accept="image/png,image/jpeg,image/webp,image/svg+xml"
         />
+
         {/* <input type={'submit'} value="사진 업로드" /> */}
       </form>
       {selectedFile && (
@@ -129,6 +158,7 @@ export const PollImage = ({ setFile }: IProps) => {
           }}
         />
       )}
+      <label htmlFor="add-vote-image">+</label>
     </InputViewContainer>
   );
 };
