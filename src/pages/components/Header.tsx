@@ -87,7 +87,7 @@ const SearchWrapper = styled.div<{ slashVisible: boolean }>`
     width: 14px;
     height: 14px;
     top: -2px;
-    left: 24px;
+    left: 48px;
     line-height: 14px;
     color: var(--font-lighter);
     border: 1px solid var(--border-lighter);
@@ -447,9 +447,39 @@ const Header: React.FunctionComponent<Props> = ({
           >
             <FiX />
           </CloseMiniSearch>
-          <MiniSearch type={'text'} />
+          <MiniSearch
+            type={'text'}
+            value={searchQuery}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+            }}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter') {
+                // Search 함수
+                if (searchQuery === '') {
+                  dispatch(notify('검색어를 입력해주세요.'));
+                  return;
+                }
+                navigate(`/search?query=${searchQuery}`, {
+                  state: searchQuery,
+                });
+                setIsMiniOpen(false);
+              }
+            }}
+          />
           <MiniSearchIcon>
-            <FaSearch />
+            <FaSearch
+              onClick={() => {
+                if (searchQuery === '') {
+                  dispatch(notify('검색어를 입력해주세요.'));
+                  return;
+                }
+                navigate(`/search?query=${searchQuery}`, {
+                  state: searchQuery,
+                });
+                setIsMiniOpen(false);
+              }}
+            />
           </MiniSearchIcon>
         </MiniSearchContainer>
       ) : null}
@@ -511,9 +541,6 @@ const Header: React.FunctionComponent<Props> = ({
               /
             </div>
           </div>
-          <SearchBox>
-            <FaSearch style={{ color: 'white' }} />
-          </SearchBox>
         </SearchWrapper>
         {isLogin ? (
           <SettingWrapper>
@@ -522,6 +549,13 @@ const Header: React.FunctionComponent<Props> = ({
               onClick={() => {
                 disableModal();
                 setIsMiniOpen(!isMiniOpen);
+                // if (searchQuery === '') {
+                //   dispatch(notify('검색어를 입력해주세요.'));
+                //   return;
+                // }
+                // navigate(`/search?query=${searchQuery}`, {
+                //   state: searchQuery,
+                // });
               }}
             >
               <FaSearch />
@@ -547,6 +581,13 @@ const Header: React.FunctionComponent<Props> = ({
               onClick={() => {
                 disableModal();
                 setIsMiniOpen(!isMiniOpen);
+                // if (searchQuery === '') {
+                //   dispatch(notify('검색어를 입력해주세요.'));
+                //   return;
+                // }
+                // navigate(`/search?query=${searchQuery}`, {
+                //   state: searchQuery,
+                // });
               }}
               style={{ marginTop: '5px' }}
             >
