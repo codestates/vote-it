@@ -135,7 +135,7 @@ export const Comments = ({ keyupHandler, isVoted, pollId }: Iprops) => {
           }, 1500);
         });
     }
-  }, [isEnd, offset, commentList]);
+  }, [isEnd, pollId, offset, accessToken, commentList]);
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, true);
     return () => {

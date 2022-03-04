@@ -6,8 +6,8 @@ import { VoteCard } from '../components/VoteCard';
 import apiAxios from '../utils/apiAxios';
 import { useDispatch } from 'react-redux';
 import { notify } from '../modules/notification';
-import { useNavigate } from 'react-router-dom';
 import ServerErr from './ServerErr';
+import { MainEmpty } from './MainEmpty';
 
 const MainOuter = styled.div`
   padding-top: 48px;
@@ -64,8 +64,8 @@ export const Main = () => {
   const [offset, setOffset] = useState(0);
   const [isEnd, setIsEnd] = useState(false);
   const [err, setErr] = useState('');
+  const [isEmply, setIsEmpty] = useState(false);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   useEffect(() => {
     setIsLoading(true);
@@ -77,7 +77,7 @@ export const Main = () => {
         setIsLoading(false);
 
         if (res.data.polls.length === 0) {
-          navigate('/emptymain');
+          setIsEmpty(true);
         }
       })
       .catch((err) => {
@@ -158,32 +158,38 @@ export const Main = () => {
   return (
     <>
       {err === '' ? (
-        <MainOuter>
-          <MainContainer>
-            {posts.map((el, idx) => {
-              return (
-                <VoteCard
-                  key={idx}
-                  id={el.id}
-                  subject={el.subject}
-                  author={el.author.nickname}
-                  createdAt={el.createdAt}
-                  expirationDate={el.expirationDate}
-                  picture={el.picture}
-                  participatedCount={el.participatedCount}
-                />
-              );
-            })}
-            {isLoading
-              ? [1, 2, 3, 4].map((el) => <LoadingVoteCard key={el} />)
-              : ''}
-          </MainContainer>
-          {btnStatus ? (
-            <div onClick={handleTop}>
-              <FloatBtn />
-            </div>
-          ) : null}{' '}
-        </MainOuter>
+        <>
+          {isEmply ? (
+            <MainEmpty />
+          ) : (
+            <MainOuter>
+              <MainContainer>
+                {posts.map((el, idx) => {
+                  return (
+                    <VoteCard
+                      key={idx}
+                      id={el.id}
+                      subject={el.subject}
+                      author={el.author.nickname}
+                      createdAt={el.createdAt}
+                      expirationDate={el.expirationDate}
+                      picture={el.picture}
+                      participatedCount={el.participatedCount}
+                    />
+                  );
+                })}
+                {isLoading
+                  ? [1, 2, 3, 4].map((el) => <LoadingVoteCard key={el} />)
+                  : ''}
+              </MainContainer>
+              {btnStatus ? (
+                <div onClick={handleTop}>
+                  <FloatBtn />
+                </div>
+              ) : null}{' '}
+            </MainOuter>
+          )}
+        </>
       ) : (
         <ServerErr err={err} />
       )}
