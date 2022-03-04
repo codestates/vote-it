@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../modules';
@@ -14,6 +14,7 @@ import { FaPlus, FaUserCircle, FaBell, FaSearch } from 'react-icons/fa';
 import { FiX } from 'react-icons/fi';
 import { darkHandler } from '../../modules/login';
 import { useRef } from 'react';
+import { notify } from '../../modules/notification';
 
 const Container = styled.div`
   position: fixed;
@@ -86,7 +87,7 @@ const SearchWrapper = styled.div<{ slashVisible: boolean }>`
     width: 14px;
     height: 14px;
     top: -2px;
-    left: 24px;
+    left: 48px;
     line-height: 14px;
     color: var(--font-lighter);
     border: 1px solid var(--border-lighter);
@@ -323,6 +324,8 @@ interface Props {
   finderRef: React.MutableRefObject<HTMLInputElement | null>;
   modalOn: Modal;
   setModalOn: Dispatch<SetStateAction<Modal>>;
+  setSearchQuery: Dispatch<SetStateAction<string>>;
+  searchQuery: string;
 }
 
 // type TDrop = {
@@ -335,6 +338,8 @@ const Header: React.FunctionComponent<Props> = ({
   finderRef,
   modalOn,
   setModalOn,
+  setSearchQuery,
+  searchQuery,
 }) => {
   // const [modalOn, setModalOn] = useState<Modal>({
   //   isOn: false,
@@ -345,6 +350,8 @@ const Header: React.FunctionComponent<Props> = ({
   const [noticeOn, setNoticeOn] = useState(false);
   const [modalClass, setModalClass] = useState<number>(0);
   const [isMiniOpen, setIsMiniOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   const disableModal = () => {
     setDropOn(false);
@@ -440,9 +447,39 @@ const Header: React.FunctionComponent<Props> = ({
           >
             <FiX />
           </CloseMiniSearch>
-          <MiniSearch type={'text'} />
+          <MiniSearch
+            type={'text'}
+            value={searchQuery}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+            }}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter') {
+                // Search 함수
+                if (searchQuery === '') {
+                  dispatch(notify('검색어를 입력해주세요.'));
+                  return;
+                }
+                navigate(`/search?query=${searchQuery}`, {
+                  state: searchQuery,
+                });
+                setIsMiniOpen(false);
+              }
+            }}
+          />
           <MiniSearchIcon>
-            <FaSearch />
+            <FaSearch
+              onClick={() => {
+                if (searchQuery === '') {
+                  dispatch(notify('검색어를 입력해주세요.'));
+                  return;
+                }
+                navigate(`/search?query=${searchQuery}`, {
+                  state: searchQuery,
+                });
+                setIsMiniOpen(false);
+              }}
+            />
           </MiniSearchIcon>
         </MiniSearchContainer>
       ) : null}
@@ -477,10 +514,22 @@ const Header: React.FunctionComponent<Props> = ({
             onKeyPress={(e) => {
               if (e.key === 'Enter') {
                 // Search 함수
+                if (searchQuery === '') {
+                  dispatch(notify('검색어를 입력해주세요.'));
+                  return;
+                }
+                navigate(`/search?query=${searchQuery}`, {
+                  state: searchQuery,
+                });
               }
             }}
             type={'text'}
             placeholder={'검색...'}
+            value={searchQuery}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              // console.log(searchQuery)
+            }}
           />
           <div className="shortcut-wrapper">
             <div
@@ -492,9 +541,6 @@ const Header: React.FunctionComponent<Props> = ({
               /
             </div>
           </div>
-          <SearchBox>
-            <FaSearch style={{ color: 'white' }} />
-          </SearchBox>
         </SearchWrapper>
         {isLogin ? (
           <SettingWrapper>
@@ -503,6 +549,13 @@ const Header: React.FunctionComponent<Props> = ({
               onClick={() => {
                 disableModal();
                 setIsMiniOpen(!isMiniOpen);
+                // if (searchQuery === '') {
+                //   dispatch(notify('검색어를 입력해주세요.'));
+                //   return;
+                // }
+                // navigate(`/search?query=${searchQuery}`, {
+                //   state: searchQuery,
+                // });
               }}
             >
               <FaSearch />
@@ -528,6 +581,13 @@ const Header: React.FunctionComponent<Props> = ({
               onClick={() => {
                 disableModal();
                 setIsMiniOpen(!isMiniOpen);
+                // if (searchQuery === '') {
+                //   dispatch(notify('검색어를 입력해주세요.'));
+                //   return;
+                // }
+                // navigate(`/search?query=${searchQuery}`, {
+                //   state: searchQuery,
+                // });
               }}
               style={{ marginTop: '5px' }}
             >

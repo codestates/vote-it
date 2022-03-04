@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { FaCaretDown, FaCaretUp, FaRegThumbsUp } from 'react-icons/fa';
+import { FaCaretDown, FaCaretUp } from 'react-icons/fa';
 import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../modules';
@@ -39,6 +39,7 @@ const CommentUsername = styled.div`
 const CommentContent = styled.div`
   padding: 10px;
   text-align: left;
+  white-space: pre-wrap;
 `;
 
 const ReplyDiv = styled.div`
@@ -255,7 +256,6 @@ export const Comment = ({
         </CommentPatchContainer>
       )}
       <LikeBox>
-        <FaRegThumbsUp className="thumb" />
         <AiOutlineEdit
           onClick={() => {
             setIsPatchComment(!isPatchComment);
