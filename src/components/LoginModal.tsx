@@ -256,6 +256,19 @@ const LoginModal: React.FunctionComponent<IProps> = ({
     // }
   }, []);
 
+  const modalESC = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      handleModalOff();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keyup', modalESC);
+    return () => {
+      document.removeEventListener('keyup', modalESC);
+    };
+  }, []);
+
   return (
     <>
       <Canvas
@@ -349,7 +362,7 @@ const LoginModal: React.FunctionComponent<IProps> = ({
           </ButtonWrapper>
           <SubWrapper>
             <div onClick={handleClick('signup')}>회원가입</div>
-            <div>계정 찾기</div>
+            {/* <div>계정 찾기</div> */}
           </SubWrapper>
         </Wrapper>
       </View>
