@@ -310,6 +310,10 @@ function CreateVote({ finderRef, keyupHandler, setModalOn }: Props) {
       dispatch(notify('선택지는 최소 2개 이상입니다.'));
       return;
     }
+    // if (calendarValue === '') {
+    //   dispatch(notify('마감 시간을 입력해주세요.'));
+    //   return;
+    // }
     const accessToken = localStorage.getItem('accessToken');
     let fileId = null;
     if (!!file) {
@@ -408,9 +412,6 @@ function CreateVote({ finderRef, keyupHandler, setModalOn }: Props) {
                   window.addEventListener('keyup', keyupHandler);
                 }}
               />
-
-              {/* option section */}
-
               <OptionContainer>
                 {optionList.map((el, index) => {
                   return (
@@ -495,7 +496,7 @@ function CreateVote({ finderRef, keyupHandler, setModalOn }: Props) {
                       fontSize: 'small',
                     }}
                   >
-                    클릭하여 이미지를 넣어주세요.
+                    클릭하여 이미지를 넣어주세요..
                   </div>
                 </ImgContainer>
               </CheckboxContainer>
