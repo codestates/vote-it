@@ -350,6 +350,8 @@ const Scheduler: React.FunctionComponent<IProps> = ({
       const date = expiresForCalender.split('T')[0];
       const time = expiresForCalender.split('T')[1];
       setInputValue({ date, time });
+    } else {
+      setInputValue({ date: '', time: '' });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [expiresForCalender]);

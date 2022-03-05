@@ -96,6 +96,7 @@ interface Props {
   isEditOn: boolean;
   expires: string;
   setExpiresForRender: Dispatch<SetStateAction<string>>;
+  setExpires: Dispatch<SetStateAction<string>>;
 }
 
 export const EditVote = ({
@@ -105,6 +106,7 @@ export const EditVote = ({
   isEditOn,
   expires,
   setExpiresForRender,
+  setExpires,
 }: Props) => {
   const [calendarValue, setCalendarValue] = useState('');
   const [isPrivate, setIsPrivate] = useState(false);
@@ -113,14 +115,14 @@ export const EditVote = ({
   const dispatch = useDispatch();
 
   const CalenderValueHandler = ({ date, time }: CalenderValue) => {
+    if (time === '' && date === '') {
+      setCalendarValue('');
+      return;
+    }
     if (time === '') {
       time = '23:59:59';
     }
     if (date === '') {
-      if (time === '') {
-        setCalendarValue('');
-        return;
-      }
       const today = new Date();
       const todayArr = today.toLocaleDateString().split('. ');
       if (todayArr[1].length === 1) {
@@ -142,7 +144,6 @@ export const EditVote = ({
         time +
         '+09:00',
     );
-    // TODO : ISO 8601 Time
   };
 
   // const expiresDate = expires.split('T')[0].split('-').join('');
@@ -150,17 +151,33 @@ export const EditVote = ({
   // const expiresForCalendar =
   //   expiresDate + 'T' + expiresTime[0] + ':' + expiresTime[1];
 
+  const timeMaker = (value: string) => {
+    if (!value) return '';
+    let date = new Date(value);
+    let dateArr = date.toLocaleString().split('. ');
+    let timeArr = date.toLocaleString().split(' ');
+    return (
+      `${dateArr[0]}-${
+        dateArr[1].length === 1 ? '0' + dateArr[1] : dateArr[1]
+      }-${dateArr[2].length === 1 ? '0' + dateArr[2] : dateArr[2]} ` +
+      `${
+        timeArr[3] === '오후'
+          ? `${+timeArr[4].split(':')[0] + 12}:${timeArr[4].split(':')[1]}`
+          : timeArr[4].split(':')[0] + 12 + ':' + timeArr[4].split(':')[1]
+      } 까지`
+    );
+  };
+
   const patchHandler = () => {
-    if (calendarValue === '') {
-      dispatch(notify('마감 시간을 입력해주세요.'));
-      return;
+    if (expiresForCalendar === '') {
+      setCalendarValue('');
     }
     const accessToken = localStorage.getItem('accessToken');
     apiAxios
       .patch(
         `users/me/polls/${id}`,
         {
-          expirationDate: calendarValue,
+          expirationDate: calendarValue === '' ? null : calendarValue,
           isPrivate: isPrivate,
         },
         {
@@ -172,7 +189,8 @@ export const EditVote = ({
       .then((res) => {
         dispatch(notify('수정이 완료되었습니다.'));
         ModalHandler();
-        window.location.reload();
+        setExpiresForRender(timeMaker(calendarValue));
+        // window.location.reload();
       })
       .catch((err) => console.log(err.response));
   };
@@ -190,13 +208,15 @@ export const EditVote = ({
     const timeTemp = kstDate.toTimeString().split(':');
     const time = timeTemp[0] + ':' + timeTemp[1];
     CalenderValueHandler({ date, time });
-    setExpiresForCalendar(date + 'T' + time);
     if (+dateTemp[0] < 2000) {
       setExpiresForRender('기한이 없습니다.');
+      setExpiresForCalendar('');
+      setCalendarValue('');
     } else {
       setExpiresForRender(
         `${dateTemp[0]}-${dateTemp[1]}-${dateTemp[2]} ${time} 까지`,
       );
+      setExpiresForCalendar(date + 'T' + time);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [expires]);
