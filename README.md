@@ -49,8 +49,8 @@ npm run build
 ## Environment Variables
 ```bash
 # Examples
-PORT=3000
-ACCESS_SECRET
+REACT_APP_API_URL=SERVER URL(with port)
+REACT_APP_KAKAO_REST_KEY=
 
 
 ## add later

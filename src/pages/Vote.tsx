@@ -404,6 +404,7 @@ export const Vote = ({ keyupHandler }: Props) => {
             isEditOn={isEditOn}
             expires={expires}
             setExpiresForRender={setExpiresForRender}
+            setExpires={setExpires}
           />
           <VoteContainer>
             <SubBox>{voteSub}</SubBox>
@@ -422,7 +423,13 @@ export const Vote = ({ keyupHandler }: Props) => {
               </div>
             </EditDelBtn>
             <UserNameBox>{username}</UserNameBox>
-            <ExpiresBox>{expiresForRender}</ExpiresBox>
+            <ExpiresBox>
+              {
+                !expiresForRender
+                  ? '기한이 없습니다.'
+                  : expiresForRender /*TODO*/
+              }
+            </ExpiresBox>
             <ShareButton onClick={handleShareModal}>
               <BiShareAlt style={{ width: '20px', height: 'auto' }} />
               <div>공유하기</div>

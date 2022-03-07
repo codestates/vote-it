@@ -7,9 +7,8 @@ import apiAxios from '../utils/apiAxios';
 import { useDispatch } from 'react-redux';
 import { notify } from '../modules/notification';
 import ServerErr from './ServerErr';
-import { Loading } from '.';
-import { MainEmpty } from './MainEmpty';
 import { useLocation } from 'react-router-dom';
+import { EmptySearch } from './components/EmptySearch';
 
 const MainOuter = styled.div`
   padding-top: 48px;
@@ -61,7 +60,6 @@ interface Post {
 export const Search = () => {
   const [posts, setPosts] = useState<Post[]>([]); //+
   const [btnStatus, setBtnStatus] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [isEnd, setIsEnd] = useState(false);
   const [err, setErr] = useState('');
   const offset = useRef(0);
@@ -70,14 +68,11 @@ export const Search = () => {
   const searchQuery = location;
 
   useEffect(() => {
-    setIsLoading(true);
-    console.log(searchQuery);
     apiAxios
       .get(`/polls?offset=${0}&limit=${12}&query=${searchQuery}`)
       .then((res) => {
         setPosts(res.data.polls);
         offset.current += 12;
-        setIsLoading(false);
       })
       .catch((err) => {
         setErr(err.message);
@@ -91,11 +86,9 @@ export const Search = () => {
     if (isEnd || Math.round(scrollTop + innerHeight) <= scrollHeight) {
       return;
     }
-    setIsLoading(true);
     apiAxios
       .get(`/polls?offset=${offset.current}&limit=${12}&query=${searchQuery}`)
       .then((res) => {
-        setIsLoading(false);
         if (res.data.polls.length === 0) {
           setIsEnd(true);
           dispatch(notify('모든 투표를 불러왔습니다.'));
@@ -144,7 +137,7 @@ export const Search = () => {
     return <ServerErr err={err} />;
   }
   if (posts.length === 0) {
-    return <MainEmpty />;
+    return <EmptySearch />;
   }
   return (
     <div>

@@ -256,18 +256,21 @@ function CreateVote({ finderRef, keyupHandler, setModalOn }: Props) {
   }
 
   const CalenderValueHandler = ({ date, time }: CalenderValue) => {
+    if (time === '' && date === '') {
+      setCalendarValue('');
+      return;
+    }
     if (time === '') {
       time = '23:59:59';
     }
     if (date === '') {
-      if (time === '') {
-        setCalendarValue('');
-        return;
-      }
       const today = new Date();
       const todayArr = today.toLocaleDateString().split('. ');
       if (todayArr[1].length === 1) {
         todayArr[1] = '0' + todayArr[1];
+      }
+      if (todayArr[2].length === 2) {
+        todayArr[2] = '0' + todayArr[2];
       }
       todayArr[2] = todayArr[2].slice(0, todayArr[2].length - 1);
       date = todayArr.join('');
@@ -412,9 +415,6 @@ function CreateVote({ finderRef, keyupHandler, setModalOn }: Props) {
                   window.addEventListener('keyup', keyupHandler);
                 }}
               />
-
-              {/* option section */}
-
               <OptionContainer>
                 {optionList.map((el, index) => {
                   return (
@@ -499,7 +499,7 @@ function CreateVote({ finderRef, keyupHandler, setModalOn }: Props) {
                       fontSize: 'small',
                     }}
                   >
-                    클릭하여 이미지를 넣어주세요.
+                    클릭하여 이미지를 넣어주세요..
                   </div>
                 </ImgContainer>
               </CheckboxContainer>
