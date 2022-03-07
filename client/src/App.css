@@ -1,0 +1,194 @@
+:root[color-theme='light'] {
+  --bg: #f8f8f8;
+  --menu-bg: #fff;
+  --menu-bg-tp: rgba(255, 255, 255, 0.7);
+  --box-bg: #fff;
+  --box-bg-lighter: #e7e7e7;
+  --box-shadow: #ececec;
+  --box-shadow-darker: #b8b8b8;
+  --button-bg: #fff;
+  --button-bg-lighter: #eee;
+  --option-hover: #e9e9e9;
+  --option-shadow: -2px -2px 4px #ececec, 3px 3px 8px rgb(184, 184, 184);
+  --font: black;
+  --font-red: #b80000;
+  --title-font-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;
+  --font-lighter: #222;
+  --font-pale: #eee;
+  --border: #808080;
+  --border-lighter: #bbb;
+  --border-lightest: #ddd;
+  --modal-bg: rgb(255, 255, 255);
+  --modal-border: 1px solid rgba(175, 175, 175, 0.4);
+}
+:root[color-theme='dark'] {
+  --bg: #0d1117;
+  --menu-bg: #161b22;
+  --menu-bg-tp: rgba(22, 27, 34, 0.7);
+  --box-bg: #161b22;
+  --box-bg-lighter: #2e343b;
+  --box-shadow: #222;
+  --box-shadow-darker: #000;
+  --button-bg: #111;
+  --button-bg-lighter: #333;
+  --option-hover: #666666;
+  --option-shadow: -2px -2px 4px #494949, 3px 3px 8px rgb(85, 85, 85);
+  --font: white;
+  --font-red: #ff6666;
+  --title-font-shadow: -1px 0 rgb(0, 0, 0), 0 1px rgb(0, 0, 0),
+    1px 0 rgb(0, 0, 0), 0 -1px rgb(0, 0, 0);
+  --font-lighter: #ddd;
+  --font-pale: #333;
+  --border: #808080;
+  --border-lighter: #444;
+  --border-lightest: #222;
+  --modal-bg: #212121;
+  --modal-border: 1px solid rgba(83, 83, 83, 0.4);
+}
+
+:root {
+  --main-color: #5d6dbe;
+  --main-color-tint: #7a88ca;
+  --modal-width: 320px;
+  --modal-height: 384px;
+
+  color: var(--font);
+  background-color: var(--bg);
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+
+  transition-duration: 0.5s;
+  transition-property: background-color;
+}
+
+* {
+  list-style: none;
+  text-decoration: none;
+  border-collapse: collapse;
+  margin: 0 0 1px 0;
+  padding: 0px;
+}
+
+@keyframes toast-in-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+::-webkit-scrollbar,
+::-webkit-scrollbar-thumb {
+  width: 4px !important;
+  overflow: visible;
+  border-radius: 4px;
+  /* visibility: hidden; */
+}
+
+/* ::-webkit-scrollbar:hover,
+::-webkit-scrollbar-thumb:hover {
+  visibility: visible;
+  transition: all 0.5s;
+} */
+
+::-webkit-scrollbar-thumb {
+  background-color: #aaa;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #bcc;
+  /* transition: all 0.5s; */
+}
+::-webkit-scrollbar-track {
+  background-color: #ddd;
+  display: none;
+}
+
+.App {
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+button {
+  font-family: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  color: var(--font);
+  background-color: var(--button-bg);
+  border: none;
+  margin: 0;
+}
+
+button:hover {
+  background-color: var(--button-bg-lighter);
+}
+
+input,
+textarea {
+  color: inherit;
+  background-color: inherit;
+  border: 1px solid var(--border);
+  outline: none;
+}
+
+input:focus,
+textarea:focus {
+  border-color: var(--border-lighter);
+  transition-duration: 0.3s;
+  transition-property: border-color;
+}
+
+/* 스크롤 방지용 클래스 */
+.stop-scroll {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* 애니메이션 효과 */
+.btn-touch {
+  animation: touch 0.2s;
+  animation-iteration-count: 2;
+  animation-direction: alternate;
+}
+
+/* CSS of pace.js */
+.pace {
+  -webkit-pointer-events: none;
+  pointer-events: none;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.pace .pace-progress {
+  background: var(--main-color);
+  position: fixed;
+  z-index: 2000;
+  top: 0;
+  right: 100%;
+  width: 100%;
+  height: 3px;
+}
+.pace-inactive {
+  display: block;
+}
+
+.pace-inactive .pace-progress {
+  opacity: 0;
+  transition: all 3s;
+}

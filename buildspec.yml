@@ -1,0 +1,16 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - npm install
+      - cd client
+  build:
+    commands:
+      # TODO: REACT_APP_API_URL AWS 환경변수로 변경
+      - REACT_APP_API_URL=https://voteit.washnix.com:3000 npm run build
+
+artifacts:
+  files:
+    - '**/*/*'
+  base-directory: build
