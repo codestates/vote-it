@@ -11,7 +11,7 @@ export class AppService {
 
   async index(): Promise<string> {
     if (env.NODE_ENV !== 'development') {
-      return 'Hello, Todo It!';
+      return 'Hello, Vote It!';
     }
 
     if (this.dbVersion === null) {
