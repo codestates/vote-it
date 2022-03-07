@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "cd .. && husky install server/.husky",
     "prebuild": "rimraf dist",
     "build": "nest build",
     "start": "nest start",
@@ -58,10 +58,10 @@
     "typescript": "^4.6.2"
   },
   "lint-staged": {
-    "{src,apps,libs}/**/*.ts": [
+    "server/{src,apps,libs}/**/*.ts": [
       "npx eslint --fix"
     ],
-    "src/**/*.{ts,json}": [
+    "server/src/**/*.{ts,json}": [
       "npx prettier --write"
     ]
   }
