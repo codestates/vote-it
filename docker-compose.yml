@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  mariadb:
+    image: 'mariadb:10.6.5'
+    container_name: 'vote-it-mariadb'
+    expose:
+      - '3306'
+    environment:
+      MARIADB_USER: 'devuser'
+      MARIADB_PASSWORD: 'devuser'
+      MARIADB_DATABASE: 'vote_it'
+      MARIADB_RANDOM_ROOT_PASSWORD: 1
+    networks:
+      - vote_it
+
+  node-app:
+    build: .
+    image: 'vote-it/server'
+    container_name: 'vote-it-server'
+    ports:
+      - '${PORT:-3000}:${PORT:-3000}'
+    volumes:
+      - './secrets:/usr/src/app/secrets'
+    depends_on:
+      - mariadb
+    environment:
+      SSL_KEY: 'secrets/key.pem'
+      SSL_CERT: 'secrets/cert.pem'
+      JWT_SECRET: '${JWT_SECRET:-secret}'
+      DB_USERNAME: 'devuser'
+      DB_PASSWORD: 'devuser'
+      DB_NAME: 'vote_it'
+      DB_HOST: 'mariadb'
+      PORT: '${PORT:-3000}'
+      NODE_ENV: 'development'
+    networks:
+      - vote_it
+
+networks:
+  vote_it:
+    driver: bridge
