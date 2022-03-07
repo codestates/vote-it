@@ -1,0 +1,15 @@
+version: 0.0
+os: linux
+files:
+  - source: /server
+    destination: /home/ubuntu/vote-it
+hooks:
+  AfterInstall:
+    - location: .scripts/after-install.sh
+      runas: ubuntu
+  ApplicationStart:
+    - location: .scripts/application-start.sh
+      runas: ubuntu
+  ApplicationStop:
+    - location: .scripts/application-stop.sh
+      runas: ubuntu
