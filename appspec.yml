@@ -5,11 +5,11 @@ files:
     destination: /home/ubuntu/vote-it
 hooks:
   AfterInstall:
-    - location: .scripts/after-install.sh
+    - location: server/.scripts/after-install.sh
       runas: ubuntu
   ApplicationStart:
-    - location: .scripts/application-start.sh
+    - location: server/.scripts/application-start.sh
       runas: ubuntu
   ApplicationStop:
-    - location: .scripts/application-stop.sh
+    - location: server/.scripts/application-stop.sh
       runas: ubuntu
