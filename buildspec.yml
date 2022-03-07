@@ -3,8 +3,8 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - npm install
       - cd client
+      - npm install
   build:
     commands:
       # TODO: REACT_APP_API_URL AWS 환경변수로 변경
