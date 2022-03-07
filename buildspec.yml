@@ -3,6 +3,7 @@ version: 0.2
 phases:
   pre_build:
     commands:
+      - cd client
       - npm install
   build:
     commands:
@@ -12,4 +13,4 @@ phases:
 artifacts:
   files:
     - '**/*'
-  base-directory: build
+  base-directory: client/build
