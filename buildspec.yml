@@ -8,10 +8,9 @@ phases:
   build:
     commands:
       # TODO: REACT_APP_API_URL AWS 환경변수로 변경
-      - REACT_APP_API_URL=https://voteit.washnix.com:3000 npm run build
+      - REACT_APP_API_URL=https://voteit-api.washnix.com:3000 npm run build
 
 artifacts:
   files:
     - '**/*'
   base-directory: client/build
-
