@@ -1,24 +1,24 @@
-import { CreateUserPollDto } from '../dto/create-user-poll.dto';
-import { JwtValidatePayload } from '../../auth/payloads/jwt-validate.payload';
-import { PollsService } from '../../polls/polls.service';
-import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import {
-  Controller,
-  UseGuards,
-  Post,
   Body,
+  Controller,
+  Delete,
+  Get,
   HttpCode,
   HttpStatus,
-  Delete,
   Param,
   ParseIntPipe,
   Patch,
-  Get,
+  Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { JwtValidatePayload } from '../../auth/payloads/jwt-validate.payload';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
+import { OldPaginationQueryDto } from '../../common/dto/pagination-query.dto';
+import { PollsService } from '../../polls/polls.service';
+import { CreateUserPollDto } from '../dto/create-user-poll.dto';
 import { UpdateUserPollDto } from '../dto/update-user-poll.dto';
-import { PaginationQueryDto } from '../../common/dto/pagination-query.dto';
 
 @Controller('users/me/polls')
 @UseGuards(JwtAuthGuard)
@@ -28,7 +28,7 @@ export class UsersMePollsController {
   @Get()
   getMyPolls(
     @CurrentUser() { userId }: JwtValidatePayload,
-    @Query() paginationQueryDto: PaginationQueryDto,
+    @Query() paginationQueryDto: OldPaginationQueryDto,
   ) {
     return this.pollsService.getPollsOfUserPagination(
       userId,

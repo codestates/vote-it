@@ -1,14 +1,14 @@
-import { UserRepository } from '../users/repositories/user.repository';
-import { Connection, EntityNotFoundError, Repository } from 'typeorm';
-import { CreatePollDto } from './dto/create-poll.dto';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Poll } from './entities/poll.entity';
-import { PollOption } from '../polls-options/entities/poll-option.entity';
-import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
-import { UpdateUserPollDto } from '../users/dto/update-user-poll.dto';
+import { Connection, EntityNotFoundError, Repository } from 'typeorm';
+import { OldPaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { joinPollPictureUrl } from '../common/utils/join-picture-url.util';
+import { PollOption } from '../polls-options/entities/poll-option.entity';
+import { UpdateUserPollDto } from '../users/dto/update-user-poll.dto';
+import { UserRepository } from '../users/repositories/user.repository';
+import { CreatePollDto } from './dto/create-poll.dto';
 import { GetPollsPaginationQueryDto } from './dto/get-polls-pagination-query.dto';
+import { Poll } from './entities/poll.entity';
 
 @Injectable()
 export class PollsService {
@@ -20,7 +20,7 @@ export class PollsService {
   ) {}
 
   async getSpecificRangePolls({
-    offset,
+    cursor,
     limit,
     query,
   }: GetPollsPaginationQueryDto) {
@@ -39,10 +39,12 @@ export class PollsService {
       .leftJoin('poll.options', 'options')
       .leftJoin('options.voteHistories', 'voteHistories')
       .where('poll.isPrivate = false')
-      .offset(offset)
-      .limit(limit)
+      .limit(limit + 1)
       .orderBy('poll.createdAt', 'DESC')
       .groupBy('poll.id');
+    if (cursor !== undefined) {
+      pollQueryBuilder.andWhere('poll.id < :cursor', { cursor });
+    }
     if (query !== undefined) {
       pollQueryBuilder.andWhere('poll.subject LIKE :query', {
         query: `%${query}%`,
@@ -61,17 +63,12 @@ export class PollsService {
       },
     }));
 
-    const [{ allPollsCountString }]: [{ allPollsCountString: string }] =
-      await this.pollRepository
-        .createQueryBuilder('poll')
-        .select('COUNT(DISTINCT poll.id)', 'allPollsCountString')
-        .where('poll.isPrivate = false')
-        .execute();
-    const allPollsCount = parseInt(allPollsCountString, 10);
+    const nextCursor: number | undefined =
+      polls.length > limit ? polls.at(-2)?.id : undefined;
 
     return {
-      polls,
-      allPollsCount,
+      polls: polls.slice(0, limit),
+      nextCursor,
     };
   }
 
@@ -143,7 +140,7 @@ export class PollsService {
 
   async getPollsOfUserPagination(
     authorId: number,
-    { offset, limit }: PaginationQueryDto,
+    { offset, limit }: OldPaginationQueryDto,
   ) {
     const [myPolls, allMyPollsCount] = await this.pollRepository
       .createQueryBuilder('poll')
