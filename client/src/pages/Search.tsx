@@ -1,14 +1,15 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import axios from 'axios';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import FloatBtn from '../components/FloatBtn';
 // import { LoadingVoteCard } from '../components/LoadingVoteCard';
 import { VoteCard } from '../components/VoteCard';
-import apiAxios from '../utils/apiAxios';
-import { useDispatch } from 'react-redux';
 import { notify } from '../modules/notification';
-import ServerErr from './ServerErr';
-import { useLocation } from 'react-router-dom';
+import { Polls } from '../utils/apiAxios';
 import { EmptySearch } from './components/EmptySearch';
+import ServerErr from './ServerErr';
 
 const MainOuter = styled.div`
   padding-top: 48px;
@@ -58,92 +59,109 @@ interface Post {
 }
 
 export const Search = () => {
-  const [posts, setPosts] = useState<Post[]>([]); //+
-  const [btnStatus, setBtnStatus] = useState(false);
-  const [isEnd, setIsEnd] = useState(false);
+  const [polls, setPolls] = useState<Post[]>([]); //+
+  const [scrollTopBtnIsVisible, setScrollTopBtnIsVisible] = useState(false);
+  const isGotAllPosts = useRef(false);
   const [err, setErr] = useState('');
-  const offset = useRef(0);
   const dispatch = useDispatch();
-  const location = useLocation().state as string;
-  const searchQuery = location;
+  const searchQuery = useLocation().state as string;
+  const cursor = useRef<number | undefined>(undefined);
 
   useEffect(() => {
-    apiAxios
-      .get(`/polls?offset=${0}&limit=${12}&query=${searchQuery}`)
-      .then((res) => {
-        setPosts(res.data.polls);
-        offset.current += 12;
-      })
-      .catch((err) => {
+    const searchPolls = async () => {
+      try {
+        const { polls: loadedPolls, nextCursor } = await Polls.getPagination(
+          12,
+          cursor.current,
+          searchQuery,
+        );
+        cursor.current = nextCursor;
+        setPolls(loadedPolls);
+      } catch (err: any) {
         setErr(err.message);
-      });
-  }, [searchQuery]);
-
-  const handleScroll = useCallback((): void => {
-    const { innerHeight } = window;
-    const { scrollHeight } = document.body;
-    const { scrollTop } = document.documentElement;
-    if (isEnd || Math.round(scrollTop + innerHeight) <= scrollHeight) {
-      return;
-    }
-    apiAxios
-      .get(`/polls?offset=${offset.current}&limit=${12}&query=${searchQuery}`)
-      .then((res) => {
-        if (res.data.polls.length === 0) {
-          setIsEnd(true);
-          dispatch(notify('모든 투표를 불러왔습니다.'));
-          return;
-        }
-        setPosts([...posts, ...res.data.polls]);
-        offset.current += 12;
-      })
-      .catch((err) => {
-        if (err.response.status >= 500) {
-          setErr(err.response.data.message);
-        } else {
-          console.log(err.response.data.message);
-        }
-      });
-  }, [dispatch, isEnd, posts, searchQuery]);
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll, true);
-    return () => {
-      window.removeEventListener('scroll', handleScroll, true);
-    };
-  }, [handleScroll]);
-
-  const handleTop = () => {
-    //클릭하면 스크롤이 위로 올라가는 함수
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    setBtnStatus(false);
-  };
-
-  useEffect(() => {
-    const handleFollow = () => {
-      if (window.pageYOffset > 100) {
-        setBtnStatus(true);
-      } else {
-        setBtnStatus(false);
       }
     };
-    window.addEventListener('scroll', handleFollow);
+    searchPolls();
+  }, [searchQuery]);
+
+  useEffect(() => {
+    const loadingPollsWhenScroll = () => {
+      const { innerHeight } = window;
+      const { scrollHeight } = document.body;
+      const { scrollTop } = document.documentElement;
+      if (
+        isGotAllPosts.current ||
+        Math.round(scrollTop + innerHeight) <= scrollHeight
+      ) {
+        return;
+      }
+      const loadingPolls = async () => {
+        try {
+          const { polls: loadedPolls, nextCursor } = await Polls.getPagination(
+            12,
+            cursor.current,
+            searchQuery,
+          );
+          setPolls((prevPolls) => [...prevPolls, ...loadedPolls]);
+          if (nextCursor === undefined) {
+            isGotAllPosts.current = true;
+            dispatch(notify('모든 투표를 불러왔습니다.'));
+            return;
+          }
+          cursor.current = nextCursor;
+        } catch (error) {
+          if (axios.isAxiosError(error)) {
+            if (error.response !== undefined) {
+              if (error.response.status >= 500) {
+                setErr(error.response.data.message);
+              } else {
+                console.log(error.response.data.message);
+              }
+            }
+            if (error.request !== undefined) {
+              console.log(error.message);
+            }
+          }
+        }
+      };
+      loadingPolls();
+    };
+    window.addEventListener('scroll', loadingPollsWhenScroll, true);
     return () => {
-      window.removeEventListener('scroll', handleFollow);
+      window.removeEventListener('scroll', loadingPollsWhenScroll, true);
+    };
+  }, [dispatch, searchQuery]);
+
+  //클릭하면 스크롤이 위로 올라가는 함수
+  const handleTop = useCallback(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  useEffect(() => {
+    const showTopBtnOnBottom = () => {
+      if (window.pageYOffset > 100) {
+        setScrollTopBtnIsVisible(true);
+      } else {
+        setScrollTopBtnIsVisible(false);
+      }
+    };
+    window.addEventListener('scroll', showTopBtnOnBottom);
+    return () => {
+      window.removeEventListener('scroll', showTopBtnOnBottom);
     };
   }, []);
 
   if (err !== '') {
     return <ServerErr err={err} />;
   }
-  if (posts.length === 0) {
+  if (polls.length === 0) {
     return <EmptySearch />;
   }
   return (
     <div>
       <MainOuter>
         <MainContainer>
-          {posts.map((post) => (
+          {polls.map((post) => (
             <VoteCard
               key={post.id}
               id={post.id}
@@ -156,7 +174,7 @@ export const Search = () => {
             />
           ))}
         </MainContainer>
-        {btnStatus && (
+        {scrollTopBtnIsVisible && (
           <div onClick={handleTop}>
             <FloatBtn />
           </div>

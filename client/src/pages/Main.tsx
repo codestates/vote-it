@@ -1,14 +1,14 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import axios from 'axios';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import FloatBtn from '../components/FloatBtn';
-import { VoteCard } from '../components/VoteCard';
-import { Poll, Polls } from '../utils/apiAxios';
-import { useDispatch } from 'react-redux';
-import { notify } from '../modules/notification';
-import ServerErr from './ServerErr';
-import { MainEmpty } from './MainEmpty';
 import { LoadingVoteCard } from '../components/LoadingVoteCard';
-import axios from 'axios';
+import { VoteCard } from '../components/VoteCard';
+import { notify } from '../modules/notification';
+import { Poll, Polls } from '../utils/apiAxios';
+import { MainEmpty } from './MainEmpty';
+import ServerErr from './ServerErr';
 
 const MainOuter = styled.div`
   padding-top: 48px;
@@ -49,23 +49,23 @@ export const Main = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [scrollTopBtnIsVisible, setScrollTopBtnIsVisible] = useState(false);
   const isGotAllPolls = useRef(false);
-  const offset = useRef(0);
+  const cursor = useRef<number | undefined>(undefined);
   const dispatch = useDispatch();
 
   const loadingPolls = useCallback(async () => {
     setIsLoading(true);
     try {
-      const { polls: loadedPolls } = await Polls.getPagination(
-        offset.current,
+      const { polls: loadedPolls, nextCursor } = await Polls.getPagination(
         12,
+        cursor.current,
       );
-      if (loadedPolls.length === 0) {
+      setPolls((prevPolls) => [...prevPolls, ...loadedPolls]);
+      if (nextCursor === undefined) {
         isGotAllPolls.current = true;
         dispatch(notify('모든 투표를 불러왔습니다.'));
         return;
       }
-      setPolls((polls) => [...polls, ...loadedPolls]);
-      offset.current += 12;
+      cursor.current = nextCursor;
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response !== undefined) {
@@ -90,7 +90,7 @@ export const Main = () => {
   }, [loadingPolls]);
 
   useEffect(() => {
-    const loadingPostsWhenScroll = () => {
+    const loadingPollsWhenScroll = () => {
       const { innerHeight } = window;
       const { scrollHeight } = document.body;
       const { scrollTop } = document.documentElement;
@@ -104,12 +104,12 @@ export const Main = () => {
       loadingPolls();
     };
     if (isGotAllPolls.current) {
-      window.removeEventListener('scroll', loadingPostsWhenScroll, true);
+      window.removeEventListener('scroll', loadingPollsWhenScroll, true);
       return;
     }
-    window.addEventListener('scroll', loadingPostsWhenScroll, true);
+    window.addEventListener('scroll', loadingPollsWhenScroll, true);
     return () => {
-      window.removeEventListener('scroll', loadingPostsWhenScroll, true);
+      window.removeEventListener('scroll', loadingPollsWhenScroll, true);
     };
   }, [isLoading, loadingPolls]);
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityNotFoundError, Repository } from 'typeorm';
-import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
+import { OldPaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { Poll } from '../polls/entities/poll.entity';
 import { CreatePollCommentDto } from './dto/create-poll-comment.dto';
 import { UpdatePollCommentDto } from './dto/update-poll-comment.dto';
@@ -18,7 +18,7 @@ export class PollsCommentsService {
 
   async getSpecificRangeCommentsOfPoll(
     pollId: number,
-    { offset, limit }: PaginationQueryDto,
+    { offset, limit }: OldPaginationQueryDto,
   ) {
     const [comments, count] = await this.pollCommentRepository
       .createQueryBuilder('comment')

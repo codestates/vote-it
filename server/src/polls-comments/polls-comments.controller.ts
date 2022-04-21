@@ -15,7 +15,7 @@ import {
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { JwtValidatePayload } from '../auth/payloads/jwt-validate.payload';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
-import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
+import { OldPaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { CreatePollCommentDto } from './dto/create-poll-comment.dto';
 import { UpdatePollCommentDto } from './dto/update-poll-comment.dto';
 import { PollsCommentsService } from './polls-comments.service';
@@ -27,7 +27,7 @@ export class PollsCommentsController {
   @Get()
   getSpecificRangeCommentsOfPoll(
     @Param('pollId', ParseIntPipe) pollId: number,
-    @Query() paginationQueryDto: PaginationQueryDto,
+    @Query() paginationQueryDto: OldPaginationQueryDto,
   ) {
     return this.pollsCommentsService.getSpecificRangeCommentsOfPoll(
       pollId,

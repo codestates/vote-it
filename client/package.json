@@ -76,7 +76,6 @@
   },
   "lint-staged": {
     "client/src/**/*.{ts,tsx,js,jsx,json}": [
-
       "npx prettier --write"
     ]
   }

@@ -28,18 +28,13 @@ const apiAxios = axios.create({
 
 export const Polls = {
   async getPagination(
-    offset: number,
     limit: number,
+    cursor?: number,
     query?: string,
-  ): Promise<{ polls: Poll[]; allPollsCount: number }> {
-    const urlQuery = new URLSearchParams({
-      offset: offset.toString(),
-      limit: limit.toString(),
+  ): Promise<{ polls: Poll[]; nextCursor: number | undefined }> {
+    const res = await apiAxios.get('/polls', {
+      params: { limit, cursor, query },
     });
-    if (query !== undefined && query !== '') {
-      urlQuery.append('query', query);
-    }
-    const res = await apiAxios.get(`/polls?${urlQuery.toString()}`);
     return res.data;
   },
 };

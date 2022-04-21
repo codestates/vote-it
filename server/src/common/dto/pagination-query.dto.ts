@@ -6,6 +6,20 @@ export class PaginationQueryDto {
   @Min(0)
   @IsOptional()
   @NumericTransform()
+  cursor?: number;
+
+  @IsInt()
+  @IsPositive()
+  @Max(30)
+  @NumericTransform()
+  limit: number;
+}
+
+export class OldPaginationQueryDto {
+  @IsInt()
+  @Min(0)
+  @IsOptional()
+  @NumericTransform()
   offset = 0;
 
   @IsInt()
